@@ -142,7 +142,6 @@ poyo==0.5.0
 pre-commit==2.15.0
 prompt-toolkit==3.0.21
 protobuf==3.17.3
-psycopg2==2.9.1
 ptyprocess==0.7.0
 pure-eval==0.2.2
 py==1.10.0
