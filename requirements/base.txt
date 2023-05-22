@@ -78,7 +78,6 @@ django-celery-beat==2.4.0
 django-ckeditor==6.5.1
 django-cors-headers==3.13.0
 django-coverage-plugin==2.0.1
-django-crispy-forms==1.13.0
 django-debug-toolbar==3.2.2
 django-environ==0.8.0
 django-extensions==3.1.3
