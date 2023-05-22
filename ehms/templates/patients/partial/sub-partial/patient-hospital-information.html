@@ -1,0 +1,14 @@
+<div class="form-section-head">
+    <strong>Patient Hospital</strong>
+</div>
+<form class="A-form" action="{% url 'patients:detail' patient.pk %}" method="POST" id="update-patient-hospital-form">
+    {% csrf_token %}
+    <div class="mb-40">
+        <label class="label-box" for="{{ update_patient_hospital_form.hospital.id_for_label }}">{{ update_patient_hospital_form.hospital.label }}</label>
+        {{ update_patient_hospital_form.hospital }}
+    </div>
+    <input type="hidden" name="update_patient_hospital_form" value="">
+</form>
+<div class="button-section text-end">
+    <button type="button"  class="ehms-button">Save Changes</button>
+</div>

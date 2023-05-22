@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block open %}
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <h1 style="font-size: 100px;">EHMS</h1>
+            <p style="font-size: 14px;">Electronic Health Management System</p>
+        </div>
+        <div class="col-12 text-center" style="font-size: 14px;">
+            <a href="{% url "login" %}">Login</a> |
+            <a href="">About</a> |
+            <a href="">Contact Us</a>
+        </div>
+    </div>
+{% endblock open %}

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+
+
+            <div class="col-6">
+                <a class="pl-5" href="{% url "dashboards:hospital-level" %}"> <i class="ri-home-3-fill ri-lg"></i> Home </a>
+                <i class="ri-arrow-right-s-line ri-lg"></i>
+                <a class="pl-5 pr-5" href="{% url "hospitals:hospital-dashboard" %}"> <i class="ri-dashboard-fill ri-lg"></i> Dashboard </a>
+                <i class="ri-arrow-right-s-line ri-lg"></i>
+                <span class="disabled-color pr-5"> <i class="ri-hospital-fill ri-lg"></i> {{ request.hospital.name }} </span>
+            </div>
+            <div class="col-6 d-flex justify-content-end">hi</div>
+
+        <div class="col-12 form-section">
+            {% include "hospitals/partial/hospital-general-information-form.html" with hospital_general_info=hospital_general_info %}
+        </div>
+        <div class="col-12 form-section">
+            {% include "hospitals/partial/hospital-contact-information-form.html" with hospital_contact_info=hospital_contact_info %}
+        </div>
+
+            <div class="col-12 form-section">
+                {% include "hospitals/partial/hospital-address-information-form.html" with hospital_address_info=hospital_address_info %}
+            </div>
+
+            <div class="col-12 form-section">
+                {% include "hospitals/partial/hospital-representative-list.html" with representatives=representatives %}
+            </div>
+
+            <div class="col-12 form-section">
+                {% include "hospitals/partial/hospital-user-list.html" with hospital_users=hospital_users %}
+            </div>
+
+{% endblock content %}
+
+{% block inline_javascript %}
+
+    <script nonce="{{ request.csp_nonce }}" type="application/javascript">
+
+            $(function() {
+
+                new FormValidation({
+                    formId: 'hospital-general-info-change-request-form',
+                    fireEventHandler: true,
+                    onPageLoad: false,
+                    disableInlineStyle: true,
+                    listStyle: 'unordered',
+                    ownErrorCountId: 'hospital-general-info-change-request-form-error-counts'
+                });
+
+                new FormValidation({
+                    formId: 'hospital-contact-info-change-request-form',
+                    fireEventHandler: true,
+                    onPageLoad: false,
+                    disableInlineStyle: true,
+                    listStyle: 'unordered',
+                    ownErrorCountId: 'hospital-contact-info-change-request-form-error-counts'
+                });
+
+                new FormValidation({
+                    formId: 'hospital-address-info-change-request-form',
+                    fireEventHandler: true,
+                    onPageLoad: false,
+                    disableInlineStyle: true,
+                    listStyle: 'unordered',
+                    ownErrorCountId: 'hospital-address-info-change-request-form-error-counts'
+                });
+            });
+    </script>
+
+
+{% endblock inline_javascript %}

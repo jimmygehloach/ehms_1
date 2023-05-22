@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <span class="disabled-color pr-5"> Inventory Detail </span>
+            </div>
+
+            <div class="col d-flex justify-content-end">
+                <a class="pr-10" href="{% url 'inventory:received' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Receive Items"><span class="material-symbols-sharp">select_check_box</span></a>
+                <a class="" href="{% url 'inventory:issued' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Issue Items"><span class="material-symbols-sharp">output</span></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+                <div class="div-table">
+                    <div class="div-table-row d-flex">
+                        <div class="div-table-head flex-fill w-30">Item</div>
+                        <div class="div-table-head flex-fill w-20">Item Category</div>
+                        <div class="div-table-head flex-fill w-10">SKU</div>
+                        <div class="div-table-head flex-fill w-20">Minimum Stock Value</div>
+                        <div class="div-table-head flex-fill w-10">Received</div>
+                        <div class="div-table-head flex-fill w-10">Issued</div>
+                    </div>
+                    {% for inventory in inventory %}
+                        <div class="div-table-row d-flex bg-white">
+                            <div class="div-table-cell flex-fill w-30">{{ inventory.item__item_name }}</div>
+                            <div class="div-table-cell flex-fill w-20">{{ inventory.item_category__name }}</div>
+                            <div class="div-table-cell flex-fill w-10">{{ inventory.item__sku }}</div>
+                            <div class="div-table-cell flex-fill w-20">{{ inventory.item__minimum_stock_value }}</div>
+                            <div class="div-table-cell flex-fill w-10">{{ inventory.total_received }}</div>
+                            <div class="div-table-cell flex-fill w-10">{{ inventory.total_issued }}</div>
+                        </div>
+                    {% empty %}
+                        <div class="div-table-row bg-white"><div class="div-table-cell flex-fill w-100 text-center">Nothing Found</div></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <span class="disabled-color pr-5"> Inventory Items Issued </span>
+            </div>
+
+            <div class="col d-flex justify-content-end"></div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <div class="div-table">
+                    <div class="div-table-row d-flex">
+                        <div class="div-table-head flex-fill w-20">Bill Number</div>
+                        <div class="div-table-head flex-fill w-20">Total Items Issued</div>
+                        <div class="div-table-head flex-fill w-20">Amount (if available)</div>
+                        <div class="div-table-head flex-fill w-20">Department</div>
+                        <div class="div-table-head flex-fill w-10">Date</div>
+                        <div class="div-table-head flex-fill w-10">Actions</div>
+                    </div>
+                    {% for issued in issued_items_detail %}
+                        <div class="div-table-row d-flex bg-white">
+                            <div class="div-table-cell flex-fill w-20">{{ issued.bill_number }}</div>
+                            <div class="div-table-cell flex-fill w-20">{{ issued.total_items }}</div>
+                            <div class="div-table-cell flex-fill w-20">{{ issued.gross_amount }}</div>
+                            <div class="div-table-cell flex-fill w-20">{{ issued.department.name }}</div>
+                            <div class="div-table-cell flex-fill w-10">{{ issued.created|naturaltime }}</div>
+                            <div class="div-table-cell flex-fill w-10">
+                                <a href="{% url 'inventory:issued-bill' issued.pk %}">
+                                    <svg height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+                                        <path d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M18 17H6v-2h12v2zm0-4H6v-2h12v2zm0-4H6V7h12v2zM3 22l1.5-1.5L6 22l1.5-1.5L9 22l1.5-1.5L12 22l1.5-1.5L15 22l1.5-1.5L18 22l1.5-1.5L21 22V2l-1.5 1.5L18 2l-1.5 1.5L15 2l-1.5 1.5L12 2l-1.5 1.5L9 2 7.5 3.5 6 2 4.5 3.5 3 2v20z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                     {% empty %}
+                        <div class="div-table-row bg-white"><div class="div-table-cell flex-fill w-100 text-center">Nothing Found</div></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <span class="disabled-color pr-5"> Inventory Items Received </span>
+            </div>
+
+            <div class="col d-flex justify-content-end"></div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <div class="div-table">
+                    <div class="div-table-row d-flex">
+                        <div class="div-table-head flex-fill w-20">Bill Number</div>
+                        <div class="div-table-head flex-fill w-20">Total Items Received</div>
+                        <div class="div-table-head flex-fill w-20">Amount (if available)</div>
+                        <div class="div-table-head flex-fill w-20">Supplier</div>
+                        <div class="div-table-head flex-fill w-10">Date</div>
+                        <div class="div-table-head flex-fill w-10">Actions</div>
+                    </div>
+                    {% for received in received_items_detail %}
+                        <div class="div-table-row d-flex bg-white">
+                            <div class="div-table-cell flex-fill w-20">{{ received.bill_number }}</div>
+                            <div class="div-table-cell flex-fill w-20">{{ received.total_items }}</div>
+                            <div class="div-table-cell flex-fill w-20">{{ received.gross_amount }}</div>
+                            <div class="div-table-cell flex-fill w-20">{{ received.supplier.name }}</div>
+                            <div class="div-table-cell flex-fill w-10">{{ received.created|naturaltime }}</div>
+                            <div class="div-table-cell flex-fill w-10">
+                                <a href="{% url 'inventory:received-bill' received.pk %}">
+                                    <svg height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+                                        <path d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M18 17H6v-2h12v2zm0-4H6v-2h12v2zm0-4H6V7h12v2zM3 22l1.5-1.5L6 22l1.5-1.5L9 22l1.5-1.5L12 22l1.5-1.5L15 22l1.5-1.5L18 22l1.5-1.5L21 22V2l-1.5 1.5L18 2l-1.5 1.5L15 2l-1.5 1.5L12 2l-1.5 1.5L9 2 7.5 3.5 6 2 4.5 3.5 3 2v20z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                     {% empty %}
+                        <div class="div-table-row bg-white"><div class="div-table-cell flex-fill w-100 text-center">Nothing Found</div></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

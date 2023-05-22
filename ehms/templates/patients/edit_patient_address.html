@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% block content %}
+    {# TODO: 0 #}
+    {% comment %}
+
+        This template contains form to edit the address related to the patient.
+        User variables passed into this template
+        1. patient
+        2. patient_address_form
+        3. title
+
+        Javascript Methods: -
+        1. FormValidation
+        2. AddressFormFields
+
+    {% endcomment %}
+
+    {# Top breadcrumb navigation #}
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-6">
+                <span class="disabled-color pr-5"> Change Address </span>
+                <span class="material-symbols-sharp breadcrumb-seperator">arrow_forward_ios</span>
+                <a href="{% url "patients:detail" patient.pk %}">{{ patient.get_full_name }}</a>
+                <span class="material-symbols-sharp breadcrumb-seperator">arrow_forward_ios</span>
+                <a class="pl-5" href="{% url "patients:create" %}">Registration</a>
+                <span class="material-symbols-sharp breadcrumb-seperator">arrow_forward_ios</span>
+                <a class="pl-5" href="{% url "patients:list" %}">Patient List</a>
+            </div>
+
+            <div class="col-6 d-flex justify-content-end">
+                {# Empty Right side #}
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    {# Main section #}
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-4">
+                <strong><span class="material-symbols-sharp aside-section-icon">edit_square</span>Edit Address Section</strong>
+                <p class="disabled-text">Change patient address information</p>
+            </div>
+            <div class="col-8 form-section">
+                <div class="form-section-head">
+                    <strong>Change Patient Address</strong>
+                </div>
+                {% comment %}
+                    Form to edit the address of the patient: - id: edit-patient-address-form
+                    Fields: -
+                    1. address_line_1
+                    2. address_line_2
+                    3. phone
+                    4. alternate_phone
+                    5. type
+                    6. current_address
+                    7. country
+                    8. region
+                    9. district
+                    10. town
+                    11. postcode
+                {% endcomment %}
+                <div class="pb-0 p-30">
+                    {% include 'partials/errors.html' with form=patient_address_form %}
+                </div>
+                <form class="A-form" action="" method="POST" id="edit-patient-address-form" novalidate>
+                    {% csrf_token %}
+                    <div class="mb-40">
+                        <label for="{{ patient_address_form.address_line_1.id_for_label }}">
+                            {{ patient_address_form.address_line_1.label }}
+                        </label>
+                        {{ patient_address_form.address_line_1 }}
+                    </div>
+                    <div class="mb-40">
+                        <label for="{{ patient_address_form.address_line_2.id_for_label }}">
+                            {{ patient_address_form.address_line_2.label }}
+                        </label>
+                        {{ patient_address_form.address_line_2 }}
+                    </div>
+                    <div class="mb-40">
+                        <label for="{{ patient_address_form.phone.id_for_label }}">
+                            {{ patient_address_form.phone.label }}
+                        </label>
+                        {{ patient_address_form.phone }}
+                    </div>
+                    <div class="mb-40">
+                        <label for="{{ patient_address_form.alternate_phone.id_for_label }}">
+                            {{ patient_address_form.alternate_phone.label }}</label>
+                        {{ patient_address_form.alternate_phone }}
+                    </div>
+                    <div class="mb-40">
+                        <label for="{{ patient_address_form.type.id_for_label }}">
+                            {{ patient_address_form.type.label }}
+                        </label>
+                        {{ patient_address_form.type }}
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="">{{ patient_address_form.current_address.label }}</label>
+                        <label class="form-label" for="{{ patient_address_form.current_address.id_for_label }}">
+                            <p>Click to check or uncheck</p>
+                            {{ patient_address_form.current_address }}
+                        </label>
+                    </div>
+                    <div class="mb-40">
+                        <label for="{{ patient_address_form.country.id_for_label }}">
+                            {{ patient_address_form.country.label }}
+                        </label>
+                        {{ patient_address_form.country }}
+                    </div>
+                    <div class="mb-40">
+                        <label for="{{ patient_address_form.region.id_for_label }}">
+                            {{ patient_address_form.region.label }}
+                        </label>
+                        {{ patient_address_form.region }}
+                    </div>
+                    <div class="mb-40">
+                        <label for="{{ patient_address_form.district.id_for_label }}">
+                            {{ patient_address_form.district.label }}
+                        </label>
+                        {{ patient_address_form.district }}
+                    </div>
+                    <div class="mb-40">
+                        <label for="{{ patient_address_form.town.id_for_label }}">
+                            {{ patient_address_form.town.label }}
+                        </label>
+                        {{ patient_address_form.town }}
+                    </div>
+                    <div class="mb-40">
+                        <label for="{{ patient_address_form.postcode.id_for_label }}">
+                            {{ patient_address_form.postcode.label }}
+                        </label>
+                        {{ patient_address_form.postcode }}
+                    </div>
+                    <button type="submit" id="edit-patient-address-form-submit-button" class="hide-block"></button>
+                </form>
+                <div class="button-section text-end">
+                    <div id="edit-patient-address-form-error-counts" class="form-errors-count"></div>
+                    <label for="edit-patient-address-form-submit-button" role="button" class="ehms-button">
+                        Save Changes
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block inline_javascript %}
+
+    <script nonce="{{ request.csp_nonce }}" type="application/javascript">
+
+        $(function() {
+
+            {# Form field validatation (patient_address_form) #}
+            new FormValidation({
+                formId: 'edit-patient-address-form',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+                ownErrorCountId: 'edit-patient-address-form-error-counts',
+            });
+
+            {# Fetch and fill the select address section of the form (patient_address_form) #}
+            new AddressFormFields({
+                formId: 'edit-patient-address-form',
+                regionUrl: '/addresses/api/region',
+                districtUrl: '/addresses/api/district',
+                townUrl: '/addresses/api/town',
+                postcodeUrl: '/addresses/api/postcode',
+            })
+        });
+
+    </script>
+
+{% endblock inline_javascript %}

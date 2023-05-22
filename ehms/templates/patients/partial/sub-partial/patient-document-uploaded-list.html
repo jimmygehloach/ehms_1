@@ -1,0 +1,23 @@
+<div class="form-section-head">
+    <strong>Patient documents Uploaded</strong>
+</div>
+<div class="div-table m-2">
+    <div class="div-table-row d-flex">
+        <div class="div-table-head flex-fill w-60">Name of document</div>
+        <div class="div-table-head flex-fill w-30">Type of document</div>
+        <div class="div-table-head flex-fill w-10">Actions</div>
+    </div>
+        {% for patient_document in patient_documents %}
+            <div class="div-table-row d-flex">
+                <div class="div-table-cell flex-fill w-60">{{ patient_document.name }}</div>
+                <div class="div-table-cell flex-fill w-30">{{ patient_document.type }}</div>
+                <div class="div-table-cell flex-fill w-10">
+                    <a href="{{ patient_document.document.url }}"><span class="material-symbols-sharp">file_download</span></a>
+                </div>
+            </div>
+        {% empty %}
+            <div class="div-table-row d-flex bg-white">
+                <div class="div-table-cell flex-fill w-100 text-center">No document is uploaded yet.</div>
+            </div>
+        {% endfor %}
+</div>

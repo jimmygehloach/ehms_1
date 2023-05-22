@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                New Medical Session /
+                <a href="{% url 'patients:detail' patient.pk %}">
+                    {{ patient.first_name }} {{ patient.last_name }}
+                </a> /
+                <a  class="pl-5"
+                    href="{% url 'hospitals:hospital-medical-sessions' %}">
+                    Medical Session List
+                </a>
+            </div>
+            <div class="col d-flex justify-content-end">
+                <a  href="{% url 'medical_sessions:list' patient.pk %}"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Medical sessions of {{ patient.first_name }} {{ patient.last_name }}">
+                    <span class="material-symbols-sharp">list_alt</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <form action="" method="POST" enctype='multipart/form-data' id="medical-session-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="medical_session_form" value="1">
+                    <div class="row">
+                        <div class="col-6 mb-40">
+                            <label class="form-label label-box">{{ medical_session_form.emergency_session.label }}</label>
+                            <label class="form-label" for="{{ medical_session_form.emergency_session.id_for_label }}" tabindex="1">
+                                <p>Click to check or uncheck</p>
+                                {{ medical_session_form.emergency_session }}
+                            </label>
+                            {{ medical_session_form.emergency_session.errors }}
+                        </div>
+                        <div class="col-12 mb-40">
+                            <label class="form-label label-box" for="{{ medical_session_form.diagnosis.id_for_label }}">
+                                {{ medical_session_form.diagnosis.label }}
+                            </label>
+                            {{ medical_session_form.diagnosis }}
+                        </div>
+                        <div class="col-12 mb-40">
+                            <label class="form-label label-box" for="{{ medical_session_form.medication.id_for_label }}">
+                                {{ medical_session_form.medication.label }}
+                            </label>
+                            {{ medical_session_form.medication }}
+                        </div>
+                        <div class="col-12 mb-40">
+                            <label class="form-label label-box" for="{{ medical_session_form.procedure.id_for_label }}">
+                                {{ medical_session_form.procedure.label }}
+                            </label>
+                            {{ medical_session_form.procedure }}
+                        </div>
+                        <div class="col-6 mb-40">
+                            <label class="form-label label-box" for="{{ medical_session_form.hard_file.id_for_label }}">
+                                {{ medical_session_form.hard_file.label }}
+                            </label>
+                            {{ medical_session_form.hard_file }}
+                        </div>
+                        <div class="col-6 mb-40">
+                            <label class="form-label label-box" for="{{ medical_session_form.supporting_documents.id_for_label }}">
+                                {{ medical_session_form.supporting_documents.label }}
+                            </label>
+                            {{ medical_session_form.supporting_documents }}
+                        </div>
+                        <div class="col-6 mb-40">
+                            <label class="form-label label-box" for="{{ medical_session_form.keywords.id_for_label }}">
+                                {{ medical_session_form.keywords.label }}
+                            </label>
+                            {{ medical_session_form.keywords }}
+                        </div>
+                        <div class="col-6 mb-40">
+                            <label class="form-label label-box" for="{{ medical_session_form.ward.id_for_label }}">
+                                {{ medical_session_form.ward.label }}
+                            </label>
+                            {{ medical_session_form.ward }}
+                        </div>
+                        <div class="col-6 mb-40">
+                            <label class="form-label label-box" for="{{ medical_session_form.department.id_for_label }}">
+                                {{ medical_session_form.department.label }}
+                            </label>
+                            {{ medical_session_form.department }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {# Model trigger button #}
+                            <button type="button" class="ehms-button" data-bs-toggle="modal"
+                                    data-bs-target="#medical-session-modal-id" onclick="launchMSModel(this)">
+                                Preview
+                            </button>
+                        </div>
+                        <div class="col d-flex flex-row-reverse">
+                            {# Main submit button #}
+                            <button type="submit" class="ehms-button">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content%}
+
+{% block modal %}
+<div class="modal fade" id="medical-session-modal-id" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="row modal-header mb-2">
+                <div class="col-11">
+                    <h3>Preview Page</h3>
+                </div>
+                <div class="col-1 text-center">
+                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="col-12 red-color">
+                    (Read carefully before you submit. Once Submitted can not be changed.)
+                </div>
+            </div>
+
+            <div class="modal-body medical-session-modal-body">
+                <div class="col-12">
+                    <h4>Diagnosis</h4>
+                    <p id="modal-diagnosis-view"></p>
+                </div>
+                <div class="col-12">
+                    <h4>Medication</h4>
+                    <p id="modal-medication-view"></p>
+                </div>
+                <div class="col-12">
+                    <h4>Procedure</h4>
+                    <p id="modal-procedure-view"></p>
+                </div>
+                <div class="col-12">
+                    <h4>Medical session hard file</h4>
+                    <p id="modal-hard-file-view"></p>
+                </div>
+                <div class="col-12">
+                    <h4>Medical supporting documents</h4>
+                    <p id="modal-supporting-docs-view"></p>
+                </div>
+                <div class="col-12">
+                    <h4>Keywords</h4>
+                    <p id="modal-keyword-view"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock modal %}
+
+{% block inline_javascript %}
+
+    <script nonce="{{ request.csp_nonce }}" type="application/javascript">
+
+        $(function() {
+
+            $('#id_keywords').select2();
+
+            function launchMSModel(obj) {
+                let form = $('#medical-session-form').serializeArray();
+                let keywords = $(".ms-keywords :selected").map(function (i, el) {
+                    return $(el).text();
+                }).get();
+
+                $('#modal-diagnosis-view').html(form[2].value || "--------");
+                $('#modal-medication-view').html(form[3].value || "--------");
+                $('#modal-procedure-view').html(form[4].value || "--------");
+                $('#modal-hard-file-view').html($('.ms-hard-file').val() || "--------");
+                $('#modal-supporting-docs-view').html($('.ms-supporting-docs').val() || "--------");
+
+                if (keywords.length === 0) {
+                    $('#modal-keyword-view').html("--------");
+                }
+                $.each(keywords, function (key, value) {
+                    $('#modal-keyword-view').html(key + 1 + ": " + value + '<br>');
+                });
+            }
+        });
+
+</script>
+
+{% endblock inline_javascript %}

@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-6">
+                <a class="pl-5" href="{% url "receptions:list" %}">Reception List</a>
+                <span class="material-symbols-sharp breadcrumb-seperator">arrow_forward_ios</span>
+                <span class="disabled-color pr-5"> Reception Token </span>
+            </div>
+            <div class="col d-flex justify-content-end">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-4">
+                <strong>Token Section</strong>
+                <p class="disabled-text">Generate token for the reception login</p>
+            </div>
+            <div class="col-8 form-section">
+                <div class="form-section-head">
+                    <strong>Reception token generator</strong>
+                </div>
+                <form class="A-form" action="{% url 'receptions:token' %}" method="POST" id="reception_token_generation_form" novalidate>
+                    {% csrf_token %}
+                    <div class="mb-40">
+                        <label class="label-box" for="token-valid-upto">Valid upto (Select the date and time)</label>
+                        <input type="text" class="form-control" name="token_timestamp" id="token-valid-upto" data-validation="required">
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="token-reception">Receptions</label>
+                        <select name="reception" id="token-reception" class="form-select" data-validation="required">
+                            {% for reception in page_obj %}
+                                <option value="{{ reception.pk }}">{{ reception.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <input type="hidden" name="generate_reception_token" value="">
+                    <button type="submit" class="hide-block" id="reception-token-form-submit-button"></button>
+                </form>
+                <div class="button-section text-end">
+                    <div id="reception-token-form-error-counts" class="form-errors-count"></div>
+                    <label for="reception-token-form-submit-button" role="button" class="ehms-button">Save Changes</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr pt-20"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-4">
+                <strong>Reception List</strong>
+                <p class="disabled-text">Reception token detail list</p>
+            </div>
+            <div class="col-8 form-section">
+                <div class="form-section-head d-flex">
+                    <strong class="flex-grow-1">Reception Token Detail</strong>
+                    <div class="dropdown flex-grow" data-bs-toggle="tooltip" data-bs-placement="top" title="Sort List">
+                        <a href=""  id="reception-token-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="material-symbols-sharp">sort</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="reception-token-dropdown">
+                            <li><a class="dropdown-item" href="{% url 'receptions:token' %}?sort=asc">Ascending</a></li>
+                            <li><a class="dropdown-item" href="{% url 'receptions:token' %}?sort=desc">Descending</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="A-form">
+                    <div class="div-table">
+                        <div class="div-table-row d-flex">
+                            <div class="div-table-head flex-fill w-50">Name</div>
+                            <div class="div-table-head flex-fill w-10">Token</div>
+                            <div class="div-table-head flex-fill w-30">Valid upto</div>
+                            <div class="div-table-head flex-fill w-10">Actions</div>
+                        </div>
+                        {% for reception in page_obj %}
+                            <div class="div-table-row d-flex">
+                                <div class="div-table-cell flex-fill w-50">
+                                    {{ reception.name }}
+                                </div>
+                                <div class="div-table-cell flex-fill w-20">
+                                    {{ reception.token }}<br>
+                                </div>
+                                <div class="div-table-cell flex-fill w-30">
+                                    {{ reception.token_timestamp|naturaltime }}
+                                </div>
+                                <div class="div-table-cell flex-fill w-10">
+                                    <a href=""><i class="ri-delete-bin-7-fill ri-lg"></i></a>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="div-table-row"><div class="div-table-cell flex-fill w-100">No reception found.</div></div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block inline_javascript %}
+
+     <script nonce="{{ request.csp_nonce }}" type="application/javascript">
+
+        $(function () {
+
+            new FormValidation({
+                formId: 'reception_token_generation_form',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+                ownErrorCountId: 'reception-token-form-error-counts'
+            });
+
+            $('#token-valid-upto').flatpickr({
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                time_24hr: true,
+            });
+        });
+
+    </script>
+
+{% endblock inline_javascript %}

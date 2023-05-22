@@ -1,0 +1,99 @@
+<div class="col-4">
+    <strong>Immunization Section</strong>
+    <p class="disabled-text">Immunization details of the new patient</p>
+</div>
+<div class="col-8 form-section mt-20">
+    <div class="form-section-head">
+        <strong>Patient Immunization Information</strong>
+    </div>
+    <div class="A-form">
+        <div class="mb-40">
+            <label class="label-box" for="">{{ patient_form.bcg.label }}</label>
+            <label class="form-label" for="{{ patient_form.bcg.id_for_label }}">
+                <p>Click to check or uncheck</p>
+                {{ patient_form.bcg }}
+                {{ patient_form.bcg.errors }}
+            </label>
+        </div>
+        <div class="mb-40">
+            <label class="label-box" for="">{{ patient_form.pentavalent.label }}</label>
+            <label for="{{ patient_form.pentavalent.id_for_label }}" class="form-label">
+                <p>Click to check or uncheck</p>
+                {{ patient_form.pentavalent }}
+                {{ patient_form.pentavalent.errors }}
+            </label>
+        </div>
+        <div class="mb-40">
+            <label class="label-box" for="">{{ patient_form.pneumo.label }}</label>
+            <label  for="{{ patient_form.pneumo.id_for_label }}" class="form-label">
+                <p>Click to check or uncheck</p>
+                {{ patient_form.pneumo }}
+                {{ patient_form.pneumo.errors }}
+            </label>
+        </div>
+        <div class="mb-40">
+            <label class="label-box" for="">{{ patient_form.polio.label }}</label>
+            <label for="{{ patient_form.polio.id_for_label }}" class="form-label">
+                <p>Click to check or uncheck</p>
+                {{ patient_form.polio }}
+                {{ patient_form.polio.errors }}
+            </label>
+        </div>
+        <div class="mb-40">
+            <label class="label-box" for="">{{ patient_form.rotarix.label }}</label>
+            <label for="{{ patient_form.rotarix.id_for_label }}" class="form-label">
+                <p>Click to check or uncheck</p>
+                {{ patient_form.rotarix }}
+                {{ patient_form.rotarix.errors }}
+            </label>
+        </div>
+        <div class="mb-40">
+            <label class="label-box" for="">{{ patient_form.measles_rubella_1.label }}</label>
+            <label for="{{ patient_form.measles_rubella_1.id_for_label }}" class="form-label">
+                <p>Click to check or uncheck</p>
+                {{ patient_form.measles_rubella_1 }}
+                {{ patient_form.measles_rubella_1.errors }}
+            </label>
+        </div>
+        <div class="mb-40">
+            <label class="label-box" for="">{{ patient_form.measles_rubella_2.label }}</label>
+            <label for="{{ patient_form.measles_rubella_2.id_for_label }}" class="form-label">
+                <p>Click to check or uncheck</p>
+                {{ patient_form.measles_rubella_2 }}
+                {{ patient_form.measles_rubella_2.errors }}
+            </label>
+        </div>
+        <div class="mb-40">
+            <label class="label-box" for="">{{ patient_form.dpt.label }}</label>
+            <label for="{{ patient_form.dpt.id_for_label }}" class="form-label">
+                <p>Click to check or uncheck</p>
+                {{ patient_form.dpt }}
+                {{ patient_form.dpt.errors }}
+            </label>
+        </div>
+        <div class="mb-40">
+            <label class="label-box" for="">{{ patient_form.yellow_fever.label }}</label>
+            <label for="{{ patient_form.yellow_fever.id_for_label }}" class="form-label">
+                <p>Click to check or uncheck</p>
+                {{ patient_form.yellow_fever }}
+                {{ patient_form.yellow_fever.errors }}
+            </label>
+        </div>
+        <div class="mb-40">
+            <label class="label-box" for="">{{ patient_form.vitamin_a.label }}</label>
+            <label for="{{ patient_form.vitamin_a.id_for_label }}" class="form-label">
+                <p>Click to check or uncheck</p>
+                {{ patient_form.vitamin_a }}
+                {{ patient_form.vitamin_a.errors }}
+            </label>
+        </div>
+        <div class="mb-40">
+            <label class="label-box" for="">{{ patient_form.tetanus.label }}</label>
+            <label for="{{ patient_form.tetanus.id_for_label }}" class="form-label">
+                <p>Click to check or uncheck</p>
+                {{ patient_form.tetanus }}
+                {{ patient_form.tetanus.errors }}
+            </label>
+        </div>
+    </div>
+</div>

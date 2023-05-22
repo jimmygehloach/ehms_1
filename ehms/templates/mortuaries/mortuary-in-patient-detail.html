@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                {{ patient.first_name }} {{ patient.last_name }} / <a href="{% url "mortuaries:list" mortuary.pk %}"><span class="disabled-color pr-5"> Patient List </span></a> / <a class="pl-5" href="{% url "mortuaries:home" %}">Mortuaries</a>
+            </div>
+            <div class="col d-flex justify-content-end"></div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <div class="div-table">
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-head text-bold w-50">Tag</div>
+                        <div class="div-table-cell w-50">
+                            {% if detail.tag %} {{ detail.tag }} {% else %} <span class="material-symbols-sharp">horizontal_rule</span> {% endif %}
+                        </div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-head text-bold w-50">Next of Kin</div>
+                        <div class="div-table-cell w-50">
+                            {% if detail.next_of_kin %} {{ detail.next_of_kin }} {% else %} <span class="material-symbols-sharp">horizontal_rule</span> {% endif %}
+                        </div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-head text-bold w-50">Received Date</div>
+                        <div class="div-table-cell w-50 text-right">
+                            {% if detail.date_received %} {{ detail.date_received }} {% else %} <span class="material-symbols-sharp">horizontal_rule</span> {% endif %}
+                        </div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-head text-bold w-50">Next of Kin relationship</div>
+                        <div class="div-table-cell w-50">
+                            {% if detail.next_of_kin_relationship %} {{ detail.next_of_kin_relationship }} {% else %}
+                                <span class="material-symbols-sharp">horizontal_rule</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-head text-bold w-50">Released Date</div>
+                        <div class="div-table-cell w-50">
+                            {% if detail.date_released %} {{ detail.date_released }} {% else %} <span class="material-symbols-sharp">horizontal_rule</span> {% endif %}
+                        </div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-head text-bold w-50">Non Relative Person</div>
+                        <div class="div-table-cell w-50">
+                            {% if detail.non_relative_person %} {{ detail.non_relative_person }} {% else %} <span class="material-symbols-sharp">horizontal_rule</span> {% endif %}
+                        </div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-head text-bold w-50">Status</div>
+                        <div class="div-table-cell w-50">
+                            {% if detail.status %} {{ detail.status }} {% else %} <span class="material-symbols-sharp">horizontal_rule</span> {% endif %}
+                        </div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-head text-bold w-50">Person Address</div>
+                        <div class="div-table-cell w-50">
+                            {% if detail.person_address %} {{ detail.person_address }} {% else %} <span class="material-symbols-sharp">horizontal_rule</span> {% endif %}
+                        </div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-head text-bold w-50">In mortuary</div>
+                        <div class="div-table-cell w-50">
+                            {% if detail.in_mortuary %} {{ detail.in_mortuary }} {% else %} <span class="material-symbols-sharp">horizontal_rule</span> {% endif %}
+                        </div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-head text-bold w-50">Patient</div>
+                        <div class="div-table-cell w-50">
+                            {% if detail.patient.pk %}
+                                <a href="{% url 'patients:detail' detail.patient.pk %}">{{ detail.patient.first_name }} {{ detail.patient.last_name }} {{ detail.patient.middle_name }}</a>
+                            {% else %}
+                                <span class="material-symbols-sharp">horizontal_rule</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-head text-bold w-50">Person Phone</div>
+                        <div class="div-table-cell w-50">
+                            {% if detail.person_phone %} {{ detail.person_phone }} {% else %} <span class="material-symbols-sharp">horizontal_rule</span> {% endif %}
+                        </div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-head text-bold w-50">Hospital</div>
+                        <div class="div-table-cell w-50">
+                            {% if detail.hospital.name %}{{ detail.hospital.name }} {% else %} <span class="material-symbols-sharp">horizontal_rule</span> {% endif %}
+                        </div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-head text-bold w-50">Witness</div>
+                        <div class="div-table-cell w-50">
+                            {% if detail.witness %}{{ detail.witness }} {% else %} <span class="material-symbols-sharp">horizontal_rule</span> {% endif %}
+                        </div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-head text-bold w-50">Mortuary</div>
+                        <div class="div-table-cell w-50">
+                            {% if detail.mortuary.name %}{{ detail.mortuary.name }} {% else %} <span class="material-symbols-sharp">horizontal_rule</span> {% endif %}
+                        </div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-head text-bold w-50">Witness Address</div>
+                        <div class="div-table-cell w-50">
+                            {% if detail.witness_address %}{{ detail.witness_address }} {% else %} <span class="material-symbols-sharp">horizontal_rule</span> {% endif %}
+                        </div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-head text-bold w-50">Witness Phone</div>
+                        <div class="div-table-cell w-50">
+                            {% if detail.witness_phone %}{{ detail.witness_phone }} {% else %} <span class="material-symbols-sharp">horizontal_rule</span> {% endif %}
+                        </div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-head text-bold w-50">UID of Person who released the body</div>
+                        <div class="div-table-cell w-50">
+                            {% if detail.person_uid %}{{ detail.person_uid }} {% else %} <span class="material-symbols-sharp">horizontal_rule</span> {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

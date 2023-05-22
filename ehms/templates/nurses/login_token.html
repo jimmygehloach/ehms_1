@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-6">
+                <span class="disabled-color pr-5"> Nurse Token </span> / <a class="pl-5" href="{% url "nurses:list" %}">Nurse List</a>
+            </div>
+            <div class="col d-flex justify-content-end">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-4">
+                <strong>Token Section</strong>
+                <p class="disabled-text">Generate token for the nurse login</p>
+            </div>
+            <div class="col-8 form-section">
+                <div class="form-section-head">
+                    <strong>Nurse token generator</strong>
+                </div>
+                <form class="A-form" action="{% url 'nurses:token' %}" method="POST" id="nurse_token_generation_form" novalidate>
+                    {% csrf_token %}
+                    <div class="mb-40">
+                        <label class="label-box" for="token-valid-upto">Valid upto (Select the date and time)</label>
+                        <input type="text" class="form-control" name="token_timestamp" id="token-valid-upto" data-validation="required">
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="token-nurse">Nurse</label>
+                        <select name="nurse" id="token-nurse" class="form-select" data-validation="required">
+                            {% for hospital_nurse in page_obj %}
+                                <option value="{{ hospital_nurse.nurse.pk }}">{{ hospital_nurse.nurse.first_name }} {{ hospital_nurse.nurse.last_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <input type="hidden" name="generate_nurse_token" value="">
+                    <button type="submit" class="hide-block" id="nurse-token-form-submit-button"></button>
+                </form>
+                <div class="button-section text-end">
+                    <div id="nurse-token-form-error-counts" class="form-errors-count"></div>
+                    <label for="nurse-token-form-submit-button" role="button" class="ehms-button">Save Changes</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr pt-20"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-4">
+                <strong>Nurse List</strong>
+                <p class="disabled-text">Nurse token detail list</p>
+            </div>
+            <div class="col-8 form-section">
+                <div class="form-section-head d-flex">
+                    <strong class="flex-grow-1">Nurse Token Detail</strong>
+                    <div class="dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="Sort List">
+                        <a href=""  id="nurse-token-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="material-symbols-sharp">sort</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="nurse-token-dropdown">
+                            <li><a class="dropdown-item" href="{% url 'nurses:token' %}?sort=asc">Ascending</a></li>
+                            <li><a class="dropdown-item" href="{% url 'nurses:token' %}?sort=desc">Descending</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="A-form">
+                    <div class="div-table">
+                        <div class="div-table-row d-flex">
+                            <div class="div-table-head flex-fill w-15">Image</div>
+                            <div class="div-table-head flex-fill w-30">Name</div>
+                            <div class="div-table-head flex-fill w-15">Token</div>
+                            <div class="div-table-head flex-fill w-30">Valid upto</div>
+                            <div class="div-table-head flex-fill w-10">Actions</div>
+                        </div>
+                        {% for hospital_nurse in page_obj %}
+                            <div class="div-table-row d-flex">
+                                <div class="div-table-cell flex-fill w-15">
+                                    {% if hospital_nurse.nurse.image %}
+                                        <img class="img-fluid profile-img-rounded img-border-2" width="50" height="50" src="{{ hospital_nurse.nurse.image_thumbnail.url }}" alt="">
+                                    {% else %}
+                                        NO PHOTO
+                                    {% endif %}
+                                </div>
+                                <div class="div-table-cell flex-fill w-30">
+                                    {{ hospital_nurse.nurse.first_name }} {{ hospital_nurse.nurse.last_name }}
+                                </div>
+                                <div class="div-table-cell flex-fill w-15">
+                                    {{ hospital_nurse.nurse.token }}<br>
+                                </div>
+                                <div class="div-table-cell flex-fill w-30">
+                                    {{ hospital_nurse.nurse.token_timestamp|naturaltime }}
+                                </div>
+                                <div class="div-table-cell flex-fill w-10">
+                                    <a href=""><i class="ri-delete-bin-7-fill ri-lg"></i></a>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="div-table-row"><div class="div-table-cell flex-fill text-center w-100">Nothing Found.</div></div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block inline_javascript %}
+
+     <script nonce="{{ request.csp_nonce }}" type="application/javascript">
+
+        $(function () {
+
+            new FormValidation({
+                formId: 'nurse_token_generation_form',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+                ownErrorCountId: 'nurse-token-form-error-counts'
+            });
+
+            $('#token-valid-upto').flatpickr({
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                time_24hr: true,
+            });
+        });
+
+    </script>
+
+{% endblock inline_javascript %}

@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+                <div class="breadcrumb d-flex">
+                    <div class="flex-grow-1">
+                        <a class="pl-5" href="{% url "patients:reception-list" %}">Patient List</a>
+                        <span class="material-symbols-sharp breadcrumb-seperator">arrow_forward_ios</span>
+                        <span class="disabled-color pr-5">
+                            {{ patient.first_name }} {{ patient.last_name }}
+                        </span>
+                        <span class="material-symbols-sharp breadcrumb-seperator">arrow_forward_ios</span>
+                        <span class="disabled-color pr-5"> New Medical Session </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <form action="" method="POST" id="reception-medical-session-form" novalidate>
+                    {% csrf_token %}
+                    <input type="hidden" name="reception_medical_session_form" value="1">
+                    <div class="row">
+                        <div class="col-6 mb-40">
+                            <label class="form-label label-box" for="{{ reception_medical_session_form.ward.id_for_label }}">
+                                {{ reception_medical_session_form.ward.label }}
+                            </label>
+                            {{ reception_medical_session_form.ward }}
+                            {{ reception_medical_session_form.ward.errors }}
+                        </div>
+                        <div class="col-6 mb-40">
+                            <label class="form-label label-box" for="{{ reception_medical_session_form.practitioner.id_for_label }}">
+                                {{ reception_medical_session_form.practitioner.label }}
+                            </label>
+                            {{ reception_medical_session_form.practitioner }}
+                            {{ reception_medical_session_form.practitioner.errors }}
+                        </div>
+                        <div class="col-6 mb-40">
+                            <label class="form-label label-box" for="{{ reception_medical_session_form.department.id_for_label }}">
+                                {{ reception_medical_session_form.department.label }}
+                            </label>
+                            {{ reception_medical_session_form.department }}
+                            {{ reception_medical_session_form.department.errors }}
+                        </div>
+                        <div class="col-6 mb-40">
+                            <div class="mb-40">
+                                <label class="form-label label-box">{{ reception_medical_session_form.emergency_session.label }}</label>
+                                <label class="form-label" for="{{ reception_medical_session_form.emergency_session.id_for_label }}" tabindex="13">
+                                    <p>Click to check or uncheck</p>
+                                    {{ reception_medical_session_form.emergency_session }}
+                                </label>
+                                {{ reception_medical_session_form.emergency_session.errors }}
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit"  class="ehms-button">Create</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content%}
+
+{% block sidebar-content %}
+
+
+
+{% endblock sidebar-content %}
+
+{% block inline_javascript %}
+
+    <script nonce="{{ request.csp_nonce }}" type="application/javascript">
+
+        $(function() {
+
+            new FormValidation({
+                formId: 'reception-medical-session-form',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+            });
+
+            $('#id_ward').on('change', function ()
+            {
+                const wardId = $(this).val() || "";
+                const URL = '/api/ward/practitioner/list/'
+                const dataObj = { 'ward_id': $(this).val(), }
+                const target = $('#id_practitioner');
+
+                {% include "ajax/ward-practitioners-list.js" %}
+            });
+        });
+
+</script>
+
+{% endblock inline_javascript %}

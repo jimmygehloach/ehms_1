@@ -1,0 +1,123 @@
+<div class="form-section-head">
+    <strong>Hospital General Information</strong>
+</div>
+
+{% comment %}
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    1. Hospital General Information Form
+    2. Fields
+        a. uid
+        b. name
+        c. image
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+{% endcomment %}
+
+<form class="A-form" action="" method="POST">
+    {% csrf_token %}
+    <div class="mb-40">
+        <label class="label-box"
+               for="{{ hospital_general_info.uid.id_for_label }}">{{ hospital_general_info.uid.label }}</label>
+        {{ hospital_general_info.uid }}
+    </div>
+    <div class="mb-40">
+        <label class="label-box"
+               for="{{ hospital_general_info.name.id_for_label }}">{{ hospital_general_info.name.label }}</label>
+        {{ hospital_general_info.name }}
+    </div>
+    <div class="mb-40">
+        <label class="label-box"
+               for="{{ hospital_general_info.image.id_for_label }}">{{ hospital_general_info.image.label }}</label>
+        <input type="file" name="image" accept="image/*" class="form-control" autocomplete="off" readonly="true"
+               id="id_image">
+    </div>
+    <div class="mb-40">
+        <label for="" class="label-box"></label>
+        <div class="w-100">
+            {% if request.hospital.image %}
+            <img class="img-fluid slight-round-image" width="200" height="200"
+                 src="{{ request.hospital.image_medium.url }}" alt="">
+            {% else %} NO PHOTO {% endif %}
+        </div>
+    </div>
+</form>
+
+<div class="button-section text-end">
+    <button type="button" class="ehms-button" data-bs-toggle="modal"
+            data-bs-target="#hospital-general-information-change-request">Change Request
+    </button>
+
+    {% comment %}
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        1. The trigger of this modal is above button. "Change Request"
+
+        2. Modal: Hospital General Information Modal
+
+        3. With the help of this modal you can send information and upload file if you require any
+           updation or changes in the hospital general information.
+
+        4. Only related hospital can perform such action.
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    {% endcomment %}
+
+    <div class="modal text-start fade" id="hospital-general-information-change-request" data-bs-backdrop="static"
+         data-bs-keyboard="false" tabindex="-1" aria-labelledby="hospital-general-information-change-request-label"
+         aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="hospital-general-information-change-request-label">
+                        <span class="material-symbols-sharp">open_in_new</span>
+                        Send us the detail of the changes you want to do</h4>
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    {% comment %}
+
+                        ////////////////////////////////////////////////////////////////////////////////////////////////
+
+                        1. Form inside a modal named as : - Hospital General Information Change Request Form
+                            a. description
+                            b. document
+
+                        ////////////////////////////////////////////////////////////////////////////////////////////////
+
+                    {% endcomment %}
+
+                    <form action="" method="post" id="hospital-general-info-change-request-form">
+                        <div class="mb-40">
+                            <label for="" class="form-labels">Type your details</label>
+                            <textarea class="form-control" name="" id="" cols="30" rows="10"
+                                      data-validation="required"></textarea>
+                        </div>
+                        <div>
+                            <label for="" class="form-labels">Upload the relevant documents</label>
+                            <input class="form-control" name="" id="" type="file" data-validation="file:pdf:1:MB">
+                        </div>
+                        <button type="submit" id="hospital-general-info-change-request-form-submit-button"
+                                class="hide-block"></button>
+                        <div id="hospital-general-info-change-request-form-error-counts"
+                             class="form-errors-count"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="me-auto ehms-button" data-bs-dismiss="modal">Close</button>
+                    <label for="hospital-general-info-change-request-form-submit-button" role="button"
+                           class="ehms-button">Submit</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Modal ends here #}
+
+</div>

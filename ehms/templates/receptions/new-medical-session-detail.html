@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+                 <div class="breadcrumb d-flex">
+                    <div class="flex-grow-1">
+                        <a class="pl-5" href="{% url "patients:reception-list" %}">Patient List</a>
+                        <span class="material-symbols-sharp breadcrumb-seperator">arrow_forward_ios</span>
+                        <span class="disabled-color pr-5">
+                            {{ medical_session.patient.first_name }} {{ medical_session.patient.last_name }}
+                        </span>
+                        <span class="material-symbols-sharp breadcrumb-seperator">arrow_forward_ios</span>
+                        <span class="disabled-color pr-5"> Medical Session Detail </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+                <div class="div-table">
+                    <div class="div-table-row d-flex">
+                        <div class="div-table-head flex-fill w-30">Medical Session Id</div>
+                        <div class="div-table-head flex-fill w-30">Patient</div>
+                        <div class="div-table-head flex-fill w-20">Practitioner</div>
+                        <div class="div-table-head flex-fill w-10">Department</div>
+                        <div class="div-table-head flex-fill w-10">Ward</div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-cell flex-fill w-30">
+                            {{ medical_session.uid }}
+                        </div>
+                        <div class="div-table-cell flex-fill w-30">
+                            {% for row in medical_session.patient.current_photo  %}
+                                {% if row.image %}
+                                    <img class="img-fluid profile-img-rounded" width="50" height="50" src="{{ row.image_thumbnail.url }}" alt="">
+                                {% else %} NO PHOTO {% endif %}
+                            {% empty %}
+                                NO PHOTO
+                            {% endfor %}
+                            {{ medical_session.patient.first_name }}{{ medical_session.patient.last_name }}
+                        </div>
+                        <div class="div-table-cell flex-fill w-20">
+                           {{ medical_session.practitioner.first_name }}{{ medical_session.practitioner.last_name }}
+                        </div>
+                        <div class="div-table-cell flex-fill w-10">
+                            {{ medical_session.department.name }}
+                        </div>
+                        <div class="div-table-cell flex-fill w-10">
+                            {{ medical_session.ward.name }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block sidebar-content %} {% endblock sidebar-content %}

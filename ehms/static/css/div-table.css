@@ -1,0 +1,38 @@
+/* ======================================================================================================== Div Table */
+
+.div-table {
+    /*border: 1px solid #66a3e0;*/
+    border-radius: 0.375rem;
+    box-shadow:  var(--main-box-shadow);
+}
+
+.div-table .div-table-row {
+    padding: 1rem;
+    background-color: #F0F3F4 !important;
+}
+
+.div-table .div-table-row:nth-child(even) {
+    background-color: var(--neutral-color-mid-light) !important;
+}
+
+.div-table .div-table-row:first-child {
+    background-color: var(--heading-bg-color) !important;
+    font-weight: 500;
+    color: var(--text-color);
+    border-radius: 0.375rem 0.375rem 0 0;
+}
+
+.div-table .div-table-row:last-child {
+    border-bottom: none !important;
+    border-radius: 0 0 0.375rem 0.375rem;
+}
+
+.div-table .div-table-row .div-table-head {
+    padding: 0.3rem 0.5rem;
+}
+
+.div-table .div-table-row .div-table-cell {
+    padding: 0.5rem;
+}
+
+/* ======================================================================================================== Div Table */

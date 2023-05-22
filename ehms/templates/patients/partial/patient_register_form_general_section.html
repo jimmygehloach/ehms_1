@@ -1,0 +1,112 @@
+<div class="col-4">
+    <strong>General Section</strong>
+    <p class="disabled-text">General information of the new patient</p>
+</div>
+<div class="col-8 form-section">
+    <div class="form-section-head">
+        <strong>Patient General Information</strong>
+    </div>
+    <div class="A-form">
+        {# --- First Name --- #}
+        <div class="mb-40">
+            <label class="form-label label-box" for="{{ patient_form.first_name.id_for_label }}">{{ patient_form.first_name.label }}</label>
+            {{ patient_form.first_name }}
+            {{ patient_form.first_name.errors }}
+        </div>
+
+        {# --- Middle Name --- #}
+        <div class="mb-40">
+            <label class="form-label label-box" for="{{ patient_form.middle_name.id_for_label }}">{{ patient_form.middle_name.label }}</label>
+            {{ patient_form.middle_name }}
+            {{ patient_form.middle_name.errors }}
+        </div>
+
+        {# --- Last Name --- #}
+        <div class="mb-40">
+            <label class="form-label label-box" for="{{ patient_form.last_name.id_for_label }}">{{ patient_form.last_name.label }}</label>
+            {{ patient_form.last_name }}
+            {{ patient_form.last_name.errors }}
+        </div>
+
+        {# --- Date of Birth --- #}
+        <div class="mb-40">
+            <label class="form-label label-box" for="{{ patient_form.date_of_birth.id_for_label }}">{{ patient_form.date_of_birth.label }}</label>
+            {{ patient_form.date_of_birth }}
+            {{ patient_form.date_of_birth.errors }}
+        </div>
+
+        {# --- Gender --- #}
+        <div class="mb-40">
+            <label class="form-label label-box" for="{{ patient_form.gender.id_for_label }}">{{ patient_form.gender.label }}</label>
+            {{ patient_form.gender }}
+            {{ patient_form.gender.errors }}
+        </div>
+
+        {# --- Religion --- #}
+        <div class="mb-40">
+            <label class="form-label label-box" for="{{ patient_form.religion.id_for_label }}">{{ patient_form.religion.label }}</label>
+            {{ patient_form.religion }}
+            {{ patient_form.religion.errors }}
+        </div>
+
+        {# --- Marital Status --- #}
+        <div class="mb-40">
+            <label class="form-label label-box" for="{{ patient_form.marital_status.id_for_label }}">{{ patient_form.marital_status.label }}</label>
+            {{ patient_form.marital_status }}
+            {{ patient_form.marital_status.errors }}
+        </div>
+
+        {# --- Pregnancy --- #}
+        <div class="mb-40">
+            <label class="form-label label-box" for="{{ patient_form.pregnancy.id_for_label }}">{{ patient_form.pregnancy.label }}</label>
+            {{ patient_form.pregnancy }}
+            {{ patient_form.pregnancy.errors }}
+        </div>
+
+        {# --- Children Count --- #}
+        <div class="mb-40">
+            <label class="form-label label-box" for="{{ patient_form.children.id_for_label }}">{{ patient_form.children.label }}</label>
+            {{ patient_form.children }}
+            {{ patient_form.children.errors }}
+        </div>
+
+        {# --- Blood group --- #}
+        <div class="mb-40">
+            <label class="form-label label-box" for="{{ patient_form.blood_group.id_for_label }}">{{ patient_form.blood_group.label }}</label>
+            {{ patient_form.blood_group }}
+            {{ patient_form.blood_group.errors }}
+        </div>
+
+        {# --- Height of the patient --- #}
+        <div class="mb-40">
+            <label class="form-label label-box" for="{{ patient_form.height.id_for_label }}">{{ patient_form.height.label }}</label>
+            {{ patient_form.height }}
+            {{ patient_form.height.errors }}
+        </div>
+
+        {# --- Weight of the patient --- #}
+        <div class="mb-40">
+            <label class="form-label label-box" for="{{ patient_form.weight.id_for_label }}">{{ patient_form.weight.label }}</label>
+            {{ patient_form.weight }}
+            {{ patient_form.weight.errors }}
+        </div>
+
+        {# --- Disability --- #}
+        <div class="mb-40">
+            <label class="form-label label-box">{{ patient_form.disability.label }}</label>
+            <label class="form-label" for="{{ patient_form.disability.id_for_label }}" tabindex="13">
+                <p>Click to check or uncheck</p>
+                {{ patient_form.disability }}
+            </label>
+            {{ patient_form.disability.errors }}
+        </div>
+
+        {# --- Image upload --- #}
+        <div class="mb-40">
+            <label class="form-label label-box" for="{{ patient_image_upload_form.image.id_for_label }}">{{ patient_image_upload_form.image.label }}</label>
+            {{ patient_image_upload_form.image }}
+            {{ patient_image_upload_form.image.errors }}
+            <div id="patient-image-preview"></div>
+        </div>
+    </div>
+</div>

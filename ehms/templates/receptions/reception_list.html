@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <a class="pl-5" href="{% url "receptions:token" %}">Reception Token</a>
+                <span class="material-symbols-sharp breadcrumb-seperator">arrow_forward_ios</span>
+                <span class="disabled-color pr-5"> Reception List </span>
+            </div>
+
+            <div class="col d-flex justify-content-end">
+                <span class="pr-10">{{ page_obj.count }}</span>
+                <div class="dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="Sort List">
+                    <a href="" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" class="dropdown-button">
+                        <span class="material-symbols-sharp">sort</span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="reception-list-sort-dropdown">
+                        <li><a class="dropdown-item" href="{% url 'receptions:list' %}?sort=asc">Ascending</a></li>
+                        <li><a class="dropdown-item" href="{% url 'receptions:list' %}?sort=desc">Descending</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+                <div class="div-table">
+                    <div class="div-table-row d-flex">
+                        <div class="div-table-head flex-fill w-70">Name</div>
+                        <div class="div-table-head flex-fill w-30">Actions</div>
+                    </div>
+                    {% for reception in reception_list %}
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-cell flex-fill w-70">
+                            <a href="">
+                                {{ reception.name }}
+                            </a>
+                        </div>
+                        <div class="div-table-cell flex-fill w-30">
+                            <a class="pr-10" href="">
+                                <span class="material-symbols-sharp">account_circle</span>
+                            </a>
+                        </div>
+                    </div>
+                    {% empty %}
+                        <div class="div-table-row bg-white"><div class="div-table-cell flex-fill w-100 text-center">Nothing Found</div></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

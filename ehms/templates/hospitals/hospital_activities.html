@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row breadcrumb">
+            <div class="col-6">
+                <a class="pl-5" href="{% url "dashboards:hospital-level" %}"> <i class="ri-home-3-fill ri-lg"></i> Home </a>
+                <i class="ri-arrow-right-s-line ri-lg"></i>
+                <a class="pl-5" href="{% url "hospitals:profile" %}"> <i class="ri-profile-fill ri-lg"></i> Profile </a>
+                <i class="ri-arrow-right-s-line ri-lg"></i>
+                <span class="disabled-color pr-5"> <i class="ri-history-fill ri-lg"></i> Activities </span>
+            </div>
+            <div class="col-6 d-flex justify-content-end">
+                <div class="dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="Sort List">
+                    <a href="" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% include "partials/dynamic-sort-icon.html" %}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="hospital-patient-medical-session-list-sort-dropdown">
+                        <li><a class="dropdown-item" href="{% url 'hospitals:activities' %}?sort=asc">Ascending</a></li>
+                        <li><a class="dropdown-item" href="{% url 'hospitals:activities' %}?sort=desc">Descending</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12 p-0">
+                <div class="div-table">
+                    <div class="div-table-row d-flex">
+                        <div class="div-table-head flex-fill w-5">#</div>
+                        <div class="div-table-head flex-fill w-15">Date Time</div>
+                        <div class="div-table-head flex-fill w-30">Description</div>
+                        <div class="div-table-head flex-fill w-20">Patient</div>
+                        <div class="div-table-head flex-fill w-20">User Group</div>
+                        <div class="div-table-head flex-fill w-10">User</div>
+                    </div>
+                    {% for activity in activity_list %}
+                        <div class="div-table-row d-flex bg-white">
+                            <div class="div-table-cell flex-fill w-5">{{ page_obj.start_index|add:forloop.counter0 }}</div>
+                            <div class="div-table-cell flex-fill w-15">{{ activity.created|naturaltime }} </div>
+                            <div class="div-table-cell flex-fill w-30">{{ activity.description }}</div>
+                            <div class="div-table-cell flex-fill w-20">{{ activity.patient }}</div>
+                            <div class="div-table-cell flex-fill w-20">{{ activity.user_group }}</div>
+                            <div class="div-table-cell flex-fill w-10">{{ activity.creator_user }}</div>
+                        </div>
+                    {% empty %}
+                        <div class="div-table-row d-flex bg-white">
+                            <div class="div-table-cell flex-fill w-100 bg-white">Nothing Found</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% include 'partials/pagination.html' with is_paginated=is_paginated %}
+
+{% endblock %}
+

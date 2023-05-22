@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+                <div class="d-flex align-items-center breadcrumb">
+                    <div class="flex-grow-1">
+                        <span class="disabled-color"> <i class="ri-list-unordered ri-lg pr-10"></i>Patient List</span>
+                    </div>
+
+                    <div class="pr-20" title="Total Patient">{{ patient_list.count }}</div>
+                    <div class="dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="Sort List">
+                        <a href=""  id="patient-list-sort-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            {% include "partials/dynamic-sort-icon.html" %}
+                        </a>
+
+                        <ul class="dropdown-menu" aria-labelledby="patient-list-sort-dropdown">
+                            <li><a class="dropdown-item" href="{% url 'patients:reception-list' %}?sort=asc">Ascending</a></li>
+                            <li><a class="dropdown-item" href="{% url 'patients:reception-list' %}?sort=desc">Descending</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+                <div class="div-table">
+                    <div class="div-table-row d-flex">
+                        <div class="div-table-head flex-fill w-20">Image</div>
+                        <div class="div-table-head flex-fill w-50">Name</div>
+                        <div class="div-table-head flex-fill w-20">UID</div>
+                        <div class="div-table-head flex-fill w-10">Actions</div>
+                    </div>
+
+                    {% for patient in patient_list %}
+                        <div class="div-table-row d-flex {% if patient.vital_status %}bg-white{% else %}bg-dull{% endif %}">
+                            <div class="div-table-cell flex-fill w-20">
+                            {% for row in patient.current_photo %}
+                                {% if row.image %}
+                                    <img class="img-fluid profile-img-rounded" width="50" height="50" src="{{ row.image_thumbnail.url }}" alt="">
+                                {% else %} NO PHOTO {% endif %}
+                            {% endfor %}
+                            </div>
+                            <div class="div-table-cell flex-fill w-50">
+                                {{ patient.first_name }}
+                                {% if patient.middle_name %} {{ patient.middle_name }} {% endif %}
+                                {{ patient.last_name }}
+                            </div>
+                            <div class="div-table-cell flex-fill w-20">
+                                {{ patient.uid }}
+                            </div>
+                            <div class="div-table-cell flex-fill w-10">
+                                {# Patient new medical session for reception only #}
+                                {% if request.group_name == 'reception level' %}
+                                    <a href="{% url "medical_sessions:reception-new" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="New Medical Session">
+                                        <i class="ri-add-box-line ri-lg"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="div-table-row bg-white"><div class="div-table-cell flex-fill w-100 text-center">Nothing Found</div></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'partials/pagination.html' with is_paginated=is_paginated page_obj=page_obj %}
+
+{% endblock %}

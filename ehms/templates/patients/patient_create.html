@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+                <div class="d-flex align-items-center breadcrumb">
+                    <div class="flex-grow-1">
+                        <span class="disabled-color pr-5"> Patient Registration </span> /
+                        <a class="pl-5" href="{% url "patients:list" %}">Patient List</a>
+                    </div>
+
+                    <div class="">
+                        <span class="disabled-color" data-bs-toggle="tooltip" data-bs-placement="top" title="Patients Registered">
+                            {{ total_patient_registered }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <div class="container-fluid content-body">
+        {% include 'patients/partial/form-errors.html' with patient_form=patient_form patient_address_form=patient_address_form %}
+        {% include 'patients/partial/patient_registeration_form.html' with patient_form=patient_form patient_address_form=patient_address_form patient_image_upload_form=patient_image_upload_form %}
+   </div>
+    {# --- TODO: Verify form in a modal before submit   --- #}
+
+{% endblock content %}
+{% block inline_javascript %}
+
+     <script nonce="{{ request.csp_nonce }}" type="application/javascript">
+
+        $(function () {
+
+            new AddressFormFields({
+                formId: 'new-patient-registration-form',
+                regionUrl: '/addresses/api/region',
+                districtUrl: '/addresses/api/district',
+                townUrl: '/addresses/api/town',
+                postcodeUrl: '/addresses/api/postcode',
+            })
+
+            new FormValidation({
+                formId: 'new-patient-registration-form',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+                imagePreviewContainer: 'patient-image-preview',
+            });
+
+            $('#id_patient_medical_illness').select2();
+            $('#id_patient_kin_medical_illness').select2();
+            $('#id_patient_allergies').select2();
+            $('#id_patient_addictions').select2();
+
+            $('#id_date_of_birth').flatpickr({
+                enableTime: false,
+                dateFormat: "Y-m-d",
+            });
+        });
+
+    </script>
+
+{% endblock inline_javascript %}
+

@@ -1,0 +1,87 @@
+<div class="form-section-head">
+    <strong>Patient Immunization Information</strong>
+</div>
+<form class="A-form" action="{% url 'patients:detail' patient.pk %}" method="POST">
+    {% csrf_token %}
+    <div class="mb-40">
+        <label class="label-box" for="">{{ update_patient_immunization_info.bcg.label }}</label>
+        <label for="{{ update_patient_immunization_info.bcg.id_for_label }}" class="form-label">
+            <p>Click to check or uncheck</p>
+            {{ update_patient_immunization_info.bcg }}
+        </label>
+    </div>
+    <div class="mb-40">
+        <label for="" class="label-box">{{ update_patient_immunization_info.pentavalent.label }}</label>
+        <label class="form-label" for="{{ update_patient_immunization_info.pentavalent.id_for_label }}">
+            <p>Click to check or uncheck</p>
+            {{ update_patient_immunization_info.pentavalent }}
+        </label>
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="">{{ update_patient_immunization_info.pneumo.label }}</label>
+        <label class="form-label" for="{{ update_patient_immunization_info.pneumo.id_for_label }}">
+            <p>Click to check or uncheck</p>
+            {{ update_patient_immunization_info.pneumo }}
+        </label>
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="">{{ update_patient_immunization_info.polio.label }}</label>
+        <label class="form-label" for="{{ update_patient_immunization_info.polio.id_for_label }}">
+            <p>Click to check or uncheck</p>
+            {{ update_patient_immunization_info.polio }}
+        </label>
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="">{{ update_patient_immunization_info.rotarix.label }}</label>
+        <label class="form-label" for="{{ update_patient_immunization_info.rotarix.id_for_label }}">
+            <p>Click to check or uncheck</p>
+            {{ update_patient_immunization_info.rotarix }}
+        </label>
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="">{{ update_patient_immunization_info.measles_rubella_1.label }}</label>
+        <label class="form-label" for="{{ update_patient_immunization_info.measles_rubella_1.id_for_label }}">
+            <p>Click to check or uncheck</p>
+            {{ update_patient_immunization_info.measles_rubella_1 }}
+        </label>
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="">{{ update_patient_immunization_info.measles_rubella_2.label }}</label>
+        <label class="form-label" for="{{ update_patient_immunization_info.measles_rubella_2.id_for_label }}">
+            <p>Click to check or uncheck</p>
+            {{ update_patient_immunization_info.measles_rubella_2 }}
+        </label>
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="">{{ update_patient_immunization_info.dpt.label }}</label>
+        <label class="form-label" for="{{ update_patient_immunization_info.dpt.id_for_label }}">
+            <p>Click to check or uncheck</p>
+            {{ update_patient_immunization_info.dpt }}
+        </label>
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="">{{ update_patient_immunization_info.yellow_fever.label }}</label>
+        <label class="form-label" for="{{ update_patient_immunization_info.yellow_fever.id_for_label }}">
+            <p>Click to check or uncheck</p>
+            {{ update_patient_immunization_info.yellow_fever }}
+        </label>
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="">{{ update_patient_immunization_info.vitamin_a.label }}</label>
+        <label class="form-label" for="{{ update_patient_immunization_info.vitamin_a.id_for_label }}">
+            <p>Click to check or uncheck</p>
+            {{ update_patient_immunization_info.vitamin_a }}
+        </label>
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="">{{ update_patient_immunization_info.tetanus.label }}</label>
+        <label class="form-label" for="{{ update_patient_immunization_info.tetanus.id_for_label }}">
+            <p>Click to check or uncheck</p>
+            {{ update_patient_immunization_info.tetanus }}
+        </label>
+    </div>
+    <input type="hidden" name="update_patient_immunization_info" value="">
+</form>
+<div class="button-section text-end">
+    <button type="button"  class="ehms-button">Save Changes</button>
+</div>

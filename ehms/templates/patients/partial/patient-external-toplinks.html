@@ -1,0 +1,26 @@
+
+    {# --------------------------------------------------------------------------------- Patient Death Record #}
+    {% if request.hospital.pk == patient.hospital.pk %}
+        <a class="pr-10" href="{% url "patients:death-record" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Create Death Record">
+            <i class="ri-user-unfollow-fill ri-lg"></i>
+        </a>
+        <a class="pr-10" href="{% url "mortuaries:add" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to mortuary">
+            <i class="ri-home-6-line ri-lg"></i>
+        </a>
+    {% endif %}
+
+    {# ------------------------------------------------------ New medical session: Level = practitioner level #}
+    {% if request.user_type == 'practitioner' %}
+        <a class="pr-10" href="{% url "medical_sessions:new" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="New Medical Session">
+            <i class="ri-add-box-line ri-lg"></i>
+        </a>
+    {% endif %}
+    {# ------------------------------------------------------------------------------------------ Family Tree #}
+    <a class="pr-10" href="{% url 'family_tree:fetch' patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Family Tree">
+        <i class="ri-node-tree ri-lg"></i>
+    </a>
+
+    {# ---------------------------------------------------------------------------------- New Medical Session #}
+    <a href="{% url "medical_sessions:list" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ patient.first_name }}'s Medical Sessions">
+        <i class="ri-file-list-3-fill ri-lg"></i>
+    </a>

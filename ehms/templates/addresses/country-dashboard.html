@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-6">
+                <a class="pl-5" href="{% url "dashboards:country-level" %}"> {{ request.country }} </a>
+                <span class="material-symbols-sharp breadcrumb-seperator">arrow_forward_ios</span>
+                <a class="pl-5" href=""> Profile </a>
+                <span class="material-symbols-sharp breadcrumb-seperator">arrow_forward_ios</span>
+                <span class="disabled-color pr-5"> Dashboard </span>
+            </div>
+            <div class="col-6 d-flex justify-content-end">
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-3">
+                <div class="card mb-40">
+                    <div class="card-header">Patients registered</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ total_patients }}</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card mb-40">
+                    <div class="card-header">Practitioners registered</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ total_practitioners }}</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card mb-40">
+                    <div class="card-header">Nurses registered</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ total_nurses }}</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card mb-40">
+                    <div class="card-header">Hospitals registered</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ total_hospitals }}</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page_javascript %}
+
+{% endblock page_javascript %}

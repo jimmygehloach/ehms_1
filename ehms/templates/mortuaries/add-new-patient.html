@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <span class="disabled-color pr-5"> {{ patient.first_name }} {{ patient.last_name }} </span> / <a class="pl-5" href="{% url "mortuaries:home" %}">Mortuaries</a>
+            </div>
+            <div class="col d-flex justify-content-end"></div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-4">
+            <strong>Relation Section</strong>
+            <p class="disabled-text">Patient's body is going to mortuary after death</p>
+        </div>
+        <div class="col-8 form-section">
+            <div class="form-section-head">
+                <strong>Patient in mortuary</strong>
+            </div>
+            {% include 'partials/errors.html' with form=form %}
+            <form class="A-form" action="" method="POST" id="add-patient-to-mortuary" novalidate>
+
+                {% csrf_token %}
+
+                <div class="mb-40">
+                    <label for="{{ form.mortuary.id_for_label }}" class="form-labels label-box">{{ form.mortuary.label}}</label>
+                    {{ form.mortuary }}
+                </div>
+                <div class="mb-40">
+                    <label for="{{ form.date_received.id_for_label }}" class="form-labels label-box">{{ form.date_received.label}}</label>
+                    {{ form.date_received }}
+                </div>
+
+                <button type="submit" class="hide-block" id="add-patient-to-mortuary-form-submit-button"></button>
+            </form>
+            <div class="button-section text-end">
+                <div id="add-patient-to-mortuary-form-error-counts" class="form-errors-count"></div>
+                <label for="add-patient-to-mortuary-form-submit-button" role="button" class="ehms-button">Save Changes</label>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block inline_javascript %}
+
+    <script type="application/javascript" nonce="{{ request.csp_nonce }}">
+
+        $(function () {
+
+            new FormValidation({
+                formId: 'add-patient-to-mortuary',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+                ownErrorCountId: 'add-patient-to-mortuary-form-error-counts'
+            });
+
+            $('#id_date_received').flatpickr({
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                time_24hr: true,
+            });
+
+        });
+
+    </script>
+
+{% endblock inline_javascript %}

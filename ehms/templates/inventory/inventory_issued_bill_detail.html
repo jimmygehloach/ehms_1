@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <span class="disabled-color pr-5"> Bill Number: <em>{{ bill.bill_number }}</em> </span> / <a class="pl-5" href="{% url "inventory:detail" %}">Inventory Detail</a>
+            </div>
+
+            <div class="col d-flex justify-content-end">
+                <a class="pr-10" href="{% url 'inventory:received' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Received"><span class="material-symbols-sharp">select_check_box</span></a>
+                <a class="" href="{% url 'inventory:issued' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Issued"><span class="material-symbols-sharp">output</span></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                 <div class="div-table">
+                    <div class="div-table-row d-flex">
+                        <div class="div-table-head flex-fill w-10">Department</div>
+                        <div class="div-table-head flex-fill w-10">Gross Amount</div>
+                        <div class="div-table-head flex-fill w-10">Total items</div>
+                        <div class="div-table-head flex-fill w-10">Status</div>
+                        <div class="div-table-head flex-fill w-10">Created</div>
+                        <div class="div-table-head flex-fill w-10">Remarks</div>
+                    </div>
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-cell flex-fill w-10">{{ bill.department.name }}</div>
+                        <div class="div-table-cell flex-fill w-10">{{ bill.gross_amount }}</div>
+                        <div class="div-table-cell flex-fill w-10">{{ bill.total_items }}</div>
+                        <div class="div-table-cell flex-fill w-10">{{ bill.status }}</div>
+                        <div class="div-table-cell flex-fill w-10">{{ bill.created }}</div>
+                        <div class="div-table-cell flex-fill w-10">{{ bill.remarks }}</div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+   <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <div class="div-table">
+                    <div class="div-table-row d-flex">
+                        <div class="div-table-head flex-fill w-10">#</div>
+                        <div class="div-table-head flex-fill w-10">Item name</div>
+                        <div class="div-table-head flex-fill w-10">Quantity (Issued)</div>
+                        <div class="div-table-head flex-fill w-10">Item Price</div>
+                        <div class="div-table-head flex-fill w-10">Vat</div>
+                        <div class="div-table-head flex-fill w-10">Discount</div>
+                        <div class="div-table-head flex-fill w-10">Total Price</div>
+                        <div class="div-table-head flex-fill w-10">Created</div>
+                    </div>
+                    {% for x in items_detail %}
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-cell flex-fill w-10">{{ forloop.counter }}</div>
+                        <div class="div-table-cell flex-fill w-10">{{ x.item }}</div>
+                        <div class="div-table-cell flex-fill w-10">{{ x.issued_quantity }}</div>
+                        <div class="div-table-cell flex-fill w-10">{{ x.price }}</div>
+                        <div class="div-table-cell flex-fill w-10">{{ x.vat }}</div>
+                        <div class="div-table-cell flex-fill w-10">{{ x.discount }}</div>
+                        <div class="div-table-cell flex-fill w-10">{{ x.total_price }}</div>
+                        <div class="div-table-cell flex-fill w-10">{{ x.created|naturaltime }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

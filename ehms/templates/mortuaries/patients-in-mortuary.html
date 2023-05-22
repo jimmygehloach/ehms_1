@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <span class="disabled-color pr-5"> Patient in Mortuary </span>  / <a class="pl-5" href="{% url "mortuaries:home" %}">Mortuaries</a>
+            </div>
+
+            <div class="col d-flex justify-content-end">
+                <span>{{ patients.count }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <div class="div-table">
+                    <div class="div-table-row d-flex">
+                        <div class="div-table-head flex-fill w-10">Tag</div>
+                        <div class="div-table-head flex-fill w-10">Name of patient</div>
+                        <div class="div-table-head flex-fill w-10">Mortuary</div>
+                        <div class="div-table-head flex-fill w-10">Received date</div>
+                        <div class="div-table-head flex-fill w-10">Released date</div>
+                        <div class="div-table-head flex-fill w-10">Actions</div>
+                    </div>
+                    {% for k in patients %}
+                        <div class="div-table-row d-flex bg-white inline-form-group">
+                            <div class="div-table-cell flex-fill w-10">{{ k.tag }}</div>
+                            <div class="div-table-cell flex-fill w-10">{{ k.patient.first_name }} {{ k.patient.middle_name }} {{ k.patient.last_name }}</div>
+                            <div class="div-table-cell flex-fill w-10">{{ k.mortuary.name }}</div>
+                            <div class="div-table-cell flex-fill w-10">{{ k.date_received }}</div>
+                            <div class="div-table-cell flex-fill w-10">{{ k.date_released }}</div>
+                            <div class="div-table-cell flex-fill w-10">
+                                <a href="{% url 'mortuaries:patient-detail' k.mortuary.pk k.patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Preview"><span class="material-symbols-sharp">preview</span></a>
+                                <a href="{% url 'mortuaries:release' k.mortuary.pk k.patient.pk %}" class="pl-10" data-bs-toggle="tooltip" data-bs-placement="top" title="Release patient"><span class="material-symbols-sharp">google_plus_reshare</span></a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="div-table-row bg-white"><div class="div-table-cell flex-fill w-100 text-center">Nothing Found</div></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block open %}
+
+        <div class="container">
+            <div class="row open-heading login-wrapper">
+                <div class="col-4">
+                     <h4 class="d-flex align-items-center login-heading">
+                        <span class="pr-10 material-symbols-sharp">lock</span> EHMS Login
+                    </h4>
+                    {% block sub_content %}{% endblock %}
+                </div>
+                <div class="col-8 login-page-content">
+                    <h3>Welcome to EHMS</h3>
+                    <em>Electronic Health Management System</em>
+                    <p class="icons">
+                        <span class="icon_1 material-symbols-sharp">local_hospital</span>
+                        <span class="icon_2 material-symbols-sharp">healing</span>
+                        <span class="icon_3 material-symbols-sharp">bloodtype</span>
+                        <span class="icon_4 material-symbols-sharp">medication_liquid</span>
+                        <span class="icon_5 material-symbols-sharp">emergency</span>
+                        <span class="icon_6 material-symbols-sharp">vaccines</span>
+                        <span class="icon_7 material-symbols-sharp">local_pharmacy</span>
+                        <span class="icon_8 material-symbols-sharp">masks</span>
+                        <span class="icon_9 material-symbols-sharp">medication</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+{% endblock open %}

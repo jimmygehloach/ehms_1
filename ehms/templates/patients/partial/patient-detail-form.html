@@ -1,0 +1,159 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <strong>General Section</strong>
+            <p class="disabled-text">Basic information of the patient</p>
+        </div>
+        <div class="col-8 form-section">
+            {% include "patients/partial/sub-partial/patient-general-information.html" with update_patient_general_info=update_patient_general_info patient=patient %}
+        </div>
+    </div>
+</div>
+
+<div class="ehms-hr pt-20"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <strong>Personal Section</strong>
+            <p class="disabled-text">Sensitive information of the patient</p>
+        </div>
+        <div class="col-8 form-section">
+            {% include "patients/partial/sub-partial/patient-personal-information.html" with update_patient_personal_info=update_patient_personal_info patient=patient %}
+        </div>
+    </div>
+</div>
+
+<div class="ehms-hr pt-20"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <strong>Physical Section</strong>
+            <p class="disabled-text">Physical information of the patient</p>
+        </div>
+        <div class="col-8 form-section">
+            {% include "patients/partial/sub-partial/patient-physcial-information.html" with update_patient_physical_info=update_patient_physical_info patient=patient %}
+        </div>
+    </div>
+</div>
+
+<div class="ehms-hr pt-20"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <strong>Medical Section</strong>
+            <p class="disabled-text">Medical information of the patient</p>
+        </div>
+        <div class="col-8 form-section">
+            {% include "patients/partial/sub-partial/patient-medical-information.html" with update_patient_medical_info=update_patient_medical_info patient=patient %}
+        </div>
+    </div>
+</div>
+
+<div class="ehms-hr pt-20"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <strong>Important Section</strong>
+            <p class="disabled-text">Important information of the patient</p>
+        </div>
+        <div class="col-8 form-section">
+            {% include "patients/partial/sub-partial/patient-important-section-information.html" with patient=patient update_patient_important_info=update_patient_important_info %}
+        </div>
+    </div>
+</div>
+
+<div class="ehms-hr pt-20"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <strong>Miscellaneous Section</strong>
+            <p class="disabled-text">Miscellaneous information of the patient</p>
+        </div>
+        <div class="col-8 form-section">
+            {% include "patients/partial/sub-partial/patient-misc-section-info.html" with patient=patient update_patient_misc_info=update_patient_misc_info %}
+        </div>
+    </div>
+</div>
+
+<div class="ehms-hr pt-20"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <strong>Immunization Section</strong>
+            <p class="disabled-text">Immunization information of the patient</p>
+        </div>
+        <div class="col-8 form-section">
+            {% include "patients/partial/sub-partial/patient-immunization-info.html" with patient=patient update_patient_immunization_info=update_patient_immunization_info %}
+        </div>
+    </div>
+</div>
+
+<div class="ehms-hr pt-20"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <strong>Female Section</strong>
+            <p class="disabled-text">Immunization information of the female patient</p>
+        </div>
+        <div class="col-8 form-section">
+            {% include "patients/partial/sub-partial/patient-female-immunization-info.html" with patient=patient update_patient_female_info=update_patient_female_info %}
+        </div>
+    </div>
+</div>
+
+<div class="ehms-hr pt-20"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <strong>Hospital Section</strong>
+            <p class="disabled-text">Hospital information of the patient</p>
+        </div>
+        <div class="col-8 form-section">
+            {% include "patients/partial/sub-partial/patient-hospital-information.html" with patient=patient update_patient_hospital_form=update_patient_hospital_form %}
+        </div>
+    </div>
+</div>
+
+<div class="ehms-hr pt-20"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <strong>Document Section</strong>
+            <p class="disabled-text">Documents uploaded of the patient</p>
+        </div>
+        <div class="col-8 form-section">
+            {% include "patients/partial/sub-partial/patient-document-uploaded-list.html" with patient=patient patient_documents=patient_documents %}
+        </div>
+        <div class="col-4"></div>
+        <div class="col-8 form-section mt-20">
+            {% include "patients/partial/sub-partial/patient-document-upload-form.html" with patient=patient patient_document_upload_form=patient_document_upload_form %}
+        </div>
+    </div>
+</div>
+
+<div class="ehms-hr pt-20"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <strong>Address Section</strong>
+            <p class="disabled-text">Addresses of the patient</p>
+        </div>
+        <div class="col-8 form-section">
+            {% include "patients/partial/sub-partial/patient-address-list.html" with patient_addresses=patient_addresses %}
+        </div>
+        <div class="col-4"></div>
+        <div class="col-8 form-section mt-20">
+            {% include "patients/partial/sub-partial/patient-new-address.html" with new_patient_address_form=new_patient_address_form %}
+        </div>
+    </div>
+</div>

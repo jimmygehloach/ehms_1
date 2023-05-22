@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <a class="pl-5" href="{% url "articles:country-list" %}">Article List</a>
+                <span class="material-symbols-sharp breadcrumb-seperator">arrow_forward_ios</span>
+                <span class="disabled-color pr-5"> New Article </span>
+            </div>
+            <div class="col d-flex justify-content-end">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+                <form method="post" enctype="multipart/form-data" id="id-update-country-article-form">
+                    <div class="row bg-white p-20 br-5">
+                        {% csrf_token %}
+                        <div class="col-12 mb-40">
+                            <label class="form-label label-box" for="{{ form.title.id_for_label }}">
+                                {{ form.title.label }}
+                            </label>
+                            {{ form.title }}
+                            {{ form.title.errors }}
+                        </div>
+                        <div class="col-12 mb-40">
+                            <label class="form-label label-box" for="{{ form.excerpt.id_for_label }}">
+                                {{ form.excerpt.label }}
+                            </label>
+                            {{ form.excerpt }}
+                            {{ form.excerpt.errors }}
+                        </div>
+                        <div class="col-12 mb-40">
+                            <label class="form-label label-box" for="{{ form.content.id_for_label }}">
+                                {{ form.content.label }}
+                            </label>
+                            {{ form.content }}
+                            {{ form.content.errors }}
+                        </div>
+                        <div class="col-12 mb-40">
+                            <label class="form-label label-box" for="{{ form.type.id_for_label }}">
+                                {{ form.type.label }}
+                            </label>
+                            {{ form.type }}
+                            {{ form.type.errors }}
+                        </div>
+                        <div class="col-12 mb-40">
+                            <img class="img-fluid" src="{{ article.image_medium.url }}" alt="">
+                            <label class="form-label label-box" for="{{ form.image.id_for_label }}">
+                                {{ form.image.label }}
+                            </label>
+                            {{ form.image }}
+                            {{ form.image.errors }}
+                        </div>
+                        <div class="col-4 mb-40">
+                            <label class="form-label label-box" for="{{ form.category.id_for_label }}">
+                                {{ form.category.label }}
+                            </label>
+                            {{ form.category }}
+                            {{ form.category.errors }}
+                        </div>
+                        <div class="col-4 mb-40">
+                            <label class="form-label label-box" for="{{ form.region.id_for_label }}">
+                                {{ form.region.label }}
+                            </label>
+                            {{ form.region }}
+                            {{ form.region.errors }}
+                        </div>
+                        <div class="col-4 mb-40">
+                            <div class="mb-40">
+                                <label class="form-label label-box">{{ form.published.label }}</label>
+                                <label class="form-label" for="{{ form.published.id_for_label }}" tabindex="13">
+                                    <p>Click to check or uncheck</p>
+                                    {{ form.published }}
+                                </label>
+                                {{ form.published.errors }}
+                            </div>
+                        </div>
+                        <div class="button-section text-end">
+                            <button type="submit"  class="ehms-button">Update Article</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

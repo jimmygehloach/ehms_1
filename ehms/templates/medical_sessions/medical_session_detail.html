@@ -1,0 +1,366 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <span class="disabled-color pr-5"> {{ medical_session.uid }} <em>({{ medical_session.created }})</em> </span> /
+                <a class="pr-5 pl-5" href="{% url 'patients:detail' patient.pk %}">{{ patient.first_name }} {{ patient.last_name }}</a> /
+                <a class="pl-5" href="{% url "medical_sessions:list" patient.pk %}">Medical Sessions</a>
+            </div>
+
+            <div class="col-4 d-flex justify-content-end">
+                {% if request.user_type == 'practitioner' %}
+                    <a href="{% url "medical_sessions:new" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="New Medical Session">
+                       <span class="material-symbols-sharp">library_add</span>
+                    </a>
+                {% endif %}
+
+                <a class="pl-20 pr-20" href="" data-bs-toggle="modal" data-bs-target="#medical-session-modal-id" onclick="launchMSModel(this)">
+                    <span data-bs-toggle="tooltip" data-bs-placement="top" title="Isolate Preview" class="material-symbols-sharp">open_in_full</span>
+                </a>
+
+                <a href="{% url "medical_sessions:list" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Patient Medical Sessions">
+                    <span class="material-symbols-sharp">ballot</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            {# Diagnosis #}
+            <div class="col-12 mb-4">
+                <div class="para-section">
+                    <strong class="mb-2 d-block">Diagnosis</strong>
+                    <p class="text-justify">{{ medical_session.diagnosis }}</p>
+                </div>
+            </div>
+
+            {# Medication #}
+            <div class="col-12 mb-4">
+                <div class="para-section">
+                    <strong class="mb-2 d-block">Medication</strong>
+                    <p class="text-justify">{{ medical_session.medication }}</p>
+                </div>
+            </div>
+
+            {# Procedure #}
+            <div class="col-12 mb-4">
+                <div class="para-section">
+                    <strong class="mb-2 d-block">Procedure</strong>
+                    <p class="text-justify">{{ medical_session.procedure }}</p>
+                </div>
+            </div>
+
+            {# Hard file of medical session #}
+            <div class="col-6 mb-4">
+                <div class="para-section">
+                    <strong class="mb-2 d-block">Medical session hard file</strong>
+                    {% if medical_session.hard_file %}
+                        <p><a class="border-b" href="{{ medical_session.hard_file.url }}">Download Hard File</a></p>
+                    {% else %}
+                        <p class="nothing-found-color">No file</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# Supporting document #}
+            <div class="col-6 mb-4">
+                <div class="para-section">
+                    <strong class="mb-2 d-block">Supporting documents</strong>
+                    {% if medical_session.supporting_documents %}
+                        <p><a class="border-b" href="{{ medical_session.supporting_documents.url }}">Download Supporting documents</a></p>
+                    {% else %}
+                        <p class="nothing-found-color">No file</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# Keywords section #}
+            <div class="col-3 mb-4">
+                <div class="para-section">
+                    <strong class="mb-2 d-block">Keywords</strong>
+                    <div id="medical-session-keywords">
+                        <ol>
+                        {% for keyword in medical_session.keywords.all %}
+                            <li>{{ keyword.name }}</li>
+                        {% empty %}
+                            <li class="nothing-found-color">No keywords added</li>
+                        {% endfor %}
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            {# Ward #}
+            <div class="col-3 mb-4">
+                <div class="para-section">
+                    <strong class="mb-2 d-block">Ward</strong>
+                    {% if medical_session.ward %}
+                    <p> {{ medical_session.ward }} </p>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# Department #}
+            <div class="col-3 mb-4">
+                <div class="para-section">
+                    <strong class="mb-2 d-block">Department</strong>
+                    {% if medical_session.department %}
+                    <p> {{ medical_session.department }} </p>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# Practitioner #}
+            <div class="col-3 mb-4">
+                <div class="para-section">
+                    <strong class="mb-2 d-block">Diagnosed by</strong>
+                    <p>
+                        <a href="{% url "practitioners:detail" medical_session.practitioner.pk %}">{{ medical_session.practitioner.first_name }} {{ medical_session.practitioner.last_name }}</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if request.group_name == 'nurse level' %}
+        <div class="ehms-hr"></div>
+        <div class="container-fluid content-body">
+            <div class="row content-body-inner">
+                <div class="col text-center">
+                    <a href="{% url 'nurses:vital-sign-record' medical_session.pk %}">Vital Sign Record</a>
+                </div>
+                <div class="col text-center">
+                    <a href="{% url 'nurses:intake-output-chart' medical_session.pk %}">Intake Output Chart Record</a>
+                </div>
+                <div class="col text-center">
+                    <a href="{% url 'nurses:session-notes' medical_session.pk %}">Nurses Notes</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-4">
+                <strong>Vital Sign Record</strong>
+                <p class="disabled-text">Vital sign record of the patient admitted</p>
+            </div>
+            <div class="col-8 form-section">
+                <div class="form-section-head">
+                    <strong>Vital Sign Recorded</strong>
+                </div>
+                <div class="A-form">
+                    <div class="div-table">
+                        <div class="div-table-row d-flex">
+                            <div class="div-table-head flex-fill w-20">Bed number</div>
+                            <div class="div-table-head flex-fill w-30">Timings</div>
+                            <div class="div-table-head flex-fill w-30">Nurse</div>
+                            <div class="div-table-head flex-fill w-20">Actions</div>
+                        </div>
+                        {% for record in vsr %}
+                            <div class="div-table-row d-flex">
+                                <div class="div-table-cell flex-fill w-20">{{ record.bed_number }}</div>
+                                <div class="div-table-cell flex-fill w-30">{{ record.timings }}</div>
+                                <div class="div-table-cell flex-fill w-30">{{ record.nurse.first_name }}{{ record.nurse.last_name }}</div>
+                                <div class="div-table-cell flex-fill w-20"><a href="{% url 'nurses:vital-sign-record-detail' record.pk %}"> Detail</a></div>
+                            </div>
+                        {% empty %}
+                            <div class="div-table-row"><div class="div-table-cell w-100">No record found.</div></div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr pt-20"></div>
+
+     <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-4">
+                <strong>Intake Output Chart</strong>
+                <p class="disabled-text">Vital sign record of the patient admitted</p>
+            </div>
+            <div class="col-8 form-section">
+                <div class="form-section-head">
+                    <strong>Intake Output Chart Recorded</strong>
+                </div>
+                <div class="A-form">
+                    <div class="div-table">
+                        <div class="div-table-row d-flex">
+                            <div class="div-table-head flex-fill w-20">Bed number</div>
+                            <div class="div-table-head flex-fill w-20">Intake Timings</div>
+                            <div class="div-table-head flex-fill w-20">Output Timings</div>
+                            <div class="div-table-head flex-fill w-30">Nurse</div>
+                            <div class="div-table-head flex-fill w-10">Actions</div>
+                        </div>
+                        {% for record in ioc %}
+                            <div class="div-table-row d-flex">
+                                <div class="div-table-cell flex-fill w-20">{{ record.bed_number }}</div>
+                                <div class="div-table-cell flex-fill w-20">{{ record.intake_timings }}</div>
+                                <div class="div-table-cell flex-fill w-20">{{ record.output_timings }}</div>
+                                <div class="div-table-cell flex-fill w-30">{{ record.nurse.first_name }}{{ record.nurse.last_name }}</div>
+                                {# TODO: fix the query in loop issue #}
+                                <div class="div-table-cell flex-fill w-10"><a href="{% url 'nurses:intake-output-chart-detail' record.pk %}"> Detail</a></div>
+                            </div>
+                        {% empty %}
+                            <div class="div-table-row"><div class="div-table-cell w-100">No record found.</div></div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr pt-20"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-4">
+                <strong>Nurse Notes</strong>
+                <p class="disabled-text">Nurse notes recorded of the patient admitted</p>
+            </div>
+            <div class="col-8 form-section">
+                <div class="form-section-head">
+                    <strong>Nurse Notes Recorded</strong>
+                </div>
+                <div class="A-form">
+                    <div class="div-table">
+                        <div class="div-table-row d-flex">
+                            <div class="div-table-head flex-fill w-20">Bed number</div>
+                            <div class="div-table-head flex-fill w-30">Timings</div>
+                            <div class="div-table-head flex-fill w-30">Nurse</div>
+                            <div class="div-table-head flex-fill w-20">Actions</div>
+                        </div>
+                        {% for record in notes %}
+                            <div class="div-table-row d-flex">
+                                <div class="div-table-cell flex-fill w-20">{{ record.bed_number }}</div>
+                                <div class="div-table-cell flex-fill w-30">{{ record.timings }}</div>
+                                <div class="div-table-cell flex-fill w-30">{{ record.nurse.first_name }}{{ record.nurse.last_name }}</div>
+                                <div class="div-table-cell flex-fill w-20"><a href="{% url 'nurses:session-notes-detail' record.pk %}"> Detail</a></div>
+                            </div>
+                        {% empty %}
+                            <div class="div-table-row"><div class="div-table-cell w-100">No record found.</div></div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block modal %}
+
+    {# TODO Improve the preview and add nurse records also. Make it like word document. also provide option to download and track that download too #}
+    {# Model body => main window code #}
+    <div class="modal fade" id="medical-session-modal-id" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="row modal-header">
+                    <div class="col-11">
+                        <h3>
+                            Preview Page
+                            <a href="#" onclick="window.print();" title="Print the view" data-bs-toggle="tooltip" data-bs-placement="top">
+                                <span class="material-symbols-sharp">print</span>
+                            </a>
+                        </h3>
+                    </div>
+                    <div class="col-1 text-center">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                </div>
+
+                <div class="modal-body medical-session-modal-body">
+                    <div class="col-12 mb-5">
+                        <b class="d-block mb-2">Diagnosis</b>
+                        <p id="modal-diagnosis-view" class="text-justify">
+                            {{ medical_session.diagnosis }}
+                        </p>
+                    </div>
+                    <div class="col-12 mb-5">
+                        <b class="d-block mb-2">Medication</b>
+                        <p id="modal-medication-view" class="text-justify">
+                            {{ medical_session.medication }}
+                        </p>
+                    </div>
+                    <div class="col-12 mb-5">
+                        <b class="d-block mb-2">Procedure</b>
+                        <p id="modal-procedure-view" class="text-justify">
+                            {{ medical_session.procedure }}
+                        </p>
+                    </div>
+                    <div class="col-12 mb-5">
+                        <b class="d-block mb-2">Medical session hard file</b>
+                        <p id="modal-hard-file-view">
+                            {% if medical_session.hard_file %}
+                                <a href="{{ medical_session.hard_file.url }}">Hard File</a>
+                                <span class="material-icons" style="vertical-align: middle;color:blue;">
+                                    link
+                                </span>
+                            {% else %}
+                                No file
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-12 mb-5">
+                        <b class="d-block mb-2">Medical supporting documents</b>
+                        <p id="modal-supporting-docs-view">
+                            {% if medical_session.supporting_documents %}
+                                <a href="{{ medical_session.supporting_documents.url }}">Supporting documents</a>
+                                <span class="material-icons" style="vertical-align: middle;color:blue;">link</span>
+                            {% else %}
+                                No file
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-12 mb-5">
+                        <b class="d-block mb-2">Keywords</b>
+                        <p id="modal-keyword-view">
+                        </p>
+                    </div>
+                    <div class="col-12 mb-5">
+                        <b class="d-block mb-2">Department</b>
+                        <p id="modal-practitioner-view">
+                            {{ medical_session.department }}
+                        </p>
+                    </div>
+                    <div class="col-12 mb-5">
+                        <b class="d-block mb-2">Ward</b>
+                        <p id="modal-practitioner-view">
+                            {{ medical_session.ward }}
+                        </p>
+                    </div>
+                    <div class="col-12 mb-5">
+                        <b class="d-block mb-2">Medical practitioner</b>
+                        <p id="modal-practitioner-view">
+                            {{ medical_session.practitioner.first_name }} {{ medical_session.practitioner.last_name }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock modal %}
+
+
+{% block inline_javascript %}
+
+    <script nonce="{{ request.csp_nonce }}">
+
+        let keywordsElement = $('#medical-session-keywords');
+
+        let modalKeywordView = $('#modal-keyword-view');
+
+        modalKeywordView.html(keywordsElement.html());
+
+    </script>
+{% endblock %}

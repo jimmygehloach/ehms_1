@@ -1,0 +1,85 @@
+<div class="col-4 mt-20">
+    <strong>Contact Section</strong>
+    <p class="disabled-text">Contact details of the new patient</p>
+</div>
+<div class="col-8 form-section mt-20">
+    <div class="form-section-head">
+        <strong>Patient Contact Information</strong>
+    </div>
+    <div class="A-form">
+        {# --- Patient address line 1 --- #}
+        <div class="mb-40">
+            <label class="label-box" for="{{ patient_address_form.address_line_1.id_for_label }}">{{ patient_address_form.address_line_1.label }}</label>
+            {{ patient_address_form.address_line_1 }}
+            {{ patient_address_form.address_line_1.errors }}
+        </div>
+
+        {# --- Patient address line 2 --- #}
+        <div class="mb-40">
+            <label class="label-box" for="{{ patient_address_form.address_line_2.id_for_label }}">{{ patient_address_form.address_line_2.label }}</label>
+            {{ patient_address_form.address_line_2 }}
+            {{ patient_address_form.address_line_2.errors }}
+        </div>
+
+        {# --- Patient phone --- #}
+        <div class="mb-40">
+            <label class="label-box" for="{{ patient_address_form.phone.id_for_label }}">{{ patient_address_form.phone.label }}</label>
+            {{ patient_address_form.phone }}
+            {{ patient_address_form.phone.errors }}
+        </div>
+
+        {# --- Patient alternate phone --- #}
+        <div class="mb-40">
+            <label class="label-box" for="{{ patient_address_form.alternate_phone.id_for_label }}">{{ patient_address_form.alternate_phone.label }}</label>
+            {{ patient_address_form.alternate_phone }}
+            {{ patient_address_form.alternate_phone.errors }}
+        </div>
+
+        {# --- Patient address type --- #}
+        <div class="mb-40">
+            <label class="label-box" for="{{ patient_address_form.type.id_for_label }}">{{ patient_address_form.type.label }}</label>
+            {{ patient_address_form.type }}
+            {{ patient_address_form.type.errors }}
+        </div>
+
+        {# --- Patient current address --- #}
+        <div class="mb-40">
+            <label class="label-box" for="">{{ patient_address_form.current_address.label }}</label>
+            <label class="form-label" for="{{ patient_address_form.current_address.id_for_label }}">
+                <p>Click to check or uncheck</p>
+                {{ patient_address_form.current_address }}
+            </label>
+            {{ patient_address_form.current_address.errors }}
+        </div>
+
+        {# --- Patient country --- #}
+        <div class="mb-40"><label class="label-box" for="{{ patient_address_form.country.id_for_label }}">{{ patient_address_form.country.label }}</label>
+            {{ patient_address_form.country }}
+            {{ patient_address_form.country.errors }}
+        </div>
+
+        {# --- Patient region --- #}
+        <div class="mb-40"><label class="label-box" for="{{ patient_address_form.region.id_for_label }}">{{ patient_address_form.region.label }}</label>
+            {{ patient_address_form.region }}
+            {{ patient_address_form.region.errors }}
+        </div>
+
+        {# --- Patient district --- #}
+        <div class="mb-40"><label class="label-box" for="{{ patient_address_form.district.id_for_label }}">{{ patient_address_form.district.label }}</label>
+            {{ patient_address_form.district }}
+            {{ patient_address_form.district.errors }}
+        </div>
+
+        {# --- Patient town --- #}
+        <div class="mb-40"><label class="label-box" for="{{ patient_address_form.town.id_for_label }}">{{ patient_address_form.town.label }}</label>
+            {{ patient_address_form.town }}
+            {{ patient_address_form.town.errors }}
+        </div>
+
+        {# --- Patient postcode --- #}
+        <div class="mb-40"><label class="label-box" for="{{ patient_address_form.postcode.id_for_label }}">{{ patient_address_form.postcode.label }}</label>
+            {{ patient_address_form.postcode }}
+            {{ patient_address_form.postcode.errors }}
+        </div>
+    </div>
+</div>

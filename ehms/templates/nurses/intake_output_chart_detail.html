@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="row pt-5">
+        <div class="col">
+            <b>Nurse: </b> <em>{{ ioc.nurse.first_name }} {{ ioc.nurse.last_name }}</em>
+            <b>Patient: </b> <em>{{ ioc.patient.first_name }} {{ ioc.patient.last_name }}</em>
+        </div>
+
+        <div class="col d-flex justify-content-end">
+
+
+        </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="row row-mb">
+        <div class="col-12">
+             {{ ioc }}
+        </div>
+    </div>
+
+
+{% endblock content %}

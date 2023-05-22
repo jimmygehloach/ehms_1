@@ -1,0 +1,14 @@
+{% if messages %}
+    <div class="common-toast-wrapper">
+        {% for message in messages %}
+        <div class="common-toast">
+            <div class="d-flex common-toast-body align-items-center {% if message.tags %}common-toast-{{ message.tags }} {% endif %}">
+                <div class="flex-grow-1">{{ message }}</div>
+                <div class="d-flex close-common-toast align-items-center">
+                    <i class="ri-close-fill ri-lg"></i>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}

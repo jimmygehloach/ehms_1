@@ -1,0 +1,38 @@
+<div class="col-4">
+    <strong>Medical Section</strong>
+    <p class="disabled-text">Medical details of the new patient</p>
+</div>
+<div class="col-8 form-section mt-20">
+    <div class="form-section-head">
+        <strong>Patient Medical Information</strong>
+    </div>
+    <div class="A-form">
+        {# --- Patient medical illness --- #}
+        <div class="mb-40">
+            <label class="label-box" for="{{ patient_form.patient_medical_illness.id_for_label }}">{{ patient_form.patient_medical_illness.label }}</label>
+            {{ patient_form.patient_medical_illness }}
+            {{ patient_form.patient_medical_illness.errors }}
+        </div>
+
+        {# --- Patient kin medical illness --- #}
+        <div class="mb-40">
+            <label class="label-box" for="{{ patient_form.patient_kin_medical_illness.id_for_label }}">{{ patient_form.patient_kin_medical_illness.label }}</label>
+            {{ patient_form.patient_kin_medical_illness }}
+            {{ patient_form.patient_kin_medical_illness.errors }}
+        </div>
+
+        {# --- Patient allergies --- #}
+        <div class="mb-40">
+            <label class="label-box" for="{{ patient_form.patient_allergies.id_for_label }}">{{ patient_form.patient_allergies.label }}</label>
+            {{ patient_form.patient_allergies }}
+            {{ patient_form.patient_allergies.errors }}
+        </div>
+
+        {# --- Patient addictions --- #}
+        <div class="mb-40">
+            <label class="label-box" for="{{ patient_form.patient_addictions.id_for_label }}">{{ patient_form.patient_addictions.label }}</label>
+            {{ patient_form.patient_addictions }}
+            {{ patient_form.patient_addictions.errors }}
+        </div>
+    </div>
+</div>

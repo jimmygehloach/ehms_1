@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-6 align-self-center">
+                <a class="pl-5" href="{% url "dashboards:hospital-level" %}"> <i class="ri-home-3-fill ri-lg"></i> Home </a>
+                <i class="ri-arrow-right-s-line ri-lg"></i>
+                <a class="pl-5 pr-5" href="{% url "hospitals:hospital-dashboard" %}"> <i class="ri-dashboard-fill ri-lg"></i> Dashboard </a>
+                <i class="ri-arrow-right-s-line ri-lg"></i>
+                <span class="disabled-color pr-5"> <i class="ri-inbox-fill ri-lg"></i> Inbox </span>
+            </div>
+
+            <div class="col-6 d-flex justify-content-end align-self-center">
+                <span class="pr-20" title="Total Queries" data-bs-toggle="tooltip" data-bs-placement="top">{% if queries_count %} {{ queries_count }} {% else %} 0 {% endif %}</span>
+                <a href="" data-bs-toggle="modal" data-bs-target="#new-query-modal" class="pr-20 cursor-pointer">
+                    <i class="ri-mail-add-fill ri-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="New Query"></i>
+                </a>
+                <div class="dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="Sort List">
+                    <a href=""  id="hospital-inbox-sort-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% include "partials/dynamic-sort-icon.html" %}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="hospital-inbox-sort-dropdown">
+                        <li><a class="dropdown-item" href="{% url 'queries:hospital-inbox' %}?sort=asc">Ascending</a></li>
+                        <li><a class="dropdown-item" href="{% url 'queries:hospital-inbox' %}?sort=desc">Descending</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+                <div class="div-table">
+                    <div class="div-table-row d-flex">
+                        <div class="div-table-head flex-fill w-60">Subject</div>
+                        <div class="div-table-head flex-fill w-10">Response Status</div>
+                        <div class="div-table-head flex-fill w-20">Date Time</div>
+                        <div class="div-table-head flex-fill w-10">Actions</div>
+                    </div>
+                    {% for query in page_obj %}
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-cell flex-fill w-60">{{ query.subject }}</div>
+                        <div class="div-table-cell flex-fill w-10">{{ query.response_status }}</div>
+                        <div class="div-table-cell flex-fill w-20">{{ query.created }}</div>
+                        <div class="div-table-cell flex-fill w-10">
+                            <a data-bs-toggle="modal" data-bs-target="#query-{{ query.pk }}" class="pr-10 cursor-pointer">
+                                <i data-bs-toggle="tooltip" data-bs-placement="top" title="Read" class="ri-mail-open-line ri-lg"></i>
+                            </a>
+                            <div class="modal fade" id="query-{{ query.pk }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="query-{{ query.pk }}" aria-hidden="true">
+                                <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                                    <div class="modal-content p-20">
+                                        <div class="modal-header no-border">
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body query-modal-body">
+                                            <div class="row">
+                                                <div class="col-12 mb-4">
+                                                    <div class="form-floating">
+                                                        <input type="text" id="id_subject{{ query.pk }}" value="{{ query.subject }}" class="form-control">
+                                                        <label for="id_subject{{ query.pk }}">Subject</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 mb-4">
+                                                    <div class="form-floating">
+                                                        <textarea id="id_body{{ query.pk }}" class="form-control ehms-modal-textarea">{{ query.body }}</textarea>
+                                                        <label for="id_body{{ query.pk }}">Body</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 mb-4">
+                                                    <div class="form-floating">
+                                                        <textarea id="id_response{{ query.pk }}" class="form-control ehms-modal-textarea">{% if query.response %}{{ query.response|escape }}{% else %}No response yet.{% endif %}</textarea>
+                                                        <label for="id_response{{ query.pk }}">Response text</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 text-end">
+                                                    {% if query.attachment %}
+                                                        <a href="{{ query.attachment.url }}">
+                                                            <button type="button" class="ehms-button-wi">
+                                                                <i class="ri-attachment-line ri-lg"></i> Attachment
+                                                            </button>
+                                                        </a>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if query.attachment %}
+                                <i class="ri-attachment-line ri-lg"></i>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="div-table-row bg-white"><div class="div-table-cell w-100 text-center">Nothing Found</div></div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block modal %}
+    <div class="modal fade" id="new-query-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="new-query-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content p-20">
+                <div class="modal-header no-border">
+                    <h1>
+                        Contact Administrator: Submit Your Query
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="query-box" id="query-box">
+                        <form action="" method="POST" id="hospital-query-form" name="hospital-query-form" enctype="multipart/form-data" novalidate>
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-12 mb-4">
+                                    <label for="{{ form.subject.id_for_label }}">{{ form.subject.label }}</label>
+                                    {{ form.subject }}
+                                    {{ form.subject.errors }}
+                                </div>
+                                <div class="col-12 mb-4">
+                                    <label for="{{ form.body.id_for_label }}">{{ form.body.label }}</label>
+                                    {{ form.body }}
+                                    {{ form.body.errors }}
+                                </div>
+                                <div class="col-12 mb-4">
+                                    <label for="{{ form.attachment.id_for_label }}">{{ form.attachment.label }}</label>
+                                    {{ form.attachment }}
+                                    {{ form.attachment.errors }}
+                                </div>
+                                <div class="col-12 text-end">
+                                    <button type="submit" class="ehms-button-wi" name="new_hospital_query">
+                                        <i class="ri-mail-send-line ri-lg"></i> Send
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock modal %}

@@ -1,0 +1,35 @@
+<div class="div-table mt-40">
+    <div class="div-table-row d-flex">
+        <div class="div-table-head flex-fill w-10">Image</div>
+        <div class="div-table-head flex-fill w-30">Name</div>
+        <div class="div-table-head flex-fill w-10">Age</div>
+        <div class="div-table-head flex-fill w-10">Gender</div>
+        <div class="div-table-head flex-fill w-10">Blood Group</div>
+        <div class="div-table-head flex-fill w-20">Health Status</div>
+        <div class="div-table-head flex-fill w-10">Actions</div>
+    </div>
+    {% for patient in page_obj %}
+        <div class="div-table-row d-flex bg-white">
+            <div class="div-table-cell flex-fill w-10">
+                {% for image in patient.current_photo %}
+                <img class="img-fluid profile-img-rounded health-status-border-{{ patient.health_status.css_class }}" width="50" height="50" src="{{ image.image_thumbnail.url }}" alt="">
+                {% empty %} NO PHOTO {% endfor %}
+            </div>
+            <div class="div-table-cell flex-fill w-30">{{ patient.first_name }} {% if patient.middle_name %} {{ patient.middle_name }} {% endif %} {{ patient.last_name }}</div>
+            <div class="div-table-cell flex-fill w-10">{{ patient.age }} </div>
+            <div class="div-table-cell flex-fill w-10">{{ patient.gender }} </div>
+            <div class="div-table-cell flex-fill w-10">{% if patient.blood_group %} {{ patient.blood_group }} {% else %} {% endif %} </div>
+            <div class="div-table-cell flex-fill w-20"><span class="health-status-{{ patient.health_status.css_class }}">{{ patient.health_status.name }}</span></div>
+            <div class="div-table-cell flex-fill w-10">
+                {# Patient new medical session for practitioner only #}
+                {% if request.group_name == 'practitioner level' %}
+                    <a href="{% url "medical_sessions:new" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="New Medical Session"><span class="material-symbols-sharp">add_box</span></a>
+                {% endif %}
+                <a class="pr-10 pl-10" href="{% url "patients:detail" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Patient portfolio"><span class="material-symbols-sharp">account_circle</span></a>
+                <a href="{% url "medical_sessions:list" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Medical Sessions"><span class="material-symbols-sharp">ballot</span></a>
+            </div>
+        </div>
+    {% empty %}
+        <div class="div-table-row bg-white"><div class="div-table-cell flex-fill w-100 text-center">Nothing Found</div></div>
+    {% endfor %}
+</div>

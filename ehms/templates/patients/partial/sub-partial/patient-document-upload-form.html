@@ -1,0 +1,23 @@
+<div class="form-section-head">
+    <strong>Upload Patient Document</strong>
+</div>
+<form class="A-form" action="{% url 'patients:detail' patient.pk %}" method="POST" enctype="multipart/form-data" id="upload-patient-document-form" novalidate>
+    {% csrf_token %}
+    <div class="mb-40">
+        <label class="label-box" for="">Name of document</label>
+        {{ patient_document_upload_form.name }}</div>
+    <div class="mb-40">
+        <label class="label-box" for="">Type of document</label>
+        {{ patient_document_upload_form.type }}
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="">Upload document</label>
+        {{ patient_document_upload_form.document }}
+    </div>
+    <input type="hidden" name="patient_document_upload" value="">
+    <button type="submit" class="hide-block" id="submit-upload-patient-document-form"></button>
+</form>
+<div class="button-section text-end">
+    <div id="upload-patient-document-form-error-counts" class="form-errors-count"></div>
+    <label for="submit-upload-patient-document-form" class="ehms-button" role="button">Save Changes</label>
+</div>

@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <i class="ri-dashboard-fill ri-lg"></i>
+                <a class="pl-5" href="{% url "hospitals:hospital-dashboard" %}">  Dashboard </a>
+                <i class="ri-arrow-right-s-line ri-lg"></i>
+                <i class="ri-profile-line ri-lg"></i>
+                <a class="pl-5" href="{% url "hospitals:profile" %}"> Profile </a>
+                <i class="ri-arrow-right-s-line ri-lg"></i>
+                <i class="ri-hospital-line ri-lg"></i>
+                <span class="disabled-color pr-5"> {{ request.hospital }} </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+
+            <div class="col-6 article-sticky-big">
+                <div class="article-image w-100">
+                    <img class="img-fluid" src="https://www.cerner.com/gb/-/media/cerner-media-united-kingdom/blog-images/ecf22-panel.png?vs=1&h=628&w=1200&la=en&hash=13DDD4B60FC6B387DFEE67E9FEFB7B2E" alt="">
+                </div>
+                <div class="article-misc d-flex">
+                    <div class="article-date flex-fill">January 11, 2022 </div>
+                    <div class="article-category flex-fill text-end">Events</div>
+                </div>
+                <div class="article-title">
+                    <h2>ECF22 – highlights, reactions and the future</h2>
+                </div>
+                <div class="article-excerpt">
+                    <p>
+                        At the end of March 2022, the Cerner European Collaboration Forum brought together 300+ attendees from over 16 countries.
+                        nstead of sharing all 147 lines of your favorite poem in class, you might want to read an excerpt, that is, just a part of the verses, so no one dozes off
+                        <span class="material-symbols-sharp vert-middle">more_horiz</span>
+                    </p>
+
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="article-sticky d-flex">
+                    <div class="article-image flex-fill w-50">
+                        <img class="img-fluid" src="https://www.cerner.com/gb/-/media/cerner-media-united-kingdom/blog-images/caregiver-sharing-tea-time-with-her-patients-image.png?vs=1&h=562&w=1000&la=en&hash=819B96F2242B5BD4CBF811ED8A9BDAC3" alt="">
+                    </div>
+                    <div class="article-sticky-aside flex-fill w-50">
+                        <div class="article-misc d-flex">
+                            <div class="article-date flex-fill">February 22, 2022</div>
+                            <div class="article-category flex-fill text-end">Circular</div>
+                        </div>
+                        <div class="article-title">
+                            <h2>Shared Care Records bringing health and care closer together</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="article-sticky d-flex">
+                    <div class="article-image flex-fill w-50">
+                        <img  class="img-fluid" src="https://www.cerner.com/gb/-/media/cerner-media-united-kingdom/blog-migration-images/uk_approves_covid-19_vaccine_distie_profit.jpg?vs=1&h=450&w=800&la=en&hash=263B897BA949FDAD1F25392FA305DD23" alt="">
+                    </div>
+                    <div class="article-sticky-aside flex-fill w-50">
+                        <div class="article-misc d-flex">
+                            <div class="article-date flex-fill">March 12, 2022 </div>
+                            <div class="article-category flex-fill text-end">Circular</div>
+                        </div>
+                        <div class="article-title">
+                            <h2>UK approves COVID-19 vaccine: An open letter from Distie Profit, managing director, Cerner UK</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="article-sticky d-flex">
+                    <div class="article-image flex-fill w-50">
+                        <img  class="img-fluid" src="https://www.cerner.com/gb/-/media/pexels-photomix-company-887751.jpg?vs=1&h=3632&w=5448&la=en&hash=5AD3A947E345311ABD3EC6FD89BA469A" alt="">
+                    </div>
+                    <div class="article-sticky-aside flex-fill w-50">
+                        <div class="article-misc d-flex">
+                            <div class="article-date flex-fill">April 02, 2022 </div>
+                            <div class="article-category flex-fill text-end">Event</div>
+                        </div>
+                        <div class="article-title">
+                            <h2>Two Cerner clients among first UK NHS Trusts to offer Health Records on iPhone</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr p-10"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-3 article-other">
+                <div class="article-image flex-fill">
+                    <img  class="img-fluid" src="https://www.cerner.com/gb/-/media/pexels-photomix-company-887751.jpg?vs=1&h=3632&w=5448&la=en&hash=5AD3A947E345311ABD3EC6FD89BA469A" alt="">
+                </div>
+                <div class="article-sticky-aside flex-fill">
+                    <div class="article-misc d-flex">
+                        <div class="article-date flex-fill">April 02, 2022 </div>
+                        <div class="article-category flex-fill text-end">News</div>
+                    </div>
+                    <div class="article-title">
+                        <h2>Two Cerner clients among first UK NHS Trusts to offer Health Records on iPhone</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 article-other">
+                <div class="article-image flex-fill">
+                    <img  class="img-fluid" src="https://www.cerner.com/gb/-/media/pexels-photomix-company-887751.jpg?vs=1&h=3632&w=5448&la=en&hash=5AD3A947E345311ABD3EC6FD89BA469A" alt="">
+                </div>
+                <div class="article-sticky-aside flex-fill">
+                    <div class="article-misc d-flex">
+                        <div class="article-date flex-fill">April 02, 2022 </div>
+                        <div class="article-category flex-fill text-end">Alert</div>
+                    </div>
+                    <div class="article-title">
+                        <h2>Two Cerner clients among first UK NHS Trusts to offer Health Records on iPhone</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 article-other">
+                <div class="article-image flex-fill">
+                    <img  class="img-fluid" src="https://www.cerner.com/gb/-/media/pexels-photomix-company-887751.jpg?vs=1&h=3632&w=5448&la=en&hash=5AD3A947E345311ABD3EC6FD89BA469A" alt="">
+                </div>
+                <div class="article-sticky-aside flex-fill">
+                    <div class="article-misc d-flex">
+                        <div class="article-date flex-fill">April 02, 2022 </div>
+                        <div class="article-category flex-fill text-end">Event</div>
+                    </div>
+                    <div class="article-title">
+                        <h2>Two Cerner clients among first UK NHS Trusts to offer Health Records on iPhone</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 article-other">
+                <div class="article-image flex-fill">
+                    <img  class="img-fluid" src="https://www.cerner.com/gb/-/media/pexels-photomix-company-887751.jpg?vs=1&h=3632&w=5448&la=en&hash=5AD3A947E345311ABD3EC6FD89BA469A" alt="">
+                </div>
+                <div class="article-sticky-aside flex-fill">
+                    <div class="article-misc d-flex">
+                        <div class="article-date flex-fill">April 02, 2022 </div>
+                        <div class="article-category flex-fill text-end">Requirement</div>
+                    </div>
+                    <div class="article-title">
+                        <h2>Two Cerner clients among first UK NHS Trusts to offer Health Records on iPhone</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 article-other">
+                <div class="article-image flex-fill">
+                    <img  class="img-fluid" src="https://www.cerner.com/gb/-/media/pexels-photomix-company-887751.jpg?vs=1&h=3632&w=5448&la=en&hash=5AD3A947E345311ABD3EC6FD89BA469A" alt="">
+                </div>
+                <div class="article-sticky-aside flex-fill">
+                    <div class="article-misc d-flex">
+                        <div class="article-date flex-fill">April 02, 2022 </div>
+                        <div class="article-category flex-fill text-end">Notice</div>
+                    </div>
+                    <div class="article-title">
+                        <h2>Two Cerner clients among first UK NHS Trusts to offer Health Records on iPhone</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 article-other">
+                <div class="article-image flex-fill">
+                    <img  class="img-fluid" src="https://www.cerner.com/gb/-/media/pexels-photomix-company-887751.jpg?vs=1&h=3632&w=5448&la=en&hash=5AD3A947E345311ABD3EC6FD89BA469A" alt="">
+                </div>
+                <div class="article-sticky-aside flex-fill">
+                    <div class="article-misc d-flex">
+                        <div class="article-date flex-fill">April 02, 2022 </div>
+                        <div class="article-category flex-fill text-end">Event</div>
+                    </div>
+                    <div class="article-title">
+                        <h2>Two Cerner clients among first UK NHS Trusts to offer Health Records on iPhone</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 article-other">
+                <div class="article-image flex-fill">
+                    <img  class="img-fluid" src="https://www.cerner.com/gb/-/media/pexels-photomix-company-887751.jpg?vs=1&h=3632&w=5448&la=en&hash=5AD3A947E345311ABD3EC6FD89BA469A" alt="">
+                </div>
+                <div class="article-sticky-aside flex-fill">
+                    <div class="article-misc d-flex">
+                        <div class="article-date flex-fill">April 02, 2022 </div>
+                        <div class="article-category flex-fill text-end">Circular</div>
+                    </div>
+                    <div class="article-title">
+                        <h2>Two Cerner clients among first UK NHS Trusts to offer Health Records on iPhone</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 article-other">
+                <div class="article-image flex-fill">
+                    <img  class="img-fluid" src="https://www.cerner.com/gb/-/media/pexels-photomix-company-887751.jpg?vs=1&h=3632&w=5448&la=en&hash=5AD3A947E345311ABD3EC6FD89BA469A" alt="">
+                </div>
+                <div class="article-sticky-aside flex-fill">
+                    <div class="article-misc d-flex">
+                        <div class="article-date flex-fill">April 02, 2022 </div>
+                        <div class="article-category flex-fill text-end">Requirement</div>
+                    </div>
+                    <div class="article-title">
+                        <h2>Two Cerner clients among first UK NHS Trusts to offer Health Records on iPhone</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 article-other">
+                <div class="article-image flex-fill">
+                    <img  class="img-fluid" src="https://www.cerner.com/gb/-/media/pexels-photomix-company-887751.jpg?vs=1&h=3632&w=5448&la=en&hash=5AD3A947E345311ABD3EC6FD89BA469A" alt="">
+                </div>
+                <div class="article-sticky-aside flex-fill">
+                    <div class="article-misc d-flex">
+                        <div class="article-date flex-fill">April 02, 2022 </div>
+                        <div class="article-category flex-fill text-end">Requirement</div>
+                    </div>
+                    <div class="article-title">
+                        <h2>Two Cerner clients among first UK NHS Trusts to offer Health Records on iPhone</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 article-other">
+                <div class="article-image flex-fill">
+                    <img  class="img-fluid" src="https://www.cerner.com/gb/-/media/pexels-photomix-company-887751.jpg?vs=1&h=3632&w=5448&la=en&hash=5AD3A947E345311ABD3EC6FD89BA469A" alt="">
+                </div>
+                <div class="article-sticky-aside flex-fill">
+                    <div class="article-misc d-flex">
+                        <div class="article-date flex-fill">April 02, 2022 </div>
+                        <div class="article-category flex-fill text-end">Notice</div>
+                    </div>
+                    <div class="article-title">
+                        <h2>Two Cerner clients among first UK NHS Trusts to offer Health Records on iPhone</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 article-other">
+                <div class="article-image flex-fill">
+                    <img  class="img-fluid" src="https://www.cerner.com/gb/-/media/pexels-photomix-company-887751.jpg?vs=1&h=3632&w=5448&la=en&hash=5AD3A947E345311ABD3EC6FD89BA469A" alt="">
+                </div>
+                <div class="article-sticky-aside flex-fill">
+                    <div class="article-misc d-flex">
+                        <div class="article-date flex-fill">April 02, 2022 </div>
+                        <div class="article-category flex-fill text-end">Event</div>
+                    </div>
+                    <div class="article-title">
+                        <h2>Two Cerner clients among first UK NHS Trusts to offer Health Records on iPhone</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 article-other">
+                <div class="article-image flex-fill">
+                    <img  class="img-fluid" src="https://www.cerner.com/gb/-/media/pexels-photomix-company-887751.jpg?vs=1&h=3632&w=5448&la=en&hash=5AD3A947E345311ABD3EC6FD89BA469A" alt="">
+                </div>
+                <div class="article-sticky-aside flex-fill">
+                    <div class="article-misc d-flex">
+                        <div class="article-date flex-fill">April 02, 2022 </div>
+                        <div class="article-category flex-fill text-end">Circular</div>
+                    </div>
+                    <div class="article-title">
+                        <h2>Two Cerner clients among first UK NHS Trusts to offer Health Records on iPhone</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="text-center">
+                <button class="ehms-button-wi"><span class="material-symbols-sharp">arrow_forward</span> Article List</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+{% endblock content %}

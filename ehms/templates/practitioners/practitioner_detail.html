@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-6">
+                <span class="disabled-color pr-5"> {{ practitioner.first_name }} {{ practitioner.last_name }} </span> / <a class="pl-5" href="{% url "practitioners:list" %}">Practioner List</a>
+            </div>
+
+            <div class="col d-flex justify-content-end">
+                <a href="{% url "practitioners:practitioner-medical-sessions" practitioner.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Medical sessions">
+                    <span class="material-symbols-sharp">ballot</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-4">
+                <strong>General Section</strong>
+                <p class="disabled-text">General information of the practitioner</p>
+            </div>
+            <div class="col-8 form-section">
+                <div class="form-section-head">
+                    <strong>Practitioner General Information</strong>
+                </div>
+                <form class="A-form" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-40">
+                        <label class="label-box" for="id_uid">UID</label>
+                        <input type="text" class="form-control" value="{{ practitioner.uid }}" name="uid" id="id_uid">
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="">Practitioner image</label>
+                        <div class="w-100">
+                            {% if practitioner.image %}
+                                <img src="{{ practitioner.image_medium.url }}" class="img-fluid slight-round-image" width="200" height="200" alt="{{ practitioner.first_name }}-{{ practitioner.last_name }}">
+                            {% else %} NO PHOTO {% endif %}
+                        </div>
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="id_first_name">First name</label>
+                        <input type="text" class="form-control" value="{{ practitioner.first_name }}" name="first_name" id="id_first_name">
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="id_middle_name">Middle name</label>
+                        <input type="text" class="form-control" value="{{ practitioner.middle_name }}" name="middle_name" id="id_middle_name">
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="id_last_name">Last name</label>
+                        <input type="text" class="form-control" value="{{ practitioner.last_name }}" name="last_name" id="id_last_name">
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="id_date_of_birth">Date of birth</label>
+                        <input type="text" class="form-control" value="{{ practitioner.date_of_birth }}" name="date_of_birth" id="id_date_of_birth">
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="id_gender">Gender</label>
+                        <input type="text" class="form-control" value="{{ practitioner.gender }}" name="gender" id="id_gender">
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="id_religion">Religion</label>
+                        <input type="text" class="form-control" value="{{ practitioner.religion }}" name="religion" id="id_religion">
+                    </div>
+                </form>
+                <div class="button-section text-end">
+                    <button type="button" class="ehms-button">Report Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr pt-20"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-4">
+                <strong>Health Section</strong>
+                <p class="disabled-text">Health information of the practitioner</p>
+            </div>
+            <div class="col-8 form-section">
+                <div class="form-section-head">
+                    <strong>Practitioner Health Information</strong>
+                </div>
+                <form class="A-form" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-40">
+                        <label class="label-box" for="id_blood_group">Blood Group</label>
+                        <input type="text" class="form-control" value="{{ practitioner.blood_group }}" name="blood_group" id="id_blood_group">
+                    </div>
+                </form>
+                <div class="button-section text-end">
+                    <button type="button"  class="ehms-button">Report Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr pt-20"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+             <div class="col-4">
+                <strong>Miscellaneous Section</strong>
+                <p class="disabled-text">Miscellaneous information of the practitioner</p>
+            </div>
+            <div class="col-8 form-section">
+                <div class="form-section-head">
+                    <strong>Practitioner Miscellaneous Information</strong>
+                </div>
+                <form class="A-form" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-40">
+                        <label class="label-box" for="id_remarks">Remarks</label>
+                        {% if practitioner.remarks %}
+                            <textarea class="form-control" rows="5" placeholder="Leave a comment here" id="id_remarks">{{ practitioner.remarks }}</textarea>
+                        {% else %}
+                            <textarea class="form-control disabled-color" rows="5" placeholder="Leave a comment here" id="id_remarks">No remarks yet.</textarea>
+                        {% endif %}
+                    </div>
+                </form>
+                <div class="button-section text-end">
+                    <button type="button" class="ehms-button">Report Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr pt-20"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+             <div class="col-4">
+                <strong>Address Section</strong>
+                <p class="disabled-text">Address information of the practitioner</p>
+            </div>
+            <div class="col-8 form-section">
+                <div class="form-section-head">
+                    <strong>Practitioner Address Information</strong>
+                </div>
+                <form class="A-form" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-40">
+                        <label class="label-box" for="id_address_line_1">Address Line 1</label>
+                        <input type="text" class="form-control" value="{{ practitioner.address_line_1 }}" name="address_line_1" id="id_address_line_1">
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="id_address_line_2">Address Line 2</label>
+                        <input type="text" class="form-control" value="{{ practitioner.address_line_2 }}" name="address_line_2" id="id_address_line_2">
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="id_town">Town</label>
+                        <input type="text" class="form-control" value="{{ practitioner.town }}" name="town" id="id_town">
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="id_district">District</label>
+                        <input type="text" class="form-control" value="{{ practitioner.district }}" name="district" id="id_district">
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="id_region">Region</label>
+                        <input type="text" class="form-control" value="{{ practitioner.region }}" name="region" id="id_region">
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="id_country">Country</label>
+                        <input type="text" class="form-control" value="{{ practitioner.country }}" name="country" id="id_country">
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="id_phone">Phone</label>
+                        <input type="text" class="form-control" value="{{ practitioner.phone }}" name="phone" id="id_phone">
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="id_alternate_phone">Alternate Phone</label>
+                        <input type="text" class="form-control" value="{{ practitioner.alternate_phone }}" name="alternate_phone" id="id_alternate_phone">
+                    </div>
+                    <div class="mb-40">
+                        <label class="label-box" for="id_email">Email</label>
+                        <input type="text" class="form-control" value="{{ practitioner.email }}" name="email" id="id_email">
+                    </div>
+                </form>
+                <div class="button-section text-end">
+                    <button type="button" class="ehms-button">Report Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr pt-20"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+             <div class="col-4">
+                <strong>Hospital Section</strong>
+                <p class="disabled-text">Hospital information of the practitioner</p>
+            </div>
+            <div class="col-8 form-section">
+                <div class="form-section-head">
+                    <strong>Practitioner Hospital Information</strong>
+                </div>
+                <div class="A-form">
+                    <div class="div-table">
+                        <div class="div-table-row d-flex">
+                            <div class="div-table-head flex-fill w-10">Hospital</div>
+                            <div class="div-table-head flex-fill w-10">Joined on</div>
+                            <div class="div-table-head flex-fill w-10">Relieved on</div>
+                            <div class="div-table-head flex-fill w-10">Current Hospital</div>
+                        </div>
+                        {% for hospital in practitioner_hospitals %}
+                            <div class="div-table-row d-flex">
+                                <div class="div-table-cell flex-fill w-10">{{ hospital.hospital.name }}</div>
+                                <div class="div-table-cell flex-fill w-10">{{ hospital.joined_on }}</div>
+                                <div class="div-table-cell flex-fill w-10">{{ hospital.relieved_on }}</div>
+                                <div class="div-table-cell flex-fill w-10">{{ hospital.current_hospital }}</div>
+                            </div>
+                        {% empty %}
+                            <div class="div-table-row"><div class="div-table-cell flex-fill w-100 text-center">Nothing Found</div></div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

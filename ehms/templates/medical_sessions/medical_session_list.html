@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-6">
+                <a class="pr-5" href="{% url 'patients:detail' patient.pk %}">{{ patient.first_name }} {{ patient.last_name }}</a> /
+                <a class="pl-5" href="{% url "hospitals:hospital-medical-sessions" %}">Medical Sessions</a>
+            </div>
+            <div class="col-6 d-flex justify-content-end">
+                {% if request.user_type == 'practitioner' %}
+                    <a href="{% url "medical_sessions:new" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="New Medical Session">
+                    <span class="material-symbols-sharp">ballot</span>
+                </a>
+                {% endif %}
+
+                <div class="dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="Sort List">
+                    <a href="" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="material-symbols-sharp">sort</span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="patient-list-sort-dropdown">
+                        <li><a class="dropdown-item" href="{% url 'medical_sessions:list' patient.pk %}?sort=asc">Ascending</a></li>
+                        <li><a class="dropdown-item" href="{% url 'medical_sessions:list' patient.pk %}?sort=desc">Descending</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+            <div class="div-table">
+                <div class="div-table-row d-flex">
+                    <div class="div-table-head flex-fill w-10">#</div>
+                    <div class="div-table-head flex-fill w-50">Practitioner</div>
+                    <div class="div-table-head flex-fill w-30">Date & Time</div>
+                    <div class="div-table-head flex-fill w-10">Actions</div>
+                </div>
+                {% for medical_session in page_obj %}
+                    <div class="div-table-row bg-white d-flex">
+                        <div class="div-table-cell flex-fill w-10">{{ forloop.counter }}</div>
+                        <div class="div-table-cell flex-fill w-50">
+                            <a href="{% url 'practitioners:detail' medical_session.practitioner.pk %}" title="{{ medical_session.practitioner.first_name }}'s profile">
+                                {{ medical_session.practitioner.first_name }} {{ practitioner_hospital.practitioner.last_name }}
+                            </a>
+                        </div>
+                        <div class="div-table-cell flex-fill w-30">{{ medical_session.created }}</div>
+                        <div class="div-table-cell flex-fill w-10">
+                            <a href="{% url "medical_sessions:detail" patient.pk medical_session.uid %}" title="View medical session" data-bs-toggle="tooltip" data-bs-placement="top">
+                                <span class="material-symbols-sharp">library_books</span>
+                            </a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="div-table-row bg-white d-flex">
+                        <div class="div-table-cell flex-fill w-100 text-center">Nothing Found</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

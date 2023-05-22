@@ -1,0 +1,35 @@
+<div class="form-section-head">
+    <strong>Female Patient Information</strong>
+</div>
+<form class="A-form" action="{% url 'patients:detail' patient.pk %}" method="POST" id="update-female-patient-form">
+    {% csrf_token %}
+    <div class="mb-40">
+        <label class="label-box" for="{{ update_patient_female_info.pregnancy.id_for_label }}">{{ update_patient_female_info.pregnancy.label }}</label>
+        {{ update_patient_female_info.pregnancy }}
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="">{{ update_patient_female_info.tt_one_pregnant.label }}</label>
+        <label class="form-label" for="{{ update_patient_female_info.tt_one_pregnant.id_for_label }}">
+            <p>Click to check or uncheck</p>
+            {{ update_patient_female_info.tt_one_pregnant }}
+        </label>
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="">{{ update_patient_female_info.tt_two_pregnant.label }}</label>
+        <label class="form-label" for="{{ update_patient_female_info.tt_two_pregnant.id_for_label }}">
+            <p>Click to check or uncheck</p>
+            {{ update_patient_female_info.tt_two_pregnant }}
+        </label>
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="">{{ update_patient_female_info.tt_booster.label }}</label>
+        <label class="form-label" for="{{ update_patient_female_info.tt_booster.id_for_label }}">
+            <p>Click to check or uncheck</p>
+            {{ update_patient_female_info.tt_booster }}
+        </label>
+    </div>
+    <input type="hidden" name="update_patient_female_info" value="">
+</form>
+<div class="button-section text-end">
+    <button type="button"  class="ehms-button">Save Changes</button>
+</div>

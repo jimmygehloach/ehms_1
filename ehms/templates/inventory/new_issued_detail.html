@@ -1,0 +1,543 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <style nonce="{{ request.csp_nonce }}">
+        #issue-inventory-form input {
+            width: 8em !important;
+        }
+
+        .get-rid-of-me {
+            border:0;
+            background: transparent;
+        }
+
+        .get-rid-of-me svg {
+            fill: var(--vermilion) !important;
+        }
+
+        .invalid-entry {
+            border: 2px solid var(--firebrick);
+        }
+
+        .error-entry-wrapper {
+            color: var(--firebrick);
+        }
+    </style>
+
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <span class="disabled-color pr-5"> Issue Items </span> / <a class="pl-5" href="{% url "inventory:detail" %}">Inventory Detail</a>
+            </div>
+
+            <div class="col d-flex justify-content-end">
+                <a class="" href="{% url 'inventory:received' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Receive Items">
+                    <span class="material-symbols-sharp">output</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <form action="" method="POST" id="issue-inventory-form" novalidate>
+                    {% csrf_token %}
+
+                    <div class="form-group mb-4">
+                        <label for="id_department">Choose Department</label>
+                        {{ form.department }}
+                        <div class="col-4 error-entry-wrapper" id="department-eew"></div>
+                    </div>
+
+                    {{ formset.management_form }}
+                    <div class="div-table">
+                        <div class="div-table-row d-flex">
+                            <div class="div-table-head flex-fill w-10">Category</div>
+                            <div class="div-table-head flex-fill w-10">Item</div>
+                            <div class="div-table-head flex-fill w-10">Quantity</div>
+                            <div class="div-table-head flex-fill w-10">Price/unit</div>
+                            <div class="div-table-head flex-fill w-10">Vat Rate</div>
+                            <div class="div-table-head flex-fill w-10">Discount</div>
+                            <div class="div-table-head flex-fill w-10">Total Price</div>
+                            <div class="div-table-head flex-fill w-15">Remarks</div>
+                            <div class="div-table-head flex-fill w-5"></div>
+                        </div>
+                        {% for form in formset %}
+                            <div class="div-table-row d-flex bg-white inline-form-group">
+                                <div class="div-table-cell flex-fill w-10">{{ form.item_category }}</div>
+                                <div class="div-table-cell flex-fill w-10">{{ form.item }}</div>
+                                <div class="div-table-cell flex-fill w-10">{{ form.issued_quantity }}</div>
+                                <div class="div-table-cell flex-fill w-10">{{ form.price }}</div>
+                                <div class="div-table-cell flex-fill w-10">{{ form.vat }}</div>
+                                <div class="div-table-cell flex-fill w-10">{{ form.discount }}</div>
+                                <div class="div-table-cell flex-fill w-10">{{ form.total_price }}</div>
+                                <div class="div-table-cell flex-fill w-15">{{ form.remarks }}</div>
+                                <div class="div-table-cell flex-fill w-5 text-end align-self-center">
+                                    <a type="button" class="get-rid-of-me">
+                                        <span class="material-symbols-sharp">disabled_by_default</span>
+                                    </a>
+                                </div>
+                            </div>
+                        {% empty %}
+                        <div class="div-table-row bg-white"><div class="div-table-cell flex-fill w-100 text-center">Nothing Found</div></div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group mt-40 mb-20 clearfix total-amount-calculated d-flex">
+                        <label for="id_gross_amount" class="pr-20 flex-grow-1 align-self-center text-end">Total Amount (Calculated)</label>
+                        <div class="float-end">{{ form.gross_amount }}</div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="id_remarks">Bill Remarks, if any</label>
+                        {{ form.remarks }}
+                    </div>
+
+                    <div class="clearfix">
+                        <button type="button" id="add-new-inline-from" class="ehms-button float-start">Add new row</button>
+                        <button type="submit" class="float-end ehms-button">Create</button>
+                    </div>
+
+                    <div class="clearfix">
+                        <div class="col-4 error-entry-wrapper float-end text-end" id="submit-error-wrapper"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block inline_javascript %}
+
+    <script nonce="{{ request.csp_nonce }}" type="application/javascript">
+        (function($) {
+
+            /*------------------------
+             |   After loading page
+             +------------------------
+             |
+             | 1. Changes in UI Design
+             | 2. Readonly Gross Amount & Total Price field
+             | 3. Ajax Request to fetch inventory items
+             | 4. Code to add or multiple rows in the form based on form parameters
+             | 5. Form Validation
+             | 6. Calculate the total price
+             |
+             */
+
+            // 1.
+            $('#issue-inventory-form')[0].reset();
+            $('input, textarea').addClass('form-control');
+            $('select').addClass('form-select');
+            $('textarea').attr({
+                'rows': '2',
+                'cols': '20'
+            });
+
+            window.addEventListener('beforeunload', function (e) {
+
+                e.preventDefault();
+
+            });
+
+            // 2.
+            $('input[id^="id_inventory_issue_detail-"][id$="-total_price"]').each(function() {
+                let $this = $(this);
+                $this.attr('readonly', true);
+            });
+
+            $('#id_gross_amount').attr({
+                'readonly': true
+            });
+
+            // 3.
+            $(function() {
+
+                let item = $('select[id^="id_inventory_issue_detail-"][id$="-item"]');
+                item.html('<option value="">Select item</option>');
+
+                $(document).on('change', 'select[id^="id_inventory_issue_detail-"][id$="-item_category"]', function() {
+
+                    let $this = $(this);
+                    let itemCategoryId = $this.val();
+                    let relatedItem = $this.parent().next('.div-table-cell').find('select');
+
+                    $.ajax({
+                        url: "/inventory/items/",
+                        cache: 'false',
+                        dataType: 'json',
+                        type: 'POST',
+                        data: {
+                            'categoryId': itemCategoryId
+                        },
+                        beforeSend: function( xhr ) {
+                            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}')
+                        },
+                    }).done(function( data ) {
+                         relatedItem.html('');
+
+                        $.each(data, function( index, value ) {
+                            relatedItem.append($("<option></option>")
+                                .attr("value", value)
+                                .text(index)
+                            );
+                        });
+
+                    }).fail(function( e ) {
+                        if ( console && console.log ) {
+                            console.log( e );
+                        }
+                    });
+                });
+
+            });
+
+            // 4.
+            $(function() {
+
+                // main form
+                let mainForm = $('#issue-inventory-form');
+
+                // inline form count input field
+                let inlineFormCounter = $('#id_inventory_issue_detail-TOTAL_FORMS');
+
+                // initial inline form allowed value
+                let initialCount = inlineFormCounter.val();
+
+                // add button => to add more inline form
+                let addNewInlineForm = $('#add-new-inline-from');
+
+                let maxInlineFormsAllowed = $('#id_inventory_issue_detail-MAX_NUM_FORMS').val();
+
+                // check if inlineFormCounter is properly initialized or not
+                if (initialCount !== {{ inline_form_min }}) {
+                    inlineFormCounter.val({{ inline_form_min }})
+                }
+
+
+                let deleteHMTL = `
+
+                        <button type="button" class="get-rid-of-me">Delete</button>
+
+                `;
+
+                // change the checkbox to delete button for better UI Experience
+                $('div[id^="div_id_inventory_issue_detail-"][id$="-DELETE"]').each(function() {
+                    let $this = $(this);
+                    $this.html(deleteHMTL);
+                });
+
+                // inline form html
+                let inlineFormHTML = mainForm.find('.inline-form-group').first().html();
+
+                inlineFormHTML = '<div class="div-table-row d-flex bg-white inline-form-group">' + inlineFormHTML +  '</div>';
+
+                function grossTotal() {
+
+                    let input = $('input[id^="id_inventory_issue_detail-"][id$="-total_price"]');
+                    let grossPrice = Number(0);
+
+                    input.each(function() {
+
+                        let $this = $(this);
+                        grossPrice = grossPrice + Number($this.val());
+
+                    })
+
+                    return grossPrice;
+                }
+
+                function reindexing() {
+
+                    let inlineFormGroupArray = mainForm.find('.inline-form-group');
+
+                    console.log(inlineFormGroupArray);
+
+                    inlineFormGroupArray.each(function(index) {
+                        let $this = $(this);
+                        let replaceString = '-' + index + '-';
+                        let inlineFormHTML = $this.html();
+
+                        let itemCategoryValue   = $this.find('select[id^="id_inventory_issue_detail-"][id$="-item_category"]').val();
+                        let itemValue           = $this.find('select[id^="id_inventory_issue_detail-"][id$="-item"]').val();
+                        let quantityValue       = $this.find('input[id^="id_inventory_issue_detail-"][id$="-issued_quantity"]').val();
+                        let priceValue          = $this.find('input[id^="id_inventory_issue_detail-"][id$="-price"]').val();
+                        let vatValue            = $this.find('input[id^="id_inventory_issue_detail-"][id$="-vat"]').val();
+                        let discountValue       = $this.find('input[id^="id_inventory_issue_detail-"][id$="-discount"]').val();
+                        let totalPriceValue     = $this.find('input[id^="id_inventory_issue_detail-"][id$="-total_price"]').val();
+                        let remarksValue        = $this.find('textarea[id^="id_inventory_issue_detail-"][id$="-remarks"]').val();
+
+                        inlineFormHTML = inlineFormHTML.replace(/-[0-9]{1,3}-/g, replaceString);
+
+                        $this.html(inlineFormHTML);
+
+                        $this.find('select[id^="id_inventory_issue_detail-"][id$="-item_category"]').val(itemCategoryValue);
+                        $this.find('select[id^="id_inventory_issue_detail-"][id$="-item"]').val(itemValue);
+                        $this.find('input[id^="id_inventory_issue_detail-"][id$="-issued_quantity"]').val(quantityValue);
+                        $this.find('input[id^="id_inventory_issue_detail-"][id$="-price"]').val(priceValue);
+                        $this.find('input[id^="id_inventory_issue_detail-"][id$="-vat"]').val(vatValue);
+                        $this.find('input[id^="id_inventory_issue_detail-"][id$="-discount"]').val(discountValue);
+                        $this.find('input[id^="id_inventory_issue_detail-"][id$="-total_price"]').val(totalPriceValue);
+                        $this.find('textarea[id^="id_inventory_issue_detail-"][id$="-remarks"]').val(remarksValue);
+
+                    });
+                }
+
+
+                $(document).on('click', '.get-rid-of-me', function() {
+                    let $this = $(this);
+                    let parentWrapper = $this.parent().parent();
+                    let count = parseInt(inlineFormCounter.val()) || 0;
+                    parentWrapper.removeClass('bg-white');
+                    parentWrapper.addClass('remove-row');
+
+                    if (count === 1) {
+                        alert('You can not delete this record. You must have at-least one entry to save this form.');
+                        parentWrapper.addClass('bg-white');
+                        parentWrapper.removeClass('remove-row');
+                    } else {
+                        if (window.confirm('Do you really want to delete this record?')) {
+                            inlineFormCounter.val(count - 1);
+                            setTimeout(function () {
+                                $(parentWrapper).remove();
+                                reindexing();
+
+                                $('#id_gross_amount').val(grossTotal);
+                            }, 3000)
+                        } else {
+                            parentWrapper.addClass('bg-white');
+                            parentWrapper.removeClass('remove-row');
+                        }
+                    }
+                });
+
+                // on click add new inline form button
+                addNewInlineForm.on('click', function() {
+
+                    // grab the last item from the inline form array
+                    let lastInlineForm = mainForm.find('.inline-form-group').last()
+
+                    {#// grab the id of the last item#}
+                    {#let firstElementId = lastInlineForm.find('select[id^="id_inventory_issue_detail-"][id$="-item_category"]').attr('id');#}
+                    {##}
+                    {#// extracting the sequence number from the id string   #}
+                    {#let sub = firstElementId.match(/[0-9]{1,3}/g);#}
+                    {##}
+                    {#// convert that sequence string number into actual number and adding 1 into it  #}
+                    {#let newDigit = Number(sub[0]) + 1;#}
+                    {#let replaceString = '-' + newDigit + '-';#}
+                    {##}
+                    let count = Number(inlineFormCounter.val());
+
+                    if (count > 10) { //TODO: Change it back to variable specified
+                         alert('No more entry allowed.');
+                    } else {
+                        inlineFormCounter.val(count+1);
+                        lastInlineForm.after(inlineFormHTML);
+                    }
+                    reindexing();
+                    $('#id_gross_amount').val(grossTotal);
+                });
+
+            });
+
+            // 5.
+            $(function () {
+
+                let form = $('#issue-inventory-form');
+
+                function errorBox(obj) {
+                    let flag = true;
+
+                    let $this = $(obj);
+                    let itemError = '';
+                    let value = $this.val();
+
+                    $this.removeClass('invalid-entry');
+                    $this.siblings('.error-entry-wrapper').remove();
+
+                    if (validator.isEmpty(value)) {
+                        flag = false;
+                        itemError = 'Mandatory';
+                    }
+
+                    if (!validator.isEmpty(itemError)) {
+                        $this.addClass('invalid-entry');
+                        $this.after('<div class="error-entry-wrapper">' + itemError + '</div>');
+                    }
+
+                    return flag;
+
+                }
+
+                form.on('submit', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    let flag = [];
+                    let submitEW = $('#submit-error-wrapper');
+                    let itemCategoryFields = $('select[id^="id_inventory_issue_detail-"][id$="-item_category"]');
+                    let itemFields = $('select[id^="id_inventory_issue_detail-"][id$="-item"]');
+                    let quantityFields = $('input[id^="id_inventory_issue_detail-"][id$="-issued_quantity"]');
+
+                    /*
+                    * Field 1
+                    * check for department
+                    * */
+                    let departmentElement = $('#id_department');
+                    let department = departmentElement.val();
+                    let departmentErrorEntryWrapper = $('#department-eew');
+                    let departmentError = '';
+
+                    if (validator.isEmpty(department)) {
+                        flag.push(false);
+                        departmentError = 'You kept this field empty. Choose department.';
+                    }
+
+                    if (!validator.isEmpty(departmentError)) {
+                        departmentElement.addClass('invalid-entry');
+                        departmentErrorEntryWrapper.html(departmentError);
+                    } else {
+                        departmentElement.removeClass('invalid-entry');
+                        departmentErrorEntryWrapper.html('');
+                    }
+
+
+                    $.each(itemCategoryFields, function() {
+                        flag.push(errorBox(this));
+                    });
+
+
+                    $.each(itemFields, function() {
+                        flag.push(errorBox(this));
+                    });
+
+
+                    $.each(quantityFields, function() {
+                        flag.push(errorBox(this));
+                    });
+
+                    // submit button error message
+                    if (flag.includes(false)) {
+                        submitEW.html('Error/s found in this form.');
+                        return false;
+                    } else {
+                        submitEW.html('');
+                        $(this)[0].submit();
+                    }
+                })
+            });
+
+            // 6.
+            $(function () {
+
+                function grossTotal() {
+
+                    let input = $('input[id^="id_inventory_issue_detail-"][id$="-total_price"]');
+                    let grossPrice = Number(0);
+
+                    input.each(function() {
+
+                        let $this = $(this);
+                        grossPrice = grossPrice + Number($this.val());
+
+                    })
+
+                    return grossPrice;
+                }
+
+                $(document).on('change', 'input[id^="id_inventory_issue_detail-"][id$="-issued_quantity"]', function() {
+
+                    let $this               = $(this);
+                    let quantityValue       = $(this).val();
+                    let pricePerUnitValue   = $(this).parent().parent().find('input[id^="id_inventory_issue_detail-"][id$="-price"]').val();
+                    let vatRateValue        = $(this).parent().parent().find('input[id^="id_inventory_issue_detail-"][id$="-vat"]').val();
+                    let discountValue       = $(this).parent().parent().find('input[id^="id_inventory_issue_detail-"][id$="-discount"]').val();
+                    let totalPriceElement   = $(this).parent().parent().find('input[id^="id_inventory_issue_detail-"][id$="-total_price"]');
+                    let id_common_discount
+
+                    let totalPriceBeforeVAT         =   quantityValue * pricePerUnitValue;
+                    let totalPriceAfterDiscount     =   totalPriceBeforeVAT-discountValue;
+                    let totalPriceAfterVAT          =   totalPriceAfterDiscount + ((totalPriceAfterDiscount*vatRateValue)/100);
+                    let finalTotalPrice             =   totalPriceAfterVAT;
+
+                    totalPriceElement.val(finalTotalPrice);
+
+                    $('#id_gross_amount').val(grossTotal);
+
+                });
+
+                $(document).on('change', 'input[id^="id_inventory_issue_detail-"][id$="-price"]', function() {
+
+                    let $this               = $(this);
+                    let quantityValue       = $(this).parent().parent().find('input[id^="id_inventory_issue_detail-"][id$="-issued_quantity"]').val();
+                    let pricePerUnitValue   = $(this).val();
+                    let vatRateValue        = $(this).parent().parent().find('input[id^="id_inventory_issue_detail-"][id$="-vat"]').val();
+                    let discountValue       = $(this).parent().parent().find('input[id^="id_inventory_issue_detail-"][id$="-discount"]').val();
+                    let totalPriceElement   = $(this).parent().parent().find('input[id^="id_inventory_issue_detail-"][id$="-total_price"]');
+
+
+                    let totalPriceBeforeVAT         =   quantityValue * pricePerUnitValue;
+                    let totalPriceAfterDiscount     =   totalPriceBeforeVAT-discountValue;
+                    let totalPriceAfterVAT          =   totalPriceAfterDiscount + ((totalPriceAfterDiscount*vatRateValue)/100);
+                    let finalTotalPrice             =   totalPriceAfterVAT;
+
+                    totalPriceElement.val(finalTotalPrice);
+                    $('#id_gross_amount').val(grossTotal);
+
+                });
+
+                $(document).on('change', 'input[id^="id_inventory_issue_detail-"][id$="-vat"]', function() {
+
+                    let $this               = $(this);
+                    let quantityValue       = $(this).parent().parent().find('input[id^="id_inventory_issue_detail-"][id$="-issued_quantity"]').val();
+                    let pricePerUnitValue   = $(this).parent().parent().find('input[id^="id_inventory_issue_detail-"][id$="-price"]').val();
+                    let vatRateValue        = $(this).val();
+                    let discountValue       = $(this).parent().parent().find('input[id^="id_inventory_issue_detail-"][id$="-discount"]').val();
+                    let totalPriceElement   = $(this).parent().parent().find('input[id^="id_inventory_issue_detail-"][id$="-total_price"]');
+
+
+                    let totalPriceBeforeVAT         =   quantityValue * pricePerUnitValue;
+                    let totalPriceAfterDiscount     =   totalPriceBeforeVAT-discountValue;
+                    let totalPriceAfterVAT          =   totalPriceAfterDiscount + ((totalPriceAfterDiscount*vatRateValue)/100);
+                    let finalTotalPrice             =   totalPriceAfterVAT;
+
+                    totalPriceElement.val(finalTotalPrice);
+                    $('#id_gross_amount').val(grossTotal);
+
+                });
+
+                $(document).on('change', 'input[id^="id_inventory_issue_detail-"][id$="-discount"]', function() {
+
+                    let $this               = $(this);
+                    let quantityValue       = $(this).parent().parent().find('input[id^="id_inventory_issue_detail-"][id$="-issued_quantity"]').val();
+                    let pricePerUnitValue   = $(this).parent().parent().find('input[id^="id_inventory_issue_detail-"][id$="-price"]').val();
+                    let vatRateValue        = $(this).parent().parent().find('input[id^="id_inventory_issue_detail-"][id$="-vat"]').val();
+                    let discountValue       = $(this).val();
+                    let totalPriceElement   = $(this).parent().parent().find('input[id^="id_inventory_issue_detail-"][id$="-total_price"]');
+
+
+                    let totalPriceBeforeVAT         =   quantityValue * pricePerUnitValue;
+                    let totalPriceAfterDiscount     =   totalPriceBeforeVAT-discountValue;
+                    let totalPriceAfterVAT          =   totalPriceAfterDiscount + ((totalPriceAfterDiscount*vatRateValue)/100);
+                    let finalTotalPrice             =   totalPriceAfterVAT;
+
+                    totalPriceElement.val(finalTotalPrice);
+                    $('#id_gross_amount').val(grossTotal);
+
+                });
+
+
+            });
+
+
+        })(jQuery)
+
+    </script>
+
+{% endblock inline_javascript %}

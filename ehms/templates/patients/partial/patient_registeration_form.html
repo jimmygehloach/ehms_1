@@ -1,0 +1,10 @@
+<form action="" method="POST" enctype='multipart/form-data' id="new-patient-registration-form" novalidate autocomplete="off">
+    <div class="row content-body-inner">
+        {% csrf_token %}
+        {% include 'patients/partial/patient_register_form_general_section.html' with patient_form=patient_form patient_image_upload_form=patient_image_upload_form %}
+        {% include 'patients/partial/patient_register_form_contact_section.html' with patient_address_form=patient_address_form %}
+        {% include 'patients/partial/patient_register_form_immunization_section.html' with patient_form=patient_form %}
+        {% include 'patients/partial/patient_register_form_medical_section.html' with patient_form=patient_form %}
+        {% include 'patients/partial/patient_register_form_miscellaneous_section.html' with patient_form=patient_form %}
+    </div>
+</form>

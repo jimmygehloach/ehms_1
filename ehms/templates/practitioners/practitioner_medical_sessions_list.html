@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-6">
+                <span class="disabled-color pr-5"> Medical Sessions </span> / <a class="pl-5 pr-5" href="{% url 'practitioners:detail' practitioner.pk %}">{{ practitioner.first_name }} {{ practitioner.last_name }}</a> / <a class="pl-5" href="{% url "practitioners:list" %}"> Practitioner List </a>
+            </div>
+
+            <div class="col-6 d-flex justify-content-end">
+                <span class="pr-20" title="Total Patient">{{ patient_count }}</span>
+                <div class="dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="Sort List">
+                    <a href=""  id="patient-list-sort-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="material-symbols-sharp">sort</span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="patient-list-sort-dropdown">
+                        <li>
+                            <a class="dropdown-item" href="{% url "practitioners:practitioner-medical-sessions" practitioner.pk %}?sort=asc">Ascending</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url "practitioners:practitioner-medical-sessions" practitioner.pk %}?sort=desc">Descending</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+                <div class="div-table">
+                    <div class="div-table-row d-flex">
+                        {# TODO ADD image colum too #}
+                        <div class="div-table-head flex-fill w-20">Image</div>
+                        <div class="div-table-head flex-fill w-40">Patient</div>
+                        <div class="div-table-head flex-fill w-30">Date & Time</div>
+                        <div class="div-table-head flex-fill w-10">Actions</div>
+                    </div>
+
+                    {% for medical_session in page_obj %}
+                        <div class="div-table-row d-flex">
+                            <div class="div-table-cell flex-fill w-20">
+                            {% for row in medical_session.patient.current_photo  %}
+                                {% if row.image %}
+                                    <img class="img-fluid profile-img-rounded" width="50" height="50" src="{{ row.image_thumbnail.url }}" alt="">
+                                {% else %} NO PHOTO {% endif %}
+                            {% empty %}
+                                NO PHOTO
+                            {% endfor %}
+                            </div>
+                            <div class="div-table-cell flex-fill w-40">
+                                <a href="{% url "patients:detail" medical_session.patient.pk %}">{{ medical_session.patient.first_name }} {{ medical_session.patient.last_name }}</a></div>
+                            <div class="div-table-cell flex-fill w-30">{{ medical_session.created }}</div>
+                            <div class="div-table-cell flex-fill w-10">
+                                {% if request.user_type == 'practitioner' %}
+                                    <a href="{% url "medical_sessions:new" medical_session.patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="New Medical Session">
+                                        <span class="material-symbols-sharp">library_add</span>
+                                    </a>
+                                {% endif %}
+                                    <a href="{% url "medical_sessions:detail" medical_session.patient.pk medical_session.uid %}" title="View medical session" data-bs-toggle="tooltip" data-bs-placement="top">
+                                        <span class="material-symbols-sharp">library_books</span>
+                                    </a>
+                            </div>
+                        </div>
+                   {% empty %}
+                        <div class="div-table-row bg-white"><div class="div-table-cell flex-fill w-100 text-center">Nothing Found</div></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

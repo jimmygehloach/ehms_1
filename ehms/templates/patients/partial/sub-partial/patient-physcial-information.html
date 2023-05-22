@@ -1,0 +1,30 @@
+<div class="form-section-head">
+    <strong>Patient Physical Information</strong>
+</div>
+<form class="A-form" action="{% url 'patients:detail' patient.pk %}" method="POST" id="patient-physical-information-form">
+    {% csrf_token %}
+    <div class="mb-40">
+        <label  class="label-box" for="{{ update_patient_physical_info.height.id_for_label }}">{{ update_patient_physical_info.height.label }}</label>
+        {{ update_patient_physical_info.height }}
+    </div>
+    <div class="mb-40">
+        <label  class="label-box" for="{{ update_patient_physical_info.weight.id_for_label }}">{{ update_patient_physical_info.weight.label }}</label>
+        {{ update_patient_physical_info.weight }}
+    </div>
+    <div class="mb-40">
+        <label  class="label-box" for="id_bmi">Bmi of the patient</label>
+        <input type="text" class="form-control" value="{{ patient.bmi }}" disabled id="id_bmi">
+        <div class="form-text">It is auto generated, you can not change it manually.</div>
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="">{{ update_patient_physical_info.disability.label }}</label>
+        <label for="{{ update_patient_physical_info.disability.id_for_label }}" class="form-label">
+            <p>Click to check or uncheck</p>
+            {{ update_patient_physical_info.disability }}
+        </label>
+    </div>
+    <input type="hidden" name="update_patient_physical_info" value="">
+</form>
+<div class="button-section text-end">
+    <button type="button"  class="ehms-button">Save Changes</button>
+</div>

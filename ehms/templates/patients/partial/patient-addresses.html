@@ -1,0 +1,40 @@
+<table class="table align-middle">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Address</th>
+            <th>Type</th>
+            <th>Current Address</th>
+            {% if patient.hospital == request.hospital %}
+                <th>Actions</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+    {% for patient_address in patient_addresses %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>
+                {{ patient_address.address_line_1 }}
+                {% if patient_address.address_line_2 %}
+                    <br>{{ patient_address.address_line_2 }}
+                {% endif %}
+                <br>{{ patient_address.town.name }}
+                <br>{{ patient_address.district.name }}
+                <br>{{ patient_address.region.name }}
+                <br>{{ patient_address.country.name }}
+                <br>Postcode - {{ patient_address.postcode.name }}
+            </td>
+            <td>{{ patient_address.type }}</td>
+            <td>{{ patient_address.current_address }}</td>
+            {% if patient.hospital == request.hospital %}
+                <td>
+                    <a href="{% url 'patients:edit-address' patient.pk patient_address.pk %}"><span class="material-symbols-sharp" title="Edit Address">edit</span></a>
+                </td>
+            {% endif %}
+        </tr>
+    {% empty %}
+        <tr><td colspan="3" class="text-center">No address found.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,63 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+{% block footer %}
+
+    {{ block.super }}
+{#    nonce="{{ request.csp_nonce }}"#}
+
+        <script>
+
+            (function($){
+
+                $(function() {
+
+                    {#let itemCategory = $('[id^=id_issue_inventory_issue_detail-][id$=-item_category]');#}
+                    {#let item = $('[id^=id_issue_inventory_issue_detail-][id$=-item]');#}
+
+                    {#item.html('<option>Select item category to display items</option>');#}
+
+                    $('select[id^="id_receive_inventory_receive_detail-"][id$="-item_category"]').on('change', function() {
+                        console.log(123)
+                        let $this = $(this);
+                        let itemCategoryId = $this.val();
+                        let item = $this.parent().parent().next().find('select[id^="id_receive_inventory_receive_detail-"][id$="-item"]');
+
+                        console.log(item);
+
+
+                        $.ajax({
+                            url: "/inventory/items/",
+                            cache: 'false',
+                            dataType: 'json',
+                            type: 'POST',
+                            data: {
+                                'categoryId': itemCategoryId
+                            },
+                            beforeSend: function( xhr ) {
+                                xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}')
+                            },
+                        }).done(function( data ) {
+                            console.log(data);
+                             item.html('');
+
+                            $.each(data, function( index, value ) {
+
+                                item.append($("<option></option>")
+                                    .attr("value", value)
+                                    .text(index)
+                                );
+
+                            });
+
+                        }).fail(function( e ) {
+                            if ( console && console.log ) {
+                                console.log( e );
+                            }
+                        });
+                    });
+
+                });
+            })(django.jQuery)
+
+        </script>
+{% endblock %}

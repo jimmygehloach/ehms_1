@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-6">
+                <span class="disabled-color pr-5">
+                    Relation Found of
+                    <a href="{% url "patients:detail" patient.pk %}">
+                        {{ patient.first_name }} {{ patient.last_name }}
+                    </a>
+                </span> /
+                <a class="pl-5" href="{% url "patients:detail" patient.pk %}">Patient Detail</a> /
+                <a class="pl-5" href="{% url "patients:list" %}">Patient List</a>
+            </div>
+
+            <div class="col-6 d-flex justify-content-end">
+                <a class="pl-5" href="{% url "patients:detail" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Back">
+                    <span class="material-symbols-sharp">google_plus_reshare</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+                <div class="div-table">
+                    <div class="div-table-row d-flex">
+                        <div class="div-table-head flex-fill w-20">Image</div>
+                        <div class="div-table-head flex-fill w-30">Name</div>
+                        <div class="div-table-head flex-fill w-30">Related as</div>
+                        <div class="div-table-head flex-fill w-20">Family Member Profile</div>
+                    </div>
+                    {% for R in relations %}
+                    <div class="div-table-row d-flex {% if R.second_patient.vital_status %}bg-white{% else %}bg-dull{% endif %}">
+                        <div class="div-table-cell flex-fill w-20">
+                            {% for p in patient_image %}
+                                {% if p.patient.pk == R.second_patient.pk %}
+                                    <img class="img-fluid profile-img-rounded" width="50" height="50" src="{{ p.image_thumbnail.url }}" alt="">
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="div-table-cell flex-fill w-30">{{ R.second_patient.first_name }} {{ R.second_patient.middle_name }} {{ R.second_patient.last_name }}</div>
+                        <div class="div-table-cell flex-fill w-30">{{ R.relation }}</div>
+                        <div class="div-table-cell flex-fill w-20">
+                            <a href="{% url 'patients:detail' R.second_patient.pk %}">
+                                <span class="material-symbols-sharp">account_circle</span>
+                            </a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="div-table-row bg-white"><div class="div-table-cell flex-fill w-100 text-center">Nothing Found</div></div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+

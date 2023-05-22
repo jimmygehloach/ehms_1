@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <span class="disabled-color pr-5"> Patient Relation </span> / <a class="pl-5" href="{% url "patients:list" %}">Patient List</a>
+            </div>
+            <div class="col d-flex justify-content-end">
+                <a href="" data-bs-toggle="tooltip" data-bs-placement="top" title="Report"><span class="material-symbols-sharp">report</span></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-4">
+            <strong>Relation Section</strong>
+            <p class="disabled-text">Create patient relation through uid</p>
+        </div>
+        <div class="col-8 form-section">
+            <div class="form-section-head">
+                <strong>Patient Relation through UID</strong>
+            </div>
+            {% include 'partials/errors.html' with form=form %}
+            <form class="A-form" action="" method="POST" id="create-patient-relation-form" novalidate>
+                {% csrf_token %}
+                <div class="mb-40">
+                    <label for="id_first_patient" class="form-labels label-box">{{ form.first_patient.label}}</label>
+                    {{ form.first_patient }}
+                </div>
+                <div class="mb-40">
+                    <label for="id_first_to_second_relation" class="form-labels label-box">{{ form.first_to_second_relation.label}}</label>
+                    {{ form.first_to_second_relation }}
+                </div>
+                <div class="mb-40">
+                    <label for="id_second_patient" class="form-labels label-box">{{ form.second_patient.label}}</label>
+                    {{ form.second_patient }}
+                </div>
+                <div class="mb-40">
+                    <label for="id_second_to_first_relation" class="form-labels label-box">{{ form.second_to_first_relation.label}}</label>
+                    {{ form.second_to_first_relation }}
+                </div>
+                <button type="submit" class="hide-block" id="patient-relation-form-submit-button"></button>
+            </form>
+            <div class="button-section text-end">
+                <div id="patient-relation-form-error-counts" class="form-errors-count"></div>
+                <label for="patient-relation-form-submit-button" role="button" class="ehms-button">Save Changes</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+{% block inline_javascript %}
+
+    <script type="application/javascript" nonce="{{ request.csp_nonce }}">
+
+        $(function () {
+
+            new FormValidation({
+                formId: 'create-patient-relation-form',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+                ownErrorCountId: 'patient-relation-form-error-counts'
+            });
+
+        });
+
+    </script>
+
+{% endblock inline_javascript %}

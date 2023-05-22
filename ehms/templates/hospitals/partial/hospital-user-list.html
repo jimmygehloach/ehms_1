@@ -1,0 +1,39 @@
+<div class="form-section-head">
+    <strong>Users Information</strong>
+</div>
+<div class="div-table m-2">
+    <div class="div-table-row d-flex">
+        <div class="div-table-head flex-fill w-20">Name</div>
+        <div class="div-table-head flex-fill w-20">Designation</div>
+        <div class="div-table-head flex-fill w-40">Contact</div>
+        <div class="div-table-head flex-fill w-10">Unique user id</div>
+        <div class="div-table-head flex-fill w-10">Actions</div>
+    </div>
+
+    {% for re in hospital_users %}
+    <div class="div-table-row d-flex">
+        <div class="div-table-cell flex-fill w-20">
+            {{ re.first_name }} {{ re.last_name }}
+        </div>
+        <div class="div-table-cell flex-fill w-20">
+            {% if re.designation %}
+                {{ re.designation }}
+            {% else %}
+                <span class="material-symbols-sharp">horizontal_rule</span>
+            {% endif %}
+        </div>
+        <div class="div-table-cell flex-fill w-40">
+            {% if re.phone %} {{ re.phone }} <br /> {% endif %}
+            {% if re.email %} {{ re.email }} {% endif %}
+        </div>
+        <div class="div-table-cell flex-fill w-10">{{ re.userprofile.user_unique_id }}</div>
+        <div class="div-table-cell flex-fill w-10">
+            <a href=""><span class="material-symbols-sharp">edit</span></a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="div-table-row d-flex">
+        <div class="div-table-cell w-100">Nothing Found.</div>
+    </div>
+    {% endfor %}
+</div>

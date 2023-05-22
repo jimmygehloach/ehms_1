@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row breadcrumb">
+            <div class="col">
+                <a class="pl-5" href="{% url "patients:list" %}">Patients</a>
+                <i class="ri-arrow-right-s-line ri-lg"></i>
+                <span class="disabled-color pr-5"> Medical Sessions </span>
+            </div>
+            <div class="col d-flex justify-content-end">
+                <span title="Total Patient" class="pr-20">{{ hospital_medical_session_count }} {{ page_obj.count }}</span>
+                <div class="dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="Sort List">
+                    <a href="" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% include "partials/dynamic-sort-icon.html" %}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="patient-list-sort-dropdown">
+                        <li><a class="dropdown-item" href="{% url 'hospitals:hospital-medical-sessions' %}?sort=asc">Ascending</a></li>
+                        <li><a class="dropdown-item" href="{% url 'hospitals:hospital-medical-sessions' %}?sort=desc">Descending</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12 p-0">
+                <div class="div-table">
+                    <div class="div-table-row d-flex">
+                        <div class="div-table-head flex-fill w-5">#</div>
+                        <div class="div-table-head flex-fill w-15">Image</div>
+                        <div class="div-table-head flex-fill w-30">Patient</div>
+                        <div class="div-table-head flex-fill w-20">Practitioner</div>
+                        <div class="div-table-head flex-fill w-20">Date & Time</div>
+                        <div class="div-table-head flex-fill w-10">Links</div>
+                    </div>
+                    {% for medical_session in medical_session_list %}
+                        <div class="div-table-row d-flex bg-white">
+                            <div class="div-table-cell flex-fill w-5">
+                                {{ page_obj.start_index|add:forloop.counter0 }}
+                            </div>
+                            <div class="div-table-cell flex-fill w-15">
+                                {% for row in medical_session.patient.current_photo  %}
+                                    {% if row.image %}
+                                        <img class="img-fluid profile-img-rounded" width="50" height="50" src="{{ row.image_thumbnail.url }}" alt="">
+                                    {% else %} NO PHOTO {% endif %}
+                                {% empty %}
+                                    NO PHOTO
+                                {% endfor %}
+                            </div>
+                            <div class="div-table-cell flex-fill w-30">
+                                <a href="{% url 'patients:detail' medical_session.patient.pk %}" title="{{ medical_session.patient.first_name }}'s portfolio">
+                                    {{ medical_session.patient.first_name }} {{ practitioner_hospital.patient.last_name }}
+                                </a>
+                            </div>
+                            <div class="div-table-cell flex-fill w-20">
+                                <a href="{% url 'practitioners:detail' medical_session.practitioner.pk %}" title="{{ medical_session.practitioner.first_name }}'s profile">
+                                    {{ medical_session.practitioner.first_name }} {{ practitioner_hospital.practitioner.last_name }}
+                                </a>
+                            </div>
+                            <div class="div-table-cell flex-fill w-20">{{ medical_session.created }}</div>
+                            <div class="div-table-cell flex-fill w-10">
+                                <a href="{% url "medical_sessions:detail" medical_session.patient.pk medical_session.uid %}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ medical_session.patient.first_name }}'s Medical session view">
+                                    <span class="material-symbols-sharp">library_books</span>
+                                </a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="div-table-row d-flex bg-white">
+                            <div class="div-table-cell flex-fill w-100 text-center">Nothing Found</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'partials/pagination.html' with is_paginated=is_paginated %}
+{% endblock %}

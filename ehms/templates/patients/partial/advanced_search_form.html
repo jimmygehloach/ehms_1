@@ -1,0 +1,91 @@
+<form id="patient-advanced-search" action="{% url 'patients:advanced' %}" method="GET">
+    <div class="div-table">
+        <div class="div-table-row d-flex bg-white" id="search-filters">
+            <div class="div-table-cell flex-fill w-30">
+                <div class="form-floating">
+                    <select class="form-select" name="country" id="id_country">
+                        <option value="" disabled selected>Choose options</option>
+                        <option value="{{ request.hospital.country.pk }}">{{ request.hospital.country.name }}</option>
+                    </select>
+                    <label for="id_country">Country</label>
+                </div>
+            </div>
+            <div class="div-table-cell flex-fill w-30">
+                <div class="form-floating">
+                    <select class="form-select" name="region" id="id_region">
+                        <option value="" disabled selected>Choose options</option>
+                        {% for region in regions %}
+                            <option value="{{ region.pk }}">{{ region.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="id_region">Region</label>
+                </div>
+            </div>
+            <div class="div-table-cell flex-fill w-30">
+                <div class="form-floating">
+                    <select class="form-select" name="district" id="id_district">
+                        <option value="" disabled selected>Choose options</option>
+                        {% for district in districts %}
+                            <option value="{{ district.pk }}">{{ district.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="id_district">District</label>
+                </div>
+            </div>
+            <div class="div-table-cell flex-fill w-30">
+                <div class="form-floating">
+                    <select class="form-select" name="town" id="id_town">
+                        <option value="" disabled selected>Choose options</option>
+                        {% for town in towns %}
+                            <option value="{{ town.pk }}">{{ town.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="id_town">Town</label>
+                </div>
+            </div>
+            <div class="div-table-cell flex-fill w-30">
+                <div class="form-floating">
+                    <select class="form-select" name="postcode" id="id_postcode">
+                        <option value="" disabled selected>Choose options</option>
+                        {% for postcode in postcodes %}
+                            <option value="{{ postcode.pk }}">{{ postcode.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="id_postcode">Postcode</label>
+                </div>
+            </div>
+        </div>
+        <div class="div-table-row d-flex bg-white">
+            <div class="div-table-cell flex-fill w-30">
+                <div class="form-floating">
+                    <select class="form-select" name="search_option" id="search-option" data-validation="required|within:patient_name,patient_blood_group">
+                        <option value="" disabled selected>Choose options</option>
+                        <option value="patient_name">Search by patient name</option>
+                        <option value="patient_blood_group">Search by patient blood group</option>
+                    </select>
+                    <label for="search-option">Search criteria</label>
+                </div>
+            </div>
+
+            <div class="div-table-cell flex-fill w-60">
+                <div class="form-floating">
+                    <input class="form-control border-radius" type="text" name="patient_name_or_blood_group" data-validation="required" id="patient_name_or_blood_group" placeholder="Type ...">
+                    <label for="patient_name_or_blood_group">Type as per the search criteria choice</label>
+                </div>
+            </div>
+
+            <div class="div-table-cell flex-fill w-10">
+                <button type="submit" class="ehms-button-wi w-100" id="patient-advanced-search-btn">
+                    <span class="material-symbols-sharp">search</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="div-table-row">
+            <div class="div-table-cell flex-fill w-100">
+                <i class="ri-information-fill ri-lg"></i> To search patient by blood groups type any one of the followings: - <span class="highlight-text">O+ | O- | A+ | A- | B+ | B- | AB+ | AB-</span>
+            </div>
+        </div>
+    </div>
+</form>
+

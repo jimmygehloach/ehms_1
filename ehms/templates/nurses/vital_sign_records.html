@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                {{ patient.first_name }} {{ patient.last_name }} /
+                <a href="">VSR List</a> /
+                <a href="{% url 'hospitals:hospital-medical-sessions' %}">Medical Session List</a>
+            </div>
+            <div class="col d-flex justify-content-end">
+                <a href="">
+                    <span class="material-symbols-sharp">google_plus_reshare</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        {% include 'partials/errors.html' with form=form %}
+        <form action="" method="POST" novalidate id="nurse-vital-sign-record-form">
+            <div class="row content-body-inner">
+                {% csrf_token %}
+                <div class="col-4">
+                    <strong>Vital Sign Record</strong>
+                    <p class="disabled-text">Submit vital sign record report against patients medical session</p>
+                </div>
+                <div class="col-8 form-section">
+                    <div class="form-section-head">
+                        <strong>Vital Sign Record Form</strong>
+                    </div>
+                    <div class="A-form">
+                        <div class="mb-40">
+                            <label for="id_bed_number" class="form-labels label-box">{{ form.bed_number.label}}</label>
+                            {{ form.bed_number }}
+                            <small class="form-text text-muted">{{ form.bed_number.help_text }}</small>
+                        </div>
+                        <div class="mb-40">
+                            <label for="id_pulse" class="form-labels label-box">{{ form.pulse.label}}</label>
+                            {{ form.pulse }}
+                            <small class="form-text text-muted">{{ form.pulse.help_text }}</small>
+                        </div>
+                        <div class="mb-40">
+                           <label for="id_temperature" class="form-labels label-box">{{ form.temperature.label}}</label>
+                            {{ form.temperature }}
+                            <small class="form-text text-muted">{{ form.temperature.help_text }}</small>
+                        </div>
+                        <div class="mb-40">
+                            <label for="id_blood_pressure_systolic" class="form-labels label-box">{{ form.blood_pressure_systolic.label}}</label>
+                            {{ form.blood_pressure_systolic }}
+                            <small class="form-text text-muted">{{ form.blood_pressure_systolic.help_text }}</small>
+                        </div>
+                        <div class="mb-40">
+                            <label for="id_blood_pressure_diastolic" class="form-labels label-box">{{ form.blood_pressure_diastolic.label}}</label>
+                            {{ form.blood_pressure_diastolic }}
+                            <small class="form-text text-muted">{{ form.blood_pressure_diastolic.help_text }}</small>
+                        </div>
+                        <div class="mb-40">
+                            <label for="id_height" class="form-labels label-box">{{ form.height.label}}</label>
+                            {{ form.height }}
+                            <small class="form-text text-muted">{{ form.height.help_text }}</small>
+                        </div>
+                        <div class="mb-40">
+                            <label for="id_weight" class="form-labels label-box">{{ form.weight.label}}</label>
+                            {{ form.weight }}
+                            <small class="form-text text-muted">{{ form.weight.help_text }}</small>
+                        </div>
+                    </div>
+                    <div class="button-section text-end">
+                        <button type="submit"  class="ehms-button">Save Vital Sign Record</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock content %}
+
+
+{% block inline_javascript %}
+
+    <script nonce="{{ request.csp_nonce }}">
+     {% comment %}
+        $(function() {
+
+            "use strict";
+            /**
+             * Validation script for Form: form
+             *
+             * return: true and submit the form or false and do not submit the form
+             */
+            let form = $('#nurse-vital-sign-record-form');
+
+            // Change number fields into text fields for validation purposes
+            $('input[type=number]').each(function() {
+                let $this = $(this);
+                $this.attr('type', 'text');
+            })
+
+            form.on('submit', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                let flag = true;
+                let submitEW = $('#submit-error-wrapper');
+
+                /*
+                * Field 1
+                * check for bed number
+                * */
+                let bedNumberElement = $('#id_bed_number');
+                let bedNumber = bedNumberElement.val() || '';
+                let bedNumberErrorEntryWrapper = $('#bed-number-eew');
+                let bedNumberError = '';
+
+                if (validator.isEmpty(bedNumber)) {
+                    flag = false;
+                    bedNumberError = 'You kept this field empty. Enter the bed number of the patient.';
+                } else if (!validator.isLength(bedNumber, {min: 1, max:50})) {
+                    flag = false;
+                    bedNumberError = 'You entered invalid value.';
+                }
+
+                if (!validator.isEmpty(bedNumberError)) {
+                    bedNumberElement.addClass('invalid-entry');
+                    bedNumberErrorEntryWrapper.html(bedNumberError);
+                } else {
+                    bedNumberElement.removeClass('invalid-entry');
+                    bedNumberErrorEntryWrapper.html('');
+                }
+
+
+                /*
+                * Field 2
+                * check for patient pulse
+                * */
+                let pulseElement = $('#id_pulse');
+                let pulse = pulseElement.val() || '';
+                let pulseErrorEntryWrapper = $('#pulse-eew');
+                let pulseError = '';
+
+                if (validator.isEmpty(pulse)) {
+                    flag = false;
+                    pulseError = 'You kept this field empty. Enter pulse of the patient.';
+                } else if (!validator.isNumeric(pulse)) {
+                    flag = false;
+                    pulseError = 'You entered invalid value.';
+                }
+
+                if (!validator.isEmpty(pulseError)) {
+                    pulseElement.addClass('invalid-entry');
+                    pulseErrorEntryWrapper.html(pulseError);
+                } else {
+                    pulseElement.removeClass('invalid-entry');
+                    pulseErrorEntryWrapper.html('');
+                }
+
+                /*
+                * Field 3
+                * check for patient temperature
+                * */
+                let temperatureElement = $('#id_temperature');
+                let temperature = temperatureElement.val() || '';
+                let temperatureErrorEntryWrapper = $('#temperature-eew');
+                let temperatureError = '';
+
+                if (validator.isEmpty(temperature)) {
+                    flag = false;
+                    temperatureError = 'You kept this field empty. Enter  temperature of the patient.';
+                } else if (!validator.isNumeric(temperature)) {
+                    flag = false;
+                    temperatureError = 'You entered invalid value.';
+                }
+
+                if (!validator.isEmpty(temperatureError)) {
+                    temperatureElement.addClass('invalid-entry');
+                    temperatureErrorEntryWrapper.html(temperatureError);
+                } else {
+                    temperatureElement.removeClass('invalid-entry');
+                    temperatureErrorEntryWrapper.html('');
+                }
+
+                /*
+                * Field 4
+                * check for patient blood_pressure_systolic
+                * */
+                let BPSElement = $('#id_blood_pressure_systolic');
+                let BPS =  BPSElement.val() || '';
+                let BPSErrorEntryWrapper = $('#blood-pressure-systolic-eew');
+                let BPSError = '';
+
+                if (!validator.isEmpty(BPS) && !validator.isNumeric(BPS)) {
+                    flag = false;
+                    BPSError = 'You entered invalid value.';
+                }
+
+                if (!validator.isEmpty(BPSError)) {
+                    BPSElement.addClass('invalid-entry');
+                    BPSErrorEntryWrapper.html(BPSError);
+                } else {
+                    BPSElement.removeClass('invalid-entry');
+                    BPSErrorEntryWrapper.html('');
+                }
+
+                /*
+                * Field 5
+                * check for patient blood_pressure_diastolic
+                * */
+                let BPDElement = $('#id_blood_pressure_diastolic');
+                let BPD = BPDElement.val() || '';
+                let BPDErrorEntryWrapper = $('#blood-pressure-diastolic-eew');
+                let BPDError = '';
+
+                if (!validator.isEmpty(BPD) && !validator.isNumeric(BPD)) {
+                    flag = false;
+                    BPDError = 'You entered invalid value.';
+                }
+
+                if (!validator.isEmpty(BPDError)) {
+                    BPDElement.addClass('invalid-entry');
+                    BPDErrorEntryWrapper.html(BPDError);
+                } else {
+                    BPDElement.removeClass('invalid-entry');
+                    BPDErrorEntryWrapper.html('');
+                }
+
+                 /*
+                * Field 5
+                * check for patient blood_pressure_diastolic
+                * */
+                let heightElement = $('#id_height');
+                let height = heightElement.val() || '';
+                let heightErrorEntryWrapper = $('#height-eew');
+                let heightError = '';
+
+                if (!validator.isEmpty(height) && !validator.isNumeric(height)) {
+                    flag = false;
+                    heightError = 'You entered invalid value.';
+                }
+
+                if (!validator.isEmpty(heightError)) {
+                    heightElement.addClass('invalid-entry');
+                    heightErrorEntryWrapper.html(heightError);
+                } else {
+                    heightElement.removeClass('invalid-entry');
+                    heightErrorEntryWrapper.html('');
+                }
+
+                 /*
+                * Field 5
+                * check for patient blood_pressure_diastolic
+                * */
+                let weightElement = $('#id_weight');
+                let weight = weightElement.val() || '';
+                let weightErrorEntryWrapper = $('#weight-eew');
+                let weightError = '';
+
+                if (!validator.isEmpty(weight) && !validator.isNumeric(weight)) {
+                    flag = false;
+                    weightError = 'You entered invalid value.';
+                }
+
+                if (!validator.isEmpty(weightError)) {
+                    weightElement.addClass('invalid-entry');
+                    weightErrorEntryWrapper.html(weightError);
+                } else {
+                    weightElement.removeClass('invalid-entry');
+                    weightErrorEntryWrapper.html('');
+                }
+
+
+                // submit button error message
+                if (flag === false) {
+                    submitEW.html('Error/s found in this form.');
+                    return false;
+                } else {
+                    submitEW.html('');
+                    $(this)[0].submit();
+                }
+        });
+        {% endcomment %}
+    </script>
+
+{% endblock %}

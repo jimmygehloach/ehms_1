@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6">
+                <a class="pl-5" href="{% url "patients:list" %}"><i class="ri-list-unordered ri-lg"></i> Patient List</a>
+                <i class="ri-arrow-right-s-line ri-xl color-light-accent"></i>
+                <span class="disabled-color pr-5"> <i class="ri-user-fill ri-lg"></i> {{ patient.first_name }} {{ patient.last_name }}</span>
+            </div>
+            {# <span class="health-status-{{ patient.health_status.css_class }}"> {{ patient.health_status.name }}</span>#}
+            {# ----------------------------------------------------------------------------------- Patient external links #}
+            <div class="col-6 d-flex justify-content-end">
+                {% include 'patients/partial/patient-external-toplinks.html' with patient=patient %}
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    {% include 'patients/partial/patient-detail-form.html' with patient=patient patient_detail_form=patient_detail_form %}
+
+
+{% endblock content %}
+
+{% block inline_javascript %}
+
+    <script nonce="{{ request.csp_nonce }}" type="application/javascript">
+
+        $(function() {
+
+            $('#id_patient_medical_illness').select2();
+            $('#id_patient_kin_medical_illness').select2();
+            $('#id_patient_allergies').select2();
+            $('#id_patient_addictions').select2();
+
+            {#let imgHeight = $('.patient-image-box img').innerHeight();#}
+            {#imgHeight = imgHeight + 'px';#}
+            {##}
+            {#let remarks = $('#id_remarks');#}
+            {#remarks.css("height", imgHeight);#}
+
+
+            new FormValidation({
+                formId: 'patient-general-info-change-request-form',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+                ownErrorCountId: 'patient-general-info-change-request-form-error-counts'
+            });
+
+            new FormValidation({
+                formId: 'patient-personal-info-change-request-form',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+                ownErrorCountId: 'patient-personal-info-change-request-form-error-counts'
+            });
+
+            new FormValidation({
+                formId: 'patient-physical-information-form',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+            });
+
+            new FormValidation({
+                formId: 'update-patient-hospital-form',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+            });
+
+            new FormValidation({
+                formId: 'update-patient-health-status-form',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+            });
+
+            new FormValidation({
+                formId: 'update-female-patient-form',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+            });
+
+            new FormValidation({
+                formId: 'upload-patient-document-form',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+                ownErrorCountId: 'upload-patient-document-form-error-counts'
+            });
+
+            new FormValidation({
+                formId: 'add-new-patient-address-form',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+                ownErrorCountId: 'add-new-patient-address-form-error-counts'
+            });
+
+            new FormValidation({
+                formId: 'patient-medical-section-form',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+            });
+
+            new AddressFormFields({
+                formId: 'add-new-patient-address-form',
+                regionUrl: '/addresses/api/region',
+                districtUrl: '/addresses/api/district',
+                townUrl: '/addresses/api/town',
+                postcodeUrl: '/addresses/api/postcode',
+            })
+        });
+
+
+    </script>
+
+{% endblock inline_javascript %}

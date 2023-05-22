@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <a class="pl-5" href="{% url "articles:country-new" %}">Create New Article</a>
+                <span class="material-symbols-sharp breadcrumb-seperator">arrow_forward_ios</span>
+                <span class="disabled-color pr-5"> Article List </span>
+            </div>
+            <div class="col d-flex justify-content-end">
+                <div class="dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="Sort List">
+                    <a href="" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="material-symbols-sharp">sort</span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="patient-list-sort-dropdown">
+                        <li><a class="dropdown-item" href="{% url 'articles:country-list' %}?sort=asc">Ascending</a></li>
+                        <li><a class="dropdown-item" href="{% url 'articles:country-list' %}?sort=desc">Descending</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+                <div class="div-table">
+                    <div class="div-table-row d-flex">
+                    <div class="div-table-head flex-fill w-10">Image</div>
+                    <div class="div-table-head flex-fill w-20">Title</div>
+                    <div class="div-table-head flex-fill w-30">Excerpt</div>
+                    <div class="div-table-head flex-fill w-10">Category</div>
+                    <div class="div-table-head flex-fill w-10">Region</div>
+                    <div class="div-table-head flex-fill w-15">Published</div>
+                    <div class="div-table-head flex-fill w-5">Actions</div>
+                </div>
+
+                    {% for article in article_list %}
+                    <div class="div-table-row d-flex bg-white">
+                        <div class="div-table-cell flex-fill w-10">
+                            {% if article.image %}
+                                <img class="img-fluid" width="100" height="100" src="{{ article.image_thumbnail.url }}" alt="">
+                            {% else %} NO PHOTO {% endif %}
+                        </div>
+                        <div class="div-table-cell flex-fill w-20">{{ article.title }}</div>
+                        <div class="div-table-cell flex-fill w-30">{{ article.excerpt }} </div>
+                        <div class="div-table-cell flex-fill w-10">{{ article.category.name }} </div>
+                        <div class="div-table-cell flex-fill w-10">
+                            {% for region in article.region.all %}
+                                {{ region.name }}
+                            {% endfor %}
+                        </div>
+                        <div class="div-table-cell flex-fill w-15">{{ article.published }}</div>
+                        <div class="div-table-cell flex-fill w-5">
+                            <a class="" href="{% url 'articles:country-edit' article.pk %}">Edit</a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="div-table-row bg-white">
+                        <div class="div-table-cell flex-fill w-100 text-center">Nothing Found</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

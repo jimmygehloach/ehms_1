@@ -1,0 +1,354 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                {{ patient.first_name }} {{ patient.last_name }} /
+                <a href="">IO Chart List List</a> /
+                <a href="{% url 'hospitals:hospital-medical-sessions' %}">Medical Session List</a>
+            </div>
+            <div class="col d-flex justify-content-end">
+                <a href="">
+                    <span class="material-symbols-sharp">google_plus_reshare</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        {% include 'partials/errors.html' with form=form %}
+        <form action="" method="POST" novalidate id="nurse-input-output-chart-form">
+            <div class="row content-body-inner">
+                {% csrf_token %}
+                <div class="col-4">
+                    <strong>Intake Output Record</strong>
+                    <p class="disabled-text">Submit intake output record report against patients medical session</p>
+                </div>
+                <div class="col-8 form-section">
+                    <div class="form-section-head">
+                        <strong>Intake Output Record Form</strong>
+                    </div>
+                    <div class="A-form">
+                        <div class="mb-40">
+                            <label for="id_bed_number" class="form-labels label-box">{{ form.bed_number.label}}</label>
+                            {{ form.bed_number }}
+                            <small class="form-text text-muted">{{ form.bed_number.help_text }}</small>
+                        </div>
+
+                        <div class="mb-40">
+                            <label for="id_intake_timings" class="form-labels label-box">{{ form.intake_timings.label}}</label>
+                            {{ form.intake_timings }}
+                            <small class="form-text text-muted">{{ form.intake_timings.help_text }}</small>
+                        </div>
+
+                        <div class="mb-40">
+                            <label for="id_output_timings" class="form-labels label-box">{{ form.output_timings.label}}</label>
+                            {{ form.output_timings }}
+                            <small class="form-text text-muted">{{ form.output_timings.help_text }}</small>
+                        </div>
+
+                        <div class="mb-40">
+                            <label for="id_intake_oral" class="form-labels label-box">{{ form.intake_oral.label}}</label>
+                            {{ form.intake_oral }}
+                            <small class="form-text text-muted">{{ form.intake_oral.help_text }}</small>
+                        </div>
+
+                        <div class="mb-40">
+                            <label for="id_intake_iv_fluids" class="form-labels label-box">{{ form.intake_iv_fluids.label}}</label>
+                            {{ form.intake_iv_fluids }}
+                            <small class="form-text text-muted">{{ form.intake_iv_fluids.help_text }}</small>
+                        </div>
+
+                        <div class="mb-40">
+                            <label for="id_" class="form-labels label-box">{{ form.output_urine.label}}</label>
+                            {{ form.output_urine }}
+                            <small class="form-text text-muted">{{ form.output_urine.help_text }}</small>
+                        </div>
+
+                        <div class="mb-40">
+                            <label for="id_output_vomit" class="form-labels label-box">{{ form.output_vomit.label}}</label>
+                            {{ form.output_vomit }}
+                            <small class="form-text text-muted">{{ form.output_vomit.help_text }}</small>
+                        </div>
+
+                        <div class="mb-40">
+                            <label for="id_" class="form-labels label-box">{{ form.output_suction.label}}</label>
+                            {{ form.output_suction }}
+                            <small class="form-text text-muted">{{ form.output_suction.help_text }}</small>
+                        </div>
+
+                        <div class="mb-40">
+                            <label for="id_output_drain" class="form-labels label-box">{{ form.output_drain.label}}</label>
+                            {{ form.output_drain }}
+                            <small class="form-text text-muted">{{ form.output_drain.help_text }}</small>
+                        </div>
+                    </div>
+                    <div class="button-section text-end">
+                        <button type="submit"  class="ehms-button">Save Input Output Chart Record</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock content %}
+
+{% block inline_javascript %}
+
+    <script nonce="{{ request.csp_nonce }}">
+    {% comment %}
+        $(function() {
+
+            "use strict";
+            /**
+             * Validation script for Form: form
+             *
+             * return: true and submit the form or false and do not submit the form
+             */
+            let form = $('#nurse-input-output-chart-form');
+
+            // Change number fields into text fields for validation purposes
+            $('input[type=number]').each(function() {
+                let $this = $(this);
+                $this.attr('type', 'text');
+            })
+
+            form.on('submit', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                let flag = true;
+                let submitEW = $('#submit-error-wrapper');
+                let dateTime = /^\d{4}\-\d{2}\-\d{2}\s\d{2}\:\d{2}\:\d{0,2}$/
+
+                /*
+                * Field 1
+                * check for bed number
+                * */
+                let bedNumberElement = $('#id_bed_number');
+                let bedNumber = bedNumberElement.val() || '';
+                let bedNumberErrorEntryWrapper = $('#bed-number-eew');
+                let bedNumberError = '';
+
+                if (validator.isEmpty(bedNumber)) {
+                    flag = false;
+                    bedNumberError = 'You kept this field empty. Enter the bed number of the patient.';
+                } else if (!validator.isLength(bedNumber, {min: 1, max:50})) {
+                    flag = false;
+                    bedNumberError = 'You entered invalid value.';
+                }
+
+                if (!validator.isEmpty(bedNumberError)) {
+                    bedNumberElement.addClass('invalid-entry');
+                    bedNumberErrorEntryWrapper.html(bedNumberError);
+                } else {
+                    bedNumberElement.removeClass('invalid-entry');
+                    bedNumberErrorEntryWrapper.html('');
+                }
+
+
+                /*
+                * Field 2
+                * check for intake timings
+                * */
+                let intakeTimingsElement = $('#id_intake_timings');
+                let intakeTimings = intakeTimingsElement.val() || '';
+                let intakeTimingsErrorEntryWrapper = $('#intake-timings-eew');
+                let intakeTimingsError = '';
+
+                if (validator.isEmpty(intakeTimings)) {
+                    flag = false;
+                    intakeTimingsError = 'You kept this field empty. Enter intake timings of the patient.';
+                } else if (! dateTime.test(intakeTimings)) {
+                    flag = false;
+                    intakeTimingsError = 'You entered invalid value.';
+                }
+
+                if (!validator.isEmpty(intakeTimingsError)) {
+                    intakeTimingsElement.addClass('invalid-entry');
+                    intakeTimingsErrorEntryWrapper.html(intakeTimingsError);
+                } else {
+                    intakeTimingsElement.removeClass('invalid-entry');
+                    intakeTimingsErrorEntryWrapper.html('');
+                }
+
+
+                /*
+                * Field 3
+                * check for output timings
+                * */
+                let outputTimingsElement = $('#id_output_timings');
+                let outputTimings = outputTimingsElement.val() || '';
+                let outputTimingsErrorEntryWrapper = $('#output-timings-eew');
+                let outputTimingsError = '';
+
+                if (validator.isEmpty(outputTimings)) {
+                    flag = false;
+                    outputTimingsError = 'You kept this field empty. Enter output timings of the patient.';
+                } else if (! dateTime.test(outputTimings)) {
+                    flag = false;
+                    outputTimingsError = 'You entered invalid value.';
+                }
+
+                if (!validator.isEmpty(outputTimingsError)) {
+                    outputTimingsElement.addClass('invalid-entry');
+                    outputTimingsErrorEntryWrapper.html(outputTimingsError);
+                } else {
+                    outputTimingsElement.removeClass('invalid-entry');
+                    outputTimingsErrorEntryWrapper.html('');
+                }
+
+                /*
+                * Field 4
+                * check for intake oral
+                * */
+                let intakeOralElement = $('#id_intake_oral');
+                let intakeOral = intakeOralElement.val() || '';
+                let intakeOralErrorEntryWrapper = $('#intake-oral-eew');
+                let intakeOralError = '';
+
+                if (! validator.isEmpty(intakeOral) && ! validator.isNumeric(intakeOral)) {
+                    flag = false;
+                    intakeOralError = 'You entered invalid value.';
+                }
+
+                if (!validator.isEmpty(intakeOralError)) {
+                    intakeOralElement.addClass('invalid-entry');
+                    intakeOralErrorEntryWrapper.html(intakeOralError);
+                } else {
+                    intakeOralElement.removeClass('invalid-entry');
+                    intakeOralErrorEntryWrapper.html('');
+                }
+
+                /*
+                * Field 5
+                * check for intake iv fluids
+                * */
+                let intakeIVFluidsElement = $('#id_intake_iv_fluids');
+                let intakeIVFluids = intakeIVFluidsElement.val() || '';
+                let intakeIVFluidsErrorEntryWrapper = $('#intake-iv-fluids-eew');
+                let intakeIVFluidsError = '';
+
+                if (! validator.isEmpty(intakeIVFluids) && !validator.isNumeric(intakeIVFluids)) {
+                    flag = false;
+                    intakeIVFluidsError = 'You entered invalid value.';
+                }
+
+                if (!validator.isEmpty(intakeIVFluidsError)) {
+                    intakeIVFluidsElement.addClass('invalid-entry');
+                    intakeIVFluidsErrorEntryWrapper.html(intakeIVFluidsError);
+                } else {
+                    intakeIVFluidsElement.removeClass('invalid-entry');
+                    intakeIVFluidsErrorEntryWrapper.html('');
+                }
+
+                /*
+                * Field 6
+                * check for output urine
+                * */
+                let outputUrineElement = $('#id_output_urine');
+                let outputUrine = outputUrineElement.val() || '';
+                let outputUrineErrorEntryWrapper = $('#output-urine-eew');
+                let outputUrineError = '';
+
+                if (! validator.isEmpty(outputUrine) && !validator.isNumeric(outputUrine)) {
+                    flag = false;
+                    outputUrineError = 'You entered invalid value.';
+                }
+
+                if (!validator.isEmpty(outputUrineError)) {
+                    outputUrineElement.addClass('invalid-entry');
+                    outputUrineErrorEntryWrapper.html(outputUrineError);
+                } else {
+                    outputUrineElement.removeClass('invalid-entry');
+                    outputUrineErrorEntryWrapper.html('');
+                }
+
+                /*
+                * Field 7
+                * check for output vomit
+                * */
+                let outputVomitElement = $('#id_output_vomit');
+                let outputVomit = outputVomitElement.val() || '';
+                let outputVomitErrorEntryWrapper = $('#output-vomit-eew');
+                let outputVomitError = '';
+
+                if (! validator.isEmpty(outputVomit) && !validator.isNumeric(outputVomit)) {
+                    flag = false;
+                    outputVomitError = 'You entered invalid value.';
+                }
+
+                if (!validator.isEmpty(outputVomitError)) {
+                    outputVomitElement.addClass('invalid-entry');
+                    outputVomitErrorEntryWrapper.html(outputVomitError);
+                } else {
+                    outputVomitElement.removeClass('invalid-entry');
+                    outputVomitErrorEntryWrapper.html('');
+                }
+
+                /*
+                * Field 8
+                * check for output vomit
+                * */
+                let outputSuctionElement = $('#id_output_suction');
+                let outputSuction = outputSuctionElement.val() || '';
+                let outputSuctionErrorEntryWrapper = $('#output-suction-eew');
+                let outputSuctionError = '';
+
+                if (! validator.isEmpty(outputSuction) && !validator.isNumeric(outputSuction)) {
+                    flag = false;
+                    outputSuctionError = 'You entered invalid value.';
+                }
+
+                if (!validator.isEmpty(outputSuctionError)) {
+                    outputSuctionElement.addClass('invalid-entry');
+                    outputSuctionErrorEntryWrapper.html(outputSuctionError);
+                } else {
+                    outputSuctionElement.removeClass('invalid-entry');
+                    outputSuctionErrorEntryWrapper.html('');
+                }
+
+
+                /*
+                * Field 9
+                * check for output drain
+                * */
+                let outputDrainElement = $('#id_output_drain');
+                let outputDrain = outputDrainElement.val() || '';
+                let outputDrainErrorEntryWrapper = $('#output-drain-eew');
+                let outputDrainError = '';
+
+                if (! validator.isEmpty(outputDrain) && !validator.isNumeric(outputDrain)) {
+                    flag = false;
+                    outputDrainError = 'You entered invalid value.';
+                }
+
+                if (! validator.isEmpty(outputDrainError)) {
+                    outputDrainElement.addClass('invalid-entry');
+                    outputDrainErrorEntryWrapper.html(outputDrainError);
+                } else {
+                    outputDrainElement.removeClass('invalid-entry');
+                    outputDrainErrorEntryWrapper.html('');
+                }
+
+
+
+                // submit button error message
+                if (flag === false) {
+                    submitEW.html('Error/s found in this form.');
+                    return false;
+                } else {
+                    submitEW.html('');
+                    $(this)[0].submit();
+                }
+            })
+        })
+    {% endcomment %}
+    </script>
+
+{% endblock %}
+

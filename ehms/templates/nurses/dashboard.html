@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-6">
+                <span class="disabled-color pr-5"> Dashboard </span> /
+                <a class="pl-5" href="{% url "nurses:detail" nurse.pk %}"> Profile </a> /
+                <a class="pl-5" href="{% url "dashboards:nurse-level" %}"> Home </a>
+            </div>
+            <div class="col-6 d-flex justify-content-end">
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-3">
+                <div class="card mb-40">
+                    <div class="card-header">Total Vital Sign Records</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ total_vsr }}</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card mb-40">
+                    <div class="card-header">Total Input output Chart Records</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ total_ioc }}</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card mb-40">
+                    <div class="card-header">Total notes</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ total_notes }}</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

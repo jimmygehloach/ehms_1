@@ -1,0 +1,22 @@
+ <form id="patient-keyword-search" class="" action="{% url 'patients:keyword' %}" method="GET">
+    <div class="div-table">
+        <div class="div-table-row d-flex bg-white all-border-radius">
+            <div class="div-table-cell flex-fill w-90">
+                <div class="form-floating">
+                    <select class="form-select border-radius" name="keyword" id="patient_country" aria-label="Keyword" aria-describedby="keyword-search" data-validation="required">
+                        <option value="" disabled selected>Choose option</option>
+                        {% for keyword in keywords %}
+                            <option value="{{ keyword.pk }}">{{ keyword.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="patient_country">Keyword</label>
+                </div>
+            </div>
+            <div class="div-table-cell flex-fill w-10">
+                <button type="submit" class="ehms-button-wi border-radius" id="keyword-search">
+                    <span class="material-symbols-sharp">search</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,34 @@
+<div class="col-4">
+    <strong>Miscellaneous Section</strong>
+    <p class="disabled-text">Miscellaneous details of the new patient</p>
+</div>
+<div class="col-8 form-section mt-20">
+    <div class="form-section-head">
+        <strong>Patient Miscellaneous Information</strong>
+    </div>
+    <div class="A-form">
+        {# --- remarks --- #}
+        <div class="mb-40">
+            <label class="label-box" for="{{ patient_form.remarks.id_for_label }}">{{ patient_form.remarks.label }}</label>
+            {{ patient_form.remarks }}
+            {{ patient_form.remarks.errors }}
+        </div>
+
+        {# --- Extra information --- #}
+        <div class="mb-40">
+            <label class="label-box" for="{{ patient_form.other_information.id_for_label }}">{{ patient_form.other_information.label }}</label>
+            {{ patient_form.other_information }}
+            {{ patient_form.other_information.errors }}
+        </div>
+
+        <!-- temporary family information -->
+        <div class="mb-40">
+            <label class="label-box" for="{{ patient_form.temporary_family_info.id_for_label }}">{{ patient_form.temporary_family_info.label }}</label>
+            {{ patient_form.temporary_family_info }}
+            {{ patient_form.temporary_family_info.errors }}
+        </div>
+    </div>
+    <div class="button-section text-end">
+        <button type="submit"  class="ehms-button">Register New Patient</button>
+    </div>
+</div>

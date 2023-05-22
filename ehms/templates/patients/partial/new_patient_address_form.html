@@ -1,0 +1,50 @@
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="{{ new_patient_address_form.address_line_1.id_for_label }}">{{ new_patient_address_form.address_line_1.label }}</label>
+        {{ new_patient_address_form.address_line_1 }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ new_patient_address_form.address_line_2.id_for_label }}">{{ new_patient_address_form.address_line_2.label }}</label>
+        {{ new_patient_address_form.address_line_2 }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ new_patient_address_form.phone.id_for_label }}">{{ new_patient_address_form.phone.label }}</label>
+        {{ new_patient_address_form.phone }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ new_patient_address_form.alternate_phone.id_for_label }}">{{ new_patient_address_form.alternate_phone.label }}</label>
+        {{ new_patient_address_form.alternate_phone }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ new_patient_address_form.type.id_for_label }}">{{ new_patient_address_form.type.label }}</label>
+        {{ new_patient_address_form.type }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ new_patient_address_form.current_address.id_for_label }}">{{ new_patient_address_form.current_address.label }}</label>
+        <div class="form-check form-switch">{{ new_patient_address_form.current_address }}</div>
+    </div>
+    <div class="mb-3">
+        <label for="{{ new_patient_address_form.country.id_for_label }}">{{ new_patient_address_form.country.label }}</label>
+        {{ new_patient_address_form.country }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ new_patient_address_form.region.id_for_label }}">{{ new_patient_address_form.region.label }}</label>
+        {{ new_patient_address_form.region }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ new_patient_address_form.district.id_for_label }}">{{ new_patient_address_form.district.label }}</label>
+        {{ new_patient_address_form.district }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ new_patient_address_form.town.id_for_label }}">{{ new_patient_address_form.town.label }}</label>
+        {{ new_patient_address_form.town }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ new_patient_address_form.postcode.id_for_label }}">{{ new_patient_address_form.postcode.label }}</label>
+        {{ new_patient_address_form.postcode }}
+    </div>
+    <div class="mt-30">
+        <button type="submit" class="ehms-button w-100" name="new_patient_address_form">Add New Address</button>
+    </div>
+</form>

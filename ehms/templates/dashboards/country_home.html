@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <a class="pl-5" href="{% url "addresses:country-dashboard" %}">  Dashboard </a>
+                <span class="material-symbols-sharp breadcrumb-seperator">arrow_forward_ios</span>
+                <a class="pl-5" href="{% url "hospitals:profile" %}"> Profile </a>
+                <span class="material-symbols-sharp breadcrumb-seperator">arrow_forward_ios</span>
+                <span class="disabled-color pr-5"> {{ request.country }} </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-6 article-sticky-big">
+                <div class="article-image w-100">
+                    <img class="img-fluid" src="{{ article_sticky_big.image_article.url }}" alt="{{ article_sticky_big.title }}">
+                </div>
+                <div class="article-misc d-flex">
+                    <div class="article-date flex-fill">{{ article_sticky_big.published_at }}</div>
+                    <div class="article-category flex-fill text-end">{{ article_sticky_big.category.name }}</div>
+                </div>
+                <div class="article-title">
+                    <h2>{{ article_sticky_big.title }}</h2>
+                </div>
+                <div class="article-excerpt">
+                    <p>
+                        {{ article_sticky_big.excerpt }}
+                        <a href="">
+                            <span class="material-symbols-sharp vert-middle">more_horiz</span>
+                        </a>
+                    </p>
+
+                </div>
+            </div>
+
+            <div class="col-6">
+                {% for article in articles_sticky_aside %}
+                <div class="article-sticky d-flex">
+                    <div class="article-image flex-fill w-50">
+                        <img class="img-fluid" src="{{ article.image_medium.url }}" alt="">
+                    </div>
+                    <div class="article-sticky-aside flex-fill w-50">
+                        <div class="article-misc d-flex">
+                            <div class="article-date flex-fill">{{ article.published_at }}</div>
+                            <div class="article-category flex-fill text-end">{{ article.category.name }}</div>
+                        </div>
+                        <div class="article-title">
+                            <h2>{{ article.title }}</h2>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr p-10"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            {% for article in articles_other %}
+            <div class="col-3 article-other">
+                <div class="article-image flex-fill">
+                    <img  class="img-fluid" src="{{ article.image_medium.url }}" alt="">
+                </div>
+                <div class="article-sticky-aside flex-fill">
+                    <div class="article-misc d-flex">
+                        <div class="article-date flex-fill">{{ article.published_at }}</div>
+                        <div class="article-category flex-fill text-end">{{ article.category.name }}</div>
+                    </div>
+                    <div class="article-title">
+                        <h2>{{ article.title }}</h2>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="text-center">
+                <a href="{% url "articles:country-list" %}">
+                    <button class="ehms-button-wi">
+                        <span>Article List</span> <span class="material-symbols-sharp">arrow_forward</span>
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+{% endblock content %}

@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-6">
+                <span class="disabled-color pr-5"> Keyword Search </span> / <a class="pl-5" href="{% url "patients:create" %}">Registration</a> /  <a class="pl-5" href="{% url "patients:list" %}">Patient List</a>
+            </div>
+            <div class="col-6 d-flex justify-content-end">
+                <span class="pr-20" title="Patient found">{% if patient_count %} {{ patient_count }} {% else %} 0 {% endif %}</span>
+                <div class="dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="Sort List">
+                    <a href=""  id="patient-list-sort-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% include "partials/dynamic-sort-icon.html" %}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="patient-list-sort-dropdown">
+                       <li><a class="dropdown-item" href="{% url 'patients:keyword' %}?sort=asc&keyword={{ request.GET.keyword|urlencode }}">Ascending</a></li>
+                        <li><a class="dropdown-item" href="{% url 'patients:keyword' %}?sort=desc&keyword={{ request.GET.keyword|urlencode }}">Descending</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+               {% include 'patients/partial/keyword_search_form.html' with keywords=keywords %}
+            </div>
+
+            <div class="col-12">
+                {% include 'patients/partial/keyword_search_list.html' with page_obj=page_obj %}
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block pagination %}
+
+    {% if is_paginated %}
+        <div class="pagination justify-content-center mt-20">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a href="?page={{ page_obj.previous_page_number }}&keyword={{ request.GET.keyword|urlencode }}" class="page-link">Previous</a>
+                </li>
+                <li>
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}&keyword={{ request.GET.keyword|urlencode }}">
+                        {{ page_obj.previous_page_number }}
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                </li>
+            {% endif %}
+
+            <li class="page-item active">
+                <span class="page-link">{{ page_obj.number }}</span>
+            </li>
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}&keyword={{ request.GET.keyword|urlencode }}">
+                        {{ page_obj.next_page_number }}
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}&keyword={{ request.GET.keyword|urlencode }}">Next</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Next</span>
+                </li>
+            {% endif %}
+        </div> {# end of pagination #}
+
+    {% endif %}
+{% endblock pagination %}
+
+{% block inline_javascript %}
+
+    <script nonce="{{ request.csp_nonce }}" type="application/javascript">
+
+        $(function () {
+
+            new FormValidation({
+                formId: 'patient-keyword-search',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+                showErrorCounts: False,
+            });
+
+        });
+
+    </script>
+
+{% endblock inline_javascript %}

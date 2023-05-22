@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{#{% load cropping %}#}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+                <div class="d-flex align-items-center breadcrumb">
+                    <div class="flex-grow-1">
+                        <a class="pl-5" href="{% url "patients:list" %}">Patient List</a>
+                        <i class="ri-arrow-right-s-line ri-lg"></i>
+                        <a class="pl-5" href="{% url "patients:create" %}">Registration</a>
+                        <i class="ri-arrow-right-s-line ri-lg"></i>
+                        <span class="disabled-color pr-5">Search Word " <b>{{ search_word|default:"---" }}</b> "</span>
+                    </div>
+                    <div class="pr-20" title="Total Patient">{% if patient_count %} {{ patient_count }} {% else %} 0 {% endif %}</div>
+                    <div class="dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="Sort List">
+                        <a href=""  id="patient-list-sort-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                               {% include "partials/dynamic-sort-icon.html" %}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="patient-list-sort-dropdown">
+                            <li><a class="dropdown-item" href="{% url 'patients:search' %}?sort=asc">Ascending</a></li>
+                            <li><a class="dropdown-item" href="{% url 'patients:search' %}?sort=desc">Descending</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+                <div class="div-table">
+                    <div class="div-table-row d-flex">
+                        <div class="div-table-head flex-fill w-5">#</div>
+                        <div class="div-table-head flex-fill w-15">Image</div>
+                        <div class="div-table-head flex-fill w-40">Name</div>
+                        <div class="div-table-head flex-fill w-30">Health Status</div>
+                        <div class="div-table-head flex-fill w-10">Actions</div>
+                    </div>
+                    {% for patient in page_obj %}
+                    <div class="div-table-row d-flex {% if patient.vital_status %}bg-white{% else %}bg-dull{% endif %}">
+                        <div class="div-table-cell flex-fill w-5">{{ page_obj.start_index|add:forloop.counter0 }}</div>
+                        <div class="div-table-cell flex-fill w-15">
+                        {% for row in patient.current_photo  %}
+                            {% if row.image %}
+                                <img class="img-fluid profile-img-rounded" width="50" height="50" src="{{ row.image_thumbnail.url }}" alt="">
+                            {% else %} NO PHOTO {% endif %}
+                        {% endfor %}
+                        </div>
+                        <div class="div-table-cell flex-fill w-40">{{ patient.first_name }} {% if patient.middle_name %} {{ patient.middle_name }} {% endif %} {{ patient.last_name }}</div>
+                        <div class="div-table-cell flex-fill w-30"><span class="health-status-{{ patient.health_status.css_class }}">{{ patient.health_status.name }}</span></div>
+                        <div class="div-table-cell flex-fill w-10">
+                            {# Patient new medical session for practitioner only #}
+                            {% if request.group_name == 'practitioner level' %}
+                                <a href="{% url "medical_sessions:new" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="New Medical Session"><span class="material-symbols-sharp">add_box</span></a>
+                            {% endif %}
+                            {% if request.group_name == 'reception level' %}
+                                <a href="{% url "medical_sessions:reception-new" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="New Medical Session"><span class="material-symbols-sharp">add_box</span></a>
+                            {% endif %}
+                            <a class="pr-10 pl-10" href="{% url "patients:detail" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Patient portfolio"><span class="material-symbols-sharp">account_circle</span></a>
+                            <a href="{% url "medical_sessions:list" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Medical Sessions"><span class="material-symbols-sharp">ballot</span></a>
+                        </div>
+                    </div>
+                    {% empty %}
+                        <div class="div-table-row bg-white"><div class="div-table-cell flex-fill w-100 text-center">Nothing Found</div></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block pagination %}
+
+    {% if is_paginated %}
+        <div class="pagination justify-content-center" style="margin-top: 20px;">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a href="?page={{ page_obj.previous_page_number }}&search={{ request.GET.search|urlencode }}"
+                       class="page-link">
+                        Previous
+                    </a>
+                </li>
+                <li>
+                    <a class="page-link"
+                       href="?page={{ page_obj.previous_page_number }}&search={{ request.GET.search|urlencode }}">
+                        {{ page_obj.previous_page_number }}
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                </li>
+            {% endif %}
+
+            <li class="page-item active">
+                <span class="page-link">{{ page_obj.number }}</span>
+            </li>
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?page={{ page_obj.next_page_number }}&search={{ request.GET.search|urlencode }}">
+                        {{ page_obj.next_page_number }}
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                       href="?page={{ page_obj.next_page_number }}&search={{ request.GET.search|urlencode }}">Next</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Next</span>
+                </li>
+            {% endif %}
+        </div> {# end of pagination #}
+
+    {% endif %}
+{% endblock %}

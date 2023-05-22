@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <span class="disabled-color pr-5"> Mortuaries </span>
+            </div>
+
+            <div class="col d-flex justify-content-end"></div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <div class="div-table">
+                    <div class="div-table-row d-flex">
+                        <div class="div-table-head flex-fill w-10">UID</div>
+                        <div class="div-table-head flex-fill w-40">Mortuary Name</div>
+                        <div class="div-table-head flex-fill w-20">Capacity</div>
+                        <div class="div-table-head flex-fill w-20">Status</div>
+                        <div class="div-table-head flex-fill w-10">Actions</div>
+                    </div>
+                {% for mortuary in mortuaries %}
+                    <div class="div-table-row d-flex bg-white inline-form-group">
+                        <div class="div-table-cell flex-fill w-10">{{ mortuary.uid }}</div>
+                        <div class="div-table-cell flex-fill w-40">{{ mortuary.name }}</div>
+                        <div class="div-table-cell flex-fill w-20">{{ mortuary.capacity }}</div>
+                        <div class="div-table-cell flex-fill w-20">{{ mortuary.status }}</div>
+                        <div class="div-table-cell flex-fill w-10">
+                            <a class="pr-10" href="{% url 'mortuaries:detail' mortuary.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="More Detail">
+                                <span class="material-symbols-sharp">preview</span>
+                            </a>
+                            <a class="" href="{% url 'mortuaries:list' mortuary.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="List of Patients">
+                                <span class="material-symbols-sharp">ballot</span>
+                            </a>
+                        </div>
+                    </div>
+                    {% empty %}
+                        <div class="div-table-row bg-white"><div class="div-table-cell flex-fill w-100 text-center">Nothing Found</div></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

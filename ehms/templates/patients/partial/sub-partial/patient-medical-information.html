@@ -1,0 +1,30 @@
+<div class="form-section-head">
+    <strong>Patient Medical Information</strong>
+</div>
+<form class="A-form" action="{% url 'patients:detail' patient.pk %}" method="POST" id="patient-medical-section-form">
+    {% csrf_token %}
+    <div class="mb-40">
+        <label class="label-box" for="{{ update_patient_medical_info.blood_group.id_for_label }}">{{ update_patient_medical_info.blood_group.label }}</label>
+        {{ update_patient_medical_info.blood_group }}
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="{{ update_patient_medical_info.patient_medical_illness.id_for_label }}">{{ update_patient_medical_info.patient_medical_illness.label }}</label>
+        {{ update_patient_medical_info.patient_medical_illness }}
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="{{ update_patient_medical_info.patient_kin_medical_illness.id_for_label }}">{{ update_patient_medical_info.patient_kin_medical_illness.label }}</label>
+        {{ update_patient_medical_info.patient_kin_medical_illness }}
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="{{ update_patient_medical_info.patient_allergies.id_for_label }}">{{ update_patient_medical_info.patient_allergies.label }}</label>
+        {{ update_patient_medical_info.patient_allergies }}
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="{{ update_patient_medical_info.patient_addictions.id_for_label }}">{{ update_patient_medical_info.patient_addictions.label }}</label>
+        {{ update_patient_medical_info.patient_addictions }}
+    </div>
+    <input type="hidden" name="update_patient_medical_info" value="">
+</form>
+<div class="button-section text-end">
+    <button type="button"  class="ehms-button">Save Changes</button>
+</div>

@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% block content %}
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                {{ patient.first_name }} {{ patient.last_name }} /
+                <a href="">Nurse Notes List</a> /
+                <a href="{% url 'hospitals:hospital-medical-sessions' %}">Medical Session List</a>
+            </div>
+            <div class="col d-flex justify-content-end">
+                <a href="">
+                    <span class="material-symbols-sharp">google_plus_reshare</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        {% include 'partials/errors.html' with form=form %}
+        <form action="" method="POST" novalidate id="nurse-notes-form">
+            <div class="row content-body-inner">
+                {% csrf_token %}
+                <div class="col-4">
+                    <strong>Nurse Notes</strong>
+                    <p class="disabled-text">Submit nurse notes against patients medical session</p>
+                </div>
+                <div class="col-8 form-section">
+                    <div class="form-section-head">
+                        <strong>Nurse Notes Form</strong>
+                    </div>
+                    <div class="A-form">
+                        <div class="mb-40">
+                            <label for="id_bed_number" class="form-labels">{{ form.bed_number.label}}</label>
+                            {{ form.bed_number }}
+                            <small class="form-text text-muted">{{ form.bed_number.help_text }}</small>
+                        </div>
+                        <div class="mb-40">
+                            <label for="id_timings" class="form-labels">{{ form.timings.label}}</label>
+                            {{ form.timings }}
+                            <small class="form-text text-muted">{{ form.timings.help_text }}</small>
+                        </div>
+                        <div class="mb-40">
+                            <label for="id_observation" class="form-labels">{{ form.observation.label}}</label>
+                            {{ form.observation }}
+                            <small class="form-text text-muted">{{ form.observation.help_text }}</small>
+                        </div>
+                    </div>
+                    <div class="button-section text-end">
+                        <button type="submit"  class="ehms-button">Save notes for this session</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock content %}
+
+{% block inline_javascript %}
+
+    <script nonce="{{ request.csp_nonce }}">
+    {% comment %}
+        $(function()
+            "use strict";
+            /**
+             * Validation script for Form: form
+             *
+             * return: true and submit the form or false and do not submit the form
+             */
+            let form = $('#nurse-notes-form');
+
+            form.on('submit', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                let flag = true;
+                let submitEW = $('#submit-error-wrapper');
+                let dateTime = /^\d{4}\-\d{2}\-\d{2}\s\d{2}\:\d{2}\:\d{0,2}$/
+
+                /*
+                * Field 1
+                * check for bed number
+                * */
+                let bedNumberElement = $('#id_bed_number');
+                let bedNumber = bedNumberElement.val() || '';
+                let bedNumberErrorEntryWrapper = $('#bed-number-eew');
+                let bedNumberError = '';
+
+                if (validator.isEmpty(bedNumber)) {
+                    flag = false;
+                    bedNumberError = 'You kept this field empty. Enter the bed number of the patient.';
+                } else if (!validator.isLength(bedNumber, {min: 1, max:50})) {
+                    flag = false;
+                    bedNumberError = 'You entered invalid value.';
+                }
+
+                if (!validator.isEmpty(bedNumberError)) {
+                    bedNumberElement.addClass('invalid-entry');
+                    bedNumberErrorEntryWrapper.html(bedNumberError);
+                } else {
+                    bedNumberElement.removeClass('invalid-entry');
+                    bedNumberErrorEntryWrapper.html('');
+                }
+
+
+                /*
+                * Field 2
+                * check for timings
+                * */
+                let timingsElement = $('#id_timings');
+                let timings = timingsElement.val() || '';
+                let timingsErrorEntryWrapper = $('#timings-eew');
+                let timingsError = '';
+
+                if (validator.isEmpty(timings)) {
+                    flag = false;
+                    timingsError = 'You kept this field empty. Enter intake timings of the patient.';
+                } else if (! dateTime.test(timings)) {
+                    flag = false;
+                    timingsError = 'You entered invalid value.';
+                }
+
+                if (!validator.isEmpty(timingsError)) {
+                    timingsElement.addClass('invalid-entry');
+                    timingsErrorEntryWrapper.html(timingsError);
+                } else {
+                    timingsElement.removeClass('invalid-entry');
+                    timingsErrorEntryWrapper.html('');
+                }
+
+
+                /*
+                * Field 3
+                * check for observation
+                * */
+                let observationElement = $('#id_observation');
+                let observation = observationElement.val() || '';
+                let observationErrorEntryWrapper = $('#observation-eew');
+                let observationError = '';
+
+                if (validator.isEmpty(observation)) {
+                    flag = false;
+                    observationError = 'You kept this field empty. Enter observations you read.';
+                } else if (!validator.isByteLength(observation, {min:10, max:100000})) {
+                    flag = false;
+                    observationError = 'Character length is not good. Min: 10 & Max: 100,000';
+                }
+
+                if (!validator.isEmpty(observationError)) {
+                    observationElement.addClass('invalid-entry');
+                    observationErrorEntryWrapper.html(observationError);
+                } else {
+                    observationElement.removeClass('invalid-entry');
+                    observationErrorEntryWrapper.html('');
+                }
+
+
+                // submit button error message
+                if (flag === false) {
+                    submitEW.html('Error/s found in this form.');
+                    return false;
+                } else {
+                    submitEW.html('');
+                    $(this)[0].submit();
+                }
+            })
+        })
+    {% endcomment %}
+    </script>
+
+{% endblock %}
+
+
+

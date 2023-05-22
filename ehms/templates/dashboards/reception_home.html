@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+                <div class="d-flex breadcrumb align-items-center">
+                    <i class="ri-home-3-fill ri-lg"></i>
+                    {{ request.user.first_name }} {{ request.user.last_name }}
+                    <i class="ri-arrow-right-s-line ri-lg"></i>
+                    <a href="{% url "receptions:profile" %}">
+                        <i class="ri-profile-line ri-lg"></i> Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            {%  if request.client_token_check == 'failed' %}
+            <div class="col-3 bg-white p-20 br-5">
+                <form action="" method="POST" id="id_reception_token_form" novalidate>
+                    {% csrf_token %}
+
+                    <div class="mb-40">
+                        <label for="reception-token" class="form-label">Enter token</label>
+                        <input class="form-control w-100" id="reception-token" type="text" name="token" data-validation="required|digit">
+                    </div>
+
+                    <button type="submit" class="ehms-button">Submit Token</button>
+                </form>
+            </div>
+            <div class="col-12 mt-40 bg-white p-20 br-5">
+                <strong>Token is required to access the following services in this portal: - </strong>
+                <ol>
+                    <li><a href="{% url "patients:reception-list" %}">Patients List</a></li>
+                    <li>Patient "New Medical Session". To create a new medical session for the patient, please visit the patients list.</li>
+                    <li><a href="">Patient New Registration</a></li>
+                </ol>
+            </div>
+            {% elif request.client_token_check == 'passed' %}
+            <div class="col-12 bg-white br-5 p-20">
+                <div class="d-flex">
+                    <div class="flex-grow-1 color-orange">
+                            <i class="ri-information-line ri-lg"></i>
+                        <strong class="color-orange">
+                            We are pleased to inform you that the token remains valid, granting you unrestricted access to continue utilizing our services.
+                        </strong>
+                    </div>
+                    <div>
+                        <i class="ri-timer-fill color-red ri-lg"></i>
+                        <span>{{ request.reception.expires_in|naturaltime }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block inline_javascript %}
+
+    <script type="application/javascript" nonce="{{ request.csp_nonce }}">
+
+        $(function () {
+            new FormValidation({
+                formId: 'id_reception_token_form',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+            });
+        });
+
+    </script>
+
+{% endblock inline_javascript %}
+

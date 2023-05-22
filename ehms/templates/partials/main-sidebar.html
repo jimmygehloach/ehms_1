@@ -1,0 +1,280 @@
+<div>
+    <ul>
+        {% if request.group_name in 'country level,region level,hospital level,practitioner level,reception level,mortuary level,nurse level' %}
+            <li>
+                <a class="d-flex align-items-center nav-link {% if title == 'Home' %}active{% endif %}" title="Home" href="
+                    {% if request.group_name == 'country level' %}
+                        {% url 'dashboards:country-level' %}
+                    {% elif request.group_name == 'region level' %}
+                        {% url 'dashboards:region-level' %}
+                    {% elif request.group_name == 'hospital level' %}
+                        {% url 'dashboards:hospital-level' %}
+                    {% elif request.group_name == 'practitioner level' %}
+                        {% url 'dashboards:practitioner-level' %}
+                    {% elif request.group_name == 'reception level' %}
+                        {% url 'dashboards:reception-level' %}
+                    {% elif request.group_name == 'mortuary level' %}
+                        {% url 'dashboards:mortuary-level' %}
+                    {% elif request.group_name == 'nurse level' %}
+                        {% url 'dashboards:nurse-level' %}
+                    {% endif %}">
+                    <i class="ri-home-3-fill ri-lg"></i>
+                    <span class="flex-grow-1">Home</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if request.group_name in 'country level,region level,hospital level,practitioner level,mortuary level,nurse level' %}
+            <li>
+                 <a class="d-flex align-items-center nav-link {% if title == 'Dashboard' %}active{% endif %}" title="Dashboard" href="
+                    {% if request.group_name == 'country level' %}
+                        {% url 'addresses:country-dashboard' %}
+                    {% elif request.group_name == 'region level' %}
+                        {% url 'addresses:region-dashboard' %}
+                    {% elif request.group_name == 'hospital level' %}
+                        {% url 'hospitals:hospital-dashboard' %}
+                    {% elif request.group_name == 'practitioner level' %}
+                        {% url 'practitioners:practitioner-dashboard' %}
+                    {% elif request.group_name == 'mortuary level' %}
+                        # TODO : missing dashboard
+{#                   {% elif request.group_name == 'reception level' %}#}
+{#                        {% url 'receptions:dashboard' %} #}
+                    {% elif request.group_name == 'nurse level' %}
+                        {% url 'nurses:nurse-dashboard' %}
+                    {% endif %}">
+                    <i class="ri-dashboard-fill ri-lg"></i>
+                    <span class="flex-grow-1">Dashboard</span>
+                 </a>
+            </li>
+            {% endif %}
+            {% if request.group_name in 'country level' %}
+            <li>
+                 <a class="d-flex align-items-center nav-link {% if title == 'Article' %}active{% endif %}" title="Article" href="
+                    {% if request.group_name == 'country level' %}
+                        {% url 'articles:country-list' %}
+                    {% endif %}">
+                     <i class="ri-article-line ri-lg"></i>
+                     <span class="flex-grow-1">Article</span>
+                 </a>
+            </li>
+            {% endif %}
+            {% if request.group_name in 'region level' %}
+            <li>
+                 <a class="d-flex align-items-center nav-link {% if title == 'Article' %}active{% endif %}" title="Article" href="
+                    {% if request.group_name == 'region level' %}
+                        {% url 'articles:region-list' %}
+                    {% endif %}">
+                    <i class="ri-article-line ri-lg"></i>
+                    <span class="flex-grow-1">Article</span>
+                 </a>
+            </li>
+            {% endif %}
+            {% if request.group_name in 'hospital level, practitioner level' %}
+            <li>
+                 <a class="d-flex align-items-center nav-link {% if title == 'Inbox' %}active{% endif %}" title="Inbox" href="
+                    {% if request.group_name == 'hospital level' %}
+                        {% url 'queries:hospital-inbox' %}
+                    {% elif request.group_name == 'practitioner level' %}
+                        {% url 'queries:practitioner-inbox' request.practitioner.pk %}
+                    {% endif %}">
+                     <i class="ri-inbox-fill ri-lg"></i>
+                     <span class="flex-grow-1">Inbox</span>
+                 </a>
+            </li>
+            {% endif %}
+            {% if request.group_name in 'hospital level' %}
+            <li>
+                 <a class="d-flex align-items-center nav-link {% if title == 'activity' %}active{% endif %}" title="Activities" href="
+                    {% if request.group_name == 'hospital level' %}
+                        {% url 'hospitals:activities' %}
+                    {% endif %}">
+                     <i class="ri-history-line ri-lg"></i>
+                     <span class="flex-grow-1">Activity</span>
+                 </a>
+            </li>
+            {% endif %}
+
+            {% if request.group_name in 'reception level' %}
+            <li>
+                 <a class="d-flex align-items-center nav-link {% if title == 'activity' %}active{% endif %}" title="Activities" href="
+                    {% if request.group_name == 'reception level' %}
+                        {% url 'patients:reception-list' %}
+                    {% endif %}">
+                     <i class="ri-user-heart-fill ri-lg"></i>
+                     <span class="flex-grow-1">Patients</span>
+                 </a>
+            </li>
+            {% endif %}
+
+            {% if request.group_name in 'hospital level, practitioner level' %}
+            <li class="vt-inline-dropdown-wrapper">
+                <h5 class="navbar-heading-text d-flex align-items-center">
+                    <i class="ri-search-line ri-lg"></i>
+                    <span class="flex-grow-1 align-middle">Search</span>
+                    <i class="ri-arrow-down-s-line ri-lg dropdown-arrow-down"></i>
+                    <i class="ri-arrow-right-s-line ri-lg dropdown-arrow-straight"></i>
+                </h5>
+                <ul class="vt-inline-dropdown">
+                    <li>
+                        <a class="nav-link d-flex align-items-center {% if title == 'Patients Advanced Search' %} active {% endif %}" title="Patients Advanced Search" href="{% url 'patients:advanced' %}">
+                            <i class="ri-subtract-line ri-lg"></i>
+                            <span class="flex-grow-1">Advanced Search</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link d-flex align-items-center {% if title == 'Patients Keyword Search' %}active{% endif %}" title="Patients Keyword Search" href="{% url 'patients:keyword' %}">
+                            <i class="ri-subtract-line ri-lg"></i>
+                            <span class="flex-grow-1">Keyword Search</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        {% endif %}
+
+        {% if request.group_name in 'hospital level,nurse level,practitioner level' %}
+            <li class="vt-inline-dropdown-wrapper">
+                <h5 class="navbar-heading-text d-flex align-items-center">
+                    <i class="ri-user-heart-fill ri-lg"></i>
+                    <span class="flex-grow-1 align-middle">Patient</span>
+                    <i class="ri-arrow-down-s-line ri-lg dropdown-arrow-down"></i>
+                    <i class="ri-arrow-right-s-line ri-lg dropdown-arrow-straight"></i>
+                </h5>
+                <ul class="vt-inline-dropdown">
+                    {% if request.group_name == 'hospital level' %}
+                    <li>
+                        <a class="nav-link d-flex align-items-center {% if title == 'Patient Registration' %}active{% endif %}" title="New Patient" href="{% url 'patients:create' %}">
+                            <i class="ri-subtract-line ri-lg"></i>
+                            <span class="flex-grow-1">Registration</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if request.group_name in 'hospital level,nurse level,practitioner level' %}
+                    <li>
+                        <a class="nav-link d-flex align-items-center {% if title == 'Patients' %}active{% endif %}" title="Patients" href="{% url 'patients:list' %}">
+                            <i class="ri-subtract-line ri-lg"></i>
+                            <span class="flex-grow-1">List</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if request.group_name in 'hospital level, practitioner level' %}
+                    <li>
+                        <a class="nav-link d-flex align-items-center {% if title == 'Practitioners' %}active{% endif %}" title="Relation" href="{% url 'family_tree:relation' %}">
+                            <i class="ri-subtract-line ri-lg"></i>
+                            <span class="flex-grow-1">Relation</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if request.group_name in 'hospital level, nurse level, practitioner level' %}
+                    <li>
+                        <a class="nav-link d-flex align-items-center {% if title == 'Medical Sessions' %}active{% endif %}" title="Medical Sessions" href="{% url 'hospitals:hospital-medical-sessions' %}">
+                            <i class="ri-subtract-line ri-lg"></i>
+                            <span class="flex-grow-1">Medical Sessions</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
+
+        {% if request.group_name in 'hospital level' %}
+            <li class="vt-inline-dropdown-wrapper">
+                <h5 class="navbar-heading-text d-flex align-items-center">
+                    <i class="ri-stethoscope-line ri-lg"></i>
+                    <span class="flex-grow-1 align-middle">Practitioner</span>
+                    <i class="ri-arrow-down-s-line ri-lg dropdown-arrow-down"></i>
+                    <i class="ri-arrow-right-s-line ri-lg dropdown-arrow-straight"></i>
+                </h5>
+                <ul class="vt-inline-dropdown">
+                    <li>
+                        <a class="nav-link d-flex align-items-center {% if title == 'Practitioners' %}active{% endif %}" title="Practitioners" href="{% url 'practitioners:list' %}">
+                            <i class="ri-subtract-line ri-lg"></i>
+                            <span class="flex-grow-1">List</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link d-flex align-items-center {% if title == 'Practitioners Token' %}active{% endif %}" title="Practitioners Token" href="{% url 'practitioners:token' %}">
+                            <i class="ri-subtract-line ri-lg"></i>
+                            <span class="flex-grow-1">Token</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="vt-inline-dropdown-wrapper">
+                <h5 class="navbar-heading-text d-flex align-items-center">
+                    <i class="ri-nurse-fill ri-lg"></i>
+                    <span class="flex-grow-1 align-middle">Nurse</span>
+                    <i class="ri-arrow-down-s-line ri-lg dropdown-arrow-down"></i>
+                    <i class="ri-arrow-right-s-line ri-lg dropdown-arrow-straight"></i>
+                </h5>
+                <ul class="vt-inline-dropdown">
+                    <li>
+                        <a class="nav-link d-flex align-items-center {% if title == 'Nurses' %}active{% endif %}" title="Nurses" href="{% url 'nurses:list' %}">
+                            <i class="ri-subtract-line ri-lg"></i>
+                            <span class="flex-grow-1">Nurses</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link d-flex align-items-center {% if title == 'Nurses Token' %}active{% endif %}" title="Nurses Token" href="{% url 'nurses:token' %}">
+                            <i class="ri-subtract-line ri-lg"></i>
+                            <span class="flex-grow-1">Nurses Token</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+{#            <li class="vt-inline-dropdown-wrapper">#}
+{#                <h5 class="navbar-heading-text d-flex align-items-center">#}
+{#                    <span class="material-symbols-sharp">inventory_2</span>#}
+{#                    <span class="flex-grow-1 align-middle">Inventory</span>#}
+{#<i class="ri-arrow-down-s-line ri-lg"> dropdown-arrow-down</i>#}
+{#<i class="ri-arrow-right-s-line ri-lg dropdown-arrow-straight"></i>#}
+{#                </h5>#}
+{#                <ul class="vt-inline-dropdown">#}
+{#                    <li>#}
+{#                        <a class="nav-link {% if title == 'Inventory' %}active{% endif %}" title="Inventory" href="{% url 'inventory:detail' %}">#}
+{#                            <i class="ri-subtract-line ri-lg"></i>#}
+{#                            <span>Detail</span>#}
+{#                        </a>#}
+{#                    </li>#}
+{#                </ul>#}
+{#            </li>#}
+            <li class="vt-inline-dropdown-wrapper">
+                <h5 class="navbar-heading-text d-flex align-items-center">
+                    <i class="ri-hand-coin-fill ri-lg"></i>
+                    <span class="flex-grow-1 align-middle">Reception</span>
+                    <i class="ri-arrow-down-s-line ri-lg dropdown-arrow-down"></i>
+                    <i class="ri-arrow-right-s-line ri-lg dropdown-arrow-straight"></i>
+                </h5>
+                <ul class="vt-inline-dropdown">
+                    <li>
+                        <a class="nav-link d-flex align-items-center {% if title == 'Receptions' %}active{% endif %}" title="Receptions" href="{% url 'receptions:list' %}">
+                            <i class="ri-subtract-line ri-lg"></i>
+                            <span class="flex-grow-1">List</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link d-flex align-items-center {% if title == 'Reception Token' %}active{% endif %}" title="Reception Token" href="{% url 'receptions:token' %}">
+                            <i class="ri-subtract-line ri-lg"></i>
+                            <span class="flex-grow-1">Token</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="vt-inline-dropdown-wrapper">
+                <h5 class="navbar-heading-text d-flex align-items-center">
+                    <i class="ri-home-6-fill ri-lg"></i>
+                    <span class="flex-grow-1 align-middle">Mortuary</span>
+                    <i class="ri-arrow-down-s-line ri-lg dropdown-arrow-down"></i>
+                    <i class="ri-arrow-right-s-line ri-lg dropdown-arrow-straight"></i>
+                </h5>
+                <ul class="vt-inline-dropdown">
+                    <li>
+                        <a class="nav-link d-flex align-items-center {% if title == 'Mortuary' %}active{% endif %}" title="Mortuary" href="{% url 'mortuaries:home' %}">
+                            <i class="ri-subtract-line ri-lg"></i>
+                            <span class="flex-grow-1">List</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        {% endif %}
+    </ul>
+</div>

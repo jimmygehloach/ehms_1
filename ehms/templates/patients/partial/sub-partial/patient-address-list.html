@@ -1,0 +1,35 @@
+<div class="form-section-head">
+    <strong>Patient Addresses</strong>
+</div>
+<div class="div-table m-2">
+    <div class="div-table-row d-flex">
+        <div class="div-table-head flex-fill w-50">Address</div>
+        <div class="div-table-head flex-fill w-20">Type</div>
+        <div class="div-table-head flex-fill w-20">Current Address</div>
+        <div class="div-table-head flex-fill w-10">Actions</div>
+    </div>
+    {% for patient_address in patient_addresses %}
+        <div class="div-table-row d-flex">
+            <div class="div-table-cell flex-fill w-50">
+                {{ patient_address.address_line_1 }}
+                {% if patient_address.address_line_2 %}
+                    <br>{{ patient_address.address_line_2 }}
+                {% endif %}
+                , {{ patient_address.town.name }}
+                , {{ patient_address.district.name }}
+                , {{ patient_address.region.name }}
+                <br>{{ patient_address.country.name }}
+                , {{ patient_address.postcode.name }}
+            </div>
+            <div class="div-table-cell flex-fill w-20">{{ patient_address.type }}</div>
+            <div class="div-table-cell flex-fill w-20">{{ patient_address.current_address }}</div>
+            <div class="div-table-cell flex-fill w-10">
+                <a href="{% url 'patients:edit-address' patient.pk patient_address.pk %}" title="Edit Address">
+                    <i class="ri-edit-box-fill ri-lg"></i>
+                </a>
+            </div>
+        </div>
+    {% empty %}
+        <div class="div-table-row d-flex"><div class="div-table-cell flex-fill w-100 text-center">No address found.</div></div>
+    {% endfor %}
+</div>

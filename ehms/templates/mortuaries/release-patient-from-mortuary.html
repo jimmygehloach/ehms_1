@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col">
+                <span class="disabled-color pr-5"> {{ patient.first_name }} {{ patient.last_name }} </span> / <a class="pl-5" href="{% url 'mortuaries:list' mortuary.pk %}">Mortuary Patients</a> / <a class="pl-5" href="{% url 'mortuaries:home' %}">Mortuaries</a>
+            </div>
+            <div class="col d-flex justify-content-end"></div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-4">
+                <strong>Release Patient Section</strong>
+                <p class="disabled-text">Patient's body is released from mortuary</p>
+            </div>
+
+            <div class="col-8 form-section">
+            <div class="form-section-head">
+                <strong>Patient released from mortuary</strong>
+            </div>
+            {% include 'partials/errors.html' with form=form %}
+            <form class="A-form" action="" method="POST" id="release-patient-from-mortuary" novalidate>
+
+                {% csrf_token %}
+
+                <div class="mb-40">
+                    <label for="{{ form.date_released.id_for_label }}" class="form-labels label-box">{{ form.date_released.label}}</label>
+                    {{ form.date_released }}
+                </div>
+                <div class="mb-40">
+                    <label for="{{ form.reason_behind_release.id_for_label }}" class="form-labels label-box">{{ form.reason_behind_release.label}}</label>
+                    {{ form.reason_behind_release }}
+                </div>
+                <div class="mb-40">
+                    <label for="{{ form.next_of_kin.id_for_label }}" class="form-labels label-box">{{ form.next_of_kin.label}}</label>
+                    {{ form.next_of_kin }}
+                </div>
+                <div class="mb-40">
+                    <label for="{{ form.next_of_kin_relationship.id_for_label }}" class="form-labels label-box">{{ form.next_of_kin_relationship.label}}</label>
+                    {{ form.next_of_kin_relationship }}
+                </div>
+                <div class="mb-40">
+                    <label for="{{ form.person_address.id_for_label }}" class="form-labels label-box">{{ form.person_address.label}}</label>
+                    {{ form.person_address }}
+                </div>
+                <div class="mb-40">
+                    <label for="{{ form.person_phone.id_for_label }}" class="form-labels label-box">{{ form.person_phone.label}}</label>
+                    {{ form.person_phone }}
+                </div>
+                <div class="mb-40">
+                    <label for="{{ form.witness.id_for_label }}" class="form-labels label-box">{{ form.witness.label}}</label>
+                    {{ form.witness }}
+                </div>
+                <div class="mb-40">
+                    <label for="{{ form.witness_address.id_for_label }}" class="form-labels label-box">{{ form.witness_address.label}}</label>
+                    {{ form.witness_address }}
+                </div>
+                <div class="mb-40">
+                    <label for="{{ form.witness_phone.id_for_label }}" class="form-labels label-box">{{ form.witness_phone.label}}</label>
+                    {{ form.witness_phone }}
+                </div>
+                <div class="mb-40">
+                    <label for="{{ form.person_uid.id_for_label }}" class="form-labels label-box">{{ form.person_uid.label}}</label>
+                    {{ form.person_uid }}
+                </div>
+
+                <button type="submit" class="hide-block" id="release-patient-from-mortuary-form-submit-button"></button>
+            </form>
+            <div class="button-section text-end">
+                <div id="release-patient-from-mortuary-form-error-counts" class="form-errors-count"></div>
+                <label for="release-patient-from-mortuary-form-submit-button" role="button" class="ehms-button">Save Changes</label>
+            </div>
+        </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block inline_javascript %}
+
+    <script type="application/javascript" nonce="{{ request.csp_nonce }}">
+
+        $(function () {
+
+            new FormValidation({
+                formId: 'release-patient-from-mortuary',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+                ownErrorCountId: 'release-patient-from-mortuary-form-error-counts'
+            });
+
+            $('#id_date_released').flatpickr({
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                time_24hr: true,
+            });
+
+        });
+
+    </script>
+
+{% endblock inline_javascript %}

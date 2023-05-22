@@ -1,0 +1,283 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex breadcrumb align-items-center">
+                    <a class="pl-5" href="{% url "dashboards:hospital-level" %}"> <i class="ri-home-3-fill ri-lg"></i> Home </a>
+                    <i class="ri-arrow-right-s-line ri-lg"></i>
+                    <a class="pl-5" href="{% url "hospitals:profile" %}"> <i class="ri-profile-fill ri-lg"></i> Profile </a>
+                    <i class="ri-arrow-right-s-line ri-lg"></i>
+                    <span class="disabled-color pr-5"> <i class="ri-dashboard-fill ri-lg"></i> Dashboard </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3">
+                <div class="card mb-40">
+                    <div class="card-header">Patients registered</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ total_patients }}</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card mb-40">
+                    <div class="card-header">Practitioners registered</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ total_practitioners }}</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card mb-40">
+                    <div class="card-header">Nurses registered</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ total_nurses }}</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card mb-40">
+                    <div class="card-header">Medical sessions created</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ total_medical_sessions }}</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card mb-40">
+                    <div class="card-header">IPD</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ patient_ipd }}</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card mb-40">
+                    <div class="card-header">OPD</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ patient_opd }}</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card mb-40">
+                    <div class="card-header">Beds Available</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ beds_available }}</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card mb-40">
+                    <div class="card-header">Beds Occupied</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ beds_occupied }}</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <form action="" method="POST" id="department-form-search" class="mb-20" novalidate>
+                    {% csrf_token %}
+                    <div class="div-table">
+                        <div class="div-table-row d-flex bg-white all-border-radius">
+                            <div class="div-table-cell flex-fill w-40">
+                                <div class="form-floating">
+                                    <select class="form-select" name="department" id="id_department" data-validation="required">
+                                        <option value="" selected disabled>Choose Option</option>
+                                        {% for department in valid_departments %}
+                                            <option value="{{ department }}">{{ department.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="id_department">Department</label>
+                                </div>
+                            </div>
+                            <div class="div-table-cell flex-fill w-30">
+                                <div class="form-floating">
+                                    <input class="form-control" type="text" name="start_date" id="hd-start-date" placeholder="YYYY-MM-DD" data-validation="required">
+                                    <label for="hd-start-date">Start Date</label>
+                                </div>
+                            </div>
+
+                            <div class="div-table-cell flex-fill w-25">
+                                <div class="form-floating">
+                                    <input class="form-control" type="text" name="end_date" id="hd-end-date" placeholder="YYYY-MM-DD" data-validation="required">
+                                    <label for="hd-end-date">Finish Date</label>
+                                </div>
+                            </div>
+                           <div class="div-table-cell flex-fill w-5">
+                               <div class="form-floating">
+                                    <button type="submit" class="btn">
+                                        <span class="material-symbols-sharp">search</span>
+                                    </button>
+                               </div>
+                           </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-12">
+                <div class="div-table mb-40">
+                    <div class="div-table-row d-flex">
+                        <div class="div-table-head flex-fill w-30">Practitioner</div>
+                        <div class="div-table-head flex-fill w-30">Patient</div>
+                        <div class="div-table-head flex-fill w-30">Date Time</div>
+                        <div class="div-table-head flex-fill w-10">Actions</div>
+                    </div>
+                    {% for medical_session in medical_sessions_department_wise %}
+                        <div class="table-row d-flex bg-white">
+                            <div class="table-cell flex-fill w-30">
+                                <a href="{% url 'practitioners:detail' medical_session.practitioner.pk %}" title="Profile">
+                                    {{ medical_session.practitioner.first_name }} {{ medical_session.practitioner.last_name }}
+                                </a>
+                            </div>
+                            <div class="table-cell flex-fill w-30">
+                                <a href="{% url 'patients:detail' medical_session.patient.pk %}" title="Profile">
+                                    {{ medical_session.practitioner.first_name }} {{ medical_session.practitioner.last_name }}
+                                </a>
+                            </div>
+                            <div class="table-cell flex-fill w-30">{{ medical_session.created }}</div>
+                            <div class="table-cell flex-fill w-10">
+                                <a href="{% url "medical_sessions:detail" medical_session.patient.pk medical_session.uid %}" title="Medical Session" data-bs-toggle="tooltip" data-bs-placement="top">
+                                    <span class="material-symbols-sharp">library_books</span>
+                                </a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="div-table-row bg-white d-flex">
+                            <div class="div-table-cell flex-fill w-100 text-center">
+                                Nothing Found
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <form action="" method="POST" id="ward-form-search" class="mb-20" novalidate>
+                    {% csrf_token %}
+                    <div class="div-table">
+                        <div class="div-table-row d-flex bg-white all-border-radius">
+                            <div class="div-table-cell flex-fill w-30">
+                                <div class="form-floating">
+                                    <select class="form-select" name="department" id="id_ward" data-validation="required">
+                                        <option value="" selected disabled>Choose Option</option>
+                                        {% for ward in valid_wards %}
+                                            <option value="{{ ward }}">{{ ward.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="id_ward">Ward</label>
+                                </div>
+                            </div>
+                            <div class="div-table-cell flex-fill w-30">
+                                <div class="form-floating">
+                                    <input class="form-control" type="text" name="start_date" id="hw-start-date" placeholder="YYYY-MM-DD"  data-validation="required">
+                                    <label for="hw-start-date">Start Date</label>
+                                </div>
+                            </div>
+
+                            <div class="div-table-cell flex-fill w-30">
+                                <div class="form-floating">
+                                    <input class="form-control" type="text" name="end_date" id="hw-end-date" placeholder="YYYY-MM-DD"  data-validation="required">
+                                    <label for="hw-end-date">Finish Date</label>
+                                </div>
+                            </div>
+                           <div class="div-table-cell flex-fill w-5">
+                               <div class="form-floating">
+                                    <button type="submit" class="btn">
+                                        <span class="material-symbols-sharp">search</span>
+                                    </button>
+                               </div>
+                           </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="div-table mb-40">
+                    <div class="div-table-row d-flex">
+                        <div class="div-table-head flex-fill w-30">Practitioner</div>
+                        <div class="div-table-head flex-fill w-30">Patient</div>
+                        <div class="div-table-head flex-fill w-30">Date Time</div>
+                        <div class="div-table-head flex-fill w-10">Actions</div>
+                    </div>
+                    {% for medical_session in medical_sessions_department_wise %}
+                        <div class="table-row d-flex bg-white">
+                            <div class="table-cell flex-fill w-30">
+                                <a href="{% url 'practitioners:detail' medical_session.practitioner.pk %}" title="Profile">
+                                    {{ medical_session.practitioner.first_name }} {{ medical_session.practitioner.last_name }}
+                                </a>
+                            </div>
+                            <div class="table-cell flex-fill w-30">
+                                <a href="{% url 'patients:detail' medical_session.patient.pk %}" title="Profile">
+                                    {{ medical_session.practitioner.first_name }} {{ medical_session.practitioner.last_name }}
+                                </a>
+                            </div>
+                            <div class="table-cell flex-fill w-30">{{ medical_session.created }}</div>
+                            <div class="table-cell flex-fill w-10">
+                                <a href="{% url "medical_sessions:detail" medical_session.patient.pk medical_session.uid %}" title="Medical Session" data-bs-toggle="tooltip" data-bs-placement="top">
+                                    <span class="material-symbols-sharp">library_books</span>
+                                </a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="div-table-row bg-white d-flex">
+                            <div class="div-table-cell flex-fill w-100 text-center">
+                                Nothing Found
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block inline_javascript %}
+    <script nonce="{{ request.csp_nonce }}" type="application/javascript">
+
+        $(function () {
+
+            new FormValidation({
+                formId: 'department-form-search',
+                fireEventHandler: true,
+                onPageLoad: false,
+                showErrorCounts: false,
+            });
+
+             new FormValidation({
+                 formId: 'ward-form-search',
+                 fireEventHandler: true,
+                 onPageLoad: false,
+                 showErrorCounts: false,
+            });
+
+            $('#hd-start-date').flatpickr({enableTime: false, dateFormat: "Y-m-d"});
+            $('#hd-end-date').flatpickr({enableTime: false, dateFormat: "Y-m-d"});
+            $('#hw-start-date').flatpickr({enableTime: false, dateFormat: "Y-m-d"});
+            $('#hw-end-date').flatpickr({enableTime: false, dateFormat: "Y-m-d"});
+        });
+
+    </script>
+{% endblock inline_javascript %}

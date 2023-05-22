@@ -1,0 +1,22 @@
+<div class="form-section-head">
+    <strong>Patient Miscellaneous Information</strong>
+</div>
+<form class="A-form" action="{% url 'patients:detail' patient.pk %}" method="POST">
+    {% csrf_token %}
+    <div class="mb-40">
+        <label class="label-box" for="{{ update_patient_misc_info.temporary_family_info.id_for_label }}">{{ update_patient_misc_info.temporary_family_info.label }}</label>
+        {{ update_patient_misc_info.temporary_family_info }}
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="{{ update_patient_misc_info.other_information.id_for_label }}">{{ update_patient_misc_info.other_information.label }}</label>
+        {{ update_patient_misc_info.other_information }}
+    </div>
+    <div class="mb-40">
+        <label class="label-box" for="{{ update_patient_misc_info.remarks.id_for_label }}">{{ update_patient_misc_info.remarks.label }}</label>
+        {{ update_patient_misc_info.remarks }}
+    </div>
+    <input type="hidden" name="update_patient_misc_info" value="">
+</form>
+<div class="button-section text-end">
+    <button type="button"  class="ehms-button">Save Changes</button>
+</div>

@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-6">
+                <span class="disabled-color pr-5"> Advanced Search </span> / <a class="pl-5" href="{% url "patients:create" %}">Registration</a> / <a class="pl-5" href="{% url "patients:list" %}">Patient List</a>
+            </div>
+
+            <div class="col-6 d-flex justify-content-end">
+                <span class="pr-20" title="Patient found">{% if patient_count %} {{ patient_count }} {% else %} 0 {% endif %}</span>
+                <div class="dropdown" data-bs-toggle="tooltip" data-bs-placement="top" title="Sort List">
+                    <a href=""  id="patient-list-sort-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="material-symbols-sharp">sort</span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="patient-list-sort-dropdown">
+                   <li><a class="dropdown-item" href="{% url 'patients:advanced' %}?sort=asc">Ascending</a></li>
+                    <li><a class="dropdown-item" href="{% url 'patients:advanced' %}?sort=desc">Descending</a></li>
+                </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ehms-hr"></div>
+
+    <div class="container-fluid content-body">
+        <div class="row content-body-inner">
+            <div class="col-12">
+                {% include 'patients/partial/advanced_search_form.html' with regions=regions districts=district towns=towns postcodes=postcodes %}
+            </div>
+            <div class="col-12">
+                <div class="div-table mt-40">
+                        <div class="div-table-row d-flex">
+                            <div class="div-table-head flex-fill w-10">Image</div>
+                            <div class="div-table-head flex-fill w-30">Name</div>
+                            <div class="div-table-head flex-fill w-10">Age</div>
+                            <div class="div-table-head flex-fill w-10">Gender</div>
+                            <div class="div-table-head flex-fill w-10">Blood Group</div>
+                            <div class="div-table-head flex-fill w-20">Health Status</div>
+                            <div class="div-table-head flex-fill w-10">Actions</div>
+                        </div>
+                        {% for patient in page_obj %}
+                            <div class="div-table-row d-flex bg-white">
+                                <div class="div-table-cell flex-fill w-10">
+                                    {% if patient.image %}
+                                    <img class="img-fluid profile-img-rounded health-status-border-{{ patient.health_status.css_class }}" width="50" height="50" src="{{ patient.image_thumbnail.url }}" alt="">
+                                    {% else %} NO PHOTO {% endif %}
+                                </div>
+                                <div class="div-table-cell flex-fill w-30">{{ patient.first_name }} {% if patient.middle_name %} {{ patient.middle_name }} {% endif %} {{ patient.last_name }}</div>
+                                <div class="div-table-cell flex-fill w-10">{{ patient.age }} </div>
+                                <div class="div-table-cell flex-fill w-10">{{ patient.gender }} </div>
+                                <div class="div-table-cell flex-fill w-10">{% if patient.blood_group %} {{ patient.blood_group }} {% else %} {% endif %} </div>
+                                <div class="div-table-cell flex-fill w-20"><span class="health-status-{{ patient.health_status.css_class }}">{{ patient.health_status.name }}</span></div>
+                                <div class="div-table-cell flex-fill w-10">
+                                    {# Patient new medical session for practitioner only #}
+                                    {% if request.group_name == 'practitioner level' %}
+                                        <a href="{% url "medical_sessions:new" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="New Medical Session"><span class="material-symbols-sharp">add_box</span></a>
+                                    {% endif %}
+                                    <a class="pr-10 pl-10" href="{% url "patients:detail" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Patient portfolio"><span class="material-symbols-sharp">account_circle</span></a>
+                                    <a href="{% url "medical_sessions:list" patient.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Medical Sessions"><span class="material-symbols-sharp">ballot</span></a>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="div-table-row bg-white"><div class="div-table-cell flex-fill w-100 text-center">Nothing Found</div></div>
+                        {% endfor %}
+                    </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block pagination %}
+    {% if is_paginated %}
+        <div class="pagination justify-content-center" style="margin-top: 20px;">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a href="?page={{ page_obj.previous_page_number }}&search_keyword={{ request.GET.search_keyword|urlencode }}"
+                       class="page-link">
+                        Previous
+                    </a>
+                </li>
+                <li>
+                    <a class="page-link"
+                       href="?page={{ page_obj.previous_page_number }}&search_keyword={{ request.GET.search_keyword|urlencode }}">
+                        {{ page_obj.previous_page_number }}
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                </li>
+            {% endif %}
+
+            <li class="page-item active">
+                <span class="page-link">{{ page_obj.number }}</span>
+            </li>
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?page={{ page_obj.next_page_number }}&search_keyword={{ request.GET.search_keyword|urlencode }}">
+                        {{ page_obj.next_page_number }}
+                    </a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link"
+                       href="?page={{ page_obj.next_page_number }}&search_keyword={{ request.GET.search_keyword|urlencode }}">Next</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Next</span>
+                </li>
+            {% endif %}
+        </div> {# end of pagination #}
+
+    {% endif %}
+{% endblock %}
+
+{% block inline_javascript %}
+
+    <script nonce="{{ request.csp_nonce }}" type="application/javascript">
+
+        $(function () {
+
+            new FormValidation({
+                formId: 'patient-advanced-search',
+                fireEventHandler: true,
+                onPageLoad: false,
+                disableInlineStyle: true,
+                listStyle: 'unordered',
+                showErrorCounts: false,
+            });
+
+            new AddressFormFields({
+                formId: 'patient-advanced-search',
+                regionUrl: '/addresses/api/region',
+                districtUrl: '/addresses/api/district',
+                townUrl: '/addresses/api/town',
+                postcodeUrl: '/addresses/api/postcode',
+            })
+
+        });
+
+    </script>
+
+{% endblock inline_javascript %}
