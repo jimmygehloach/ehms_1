@@ -1,0 +1,80 @@
+body {
+    color: var(--text-color);
+    position: relative;
+    font-family: 'Roboto', 'Roboto', sans-serif;
+    font-size: calc((1 - 1) * 1.2vw + 1rem);
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 0em;
+    text-transform: none;
+    line-height: 1.5em;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ================================================================================================ Block Main Navbar */
+#main-sticky-navbar {
+    background: var(--neutral-color-mid-light);
+    padding: 20px 40px;
+    box-shadow: var(--main-box-shadow);
+}
+
+#main-sticky-navbar .menu a {
+    color: var(--primary-color);
+}
+
+#main-search-form input[type="text"] {
+    background: var(--neutral-color-light) !important;
+    width: 30% !important;
+    border-radius: 5px !important;
+    border: 2px solid var(--border-color-3) !important;
+}
+
+#main-search-form input[type="text"]:focus {
+    box-shadow: none !important;
+    border: 2px solid var(--primary-color) !important;
+}
+
+#main-search-form button[type="submit"] {
+    background: var(--neutral-color-light) !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    color: var(--primary-color);
+    position: relative;
+    right: 40px;
+    top: 16px;
+    padding: 0 5px;
+    height: 10px;
+}
+
+.main-profile-link a {
+    color: var(--primary-color);
+}
+
+.main-profile-link ul {
+    padding: 0;
+    margin: 0;
+}
+
+/* ============================================================================================ End Block Main Navbar */
+
+/* =============================================================================================== Block Main Content */
+#main-content {
+    background: var(--neutral-color-light);
+    padding: 50px 40px;
+    min-height: 100vh;
+}
+
+#main-content .breadcrumb {
+    padding: 15px 20px;
+    background: var(--heading-bg-color);
+    border-radius: 5px;
+    margin-bottom: 40px;
+    box-shadow: var(--main-box-shadow);
+}
+
+#main-content .breadcrumb .ri-arrow-right-s-line {
+    color: var(--neutral-color-mid);
+    padding: 0 10px;
+}
+/* =========================================================================================== End Block Main Content */
+
