@@ -9,7 +9,7 @@
     <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredPackages">
         <value>
-          <list size="8">
+          <list size="30">
             <item index="0" class="java.lang.String" itemvalue="hiredis" />
             <item index="1" class="java.lang.String" itemvalue="django-anymail" />
             <item index="2" class="java.lang.String" itemvalue="psycopg2" />
@@ -18,6 +18,28 @@
             <item index="5" class="java.lang.String" itemvalue="django-smart-selects" />
             <item index="6" class="java.lang.String" itemvalue="cryptography" />
             <item index="7" class="java.lang.String" itemvalue="djangorestframework" />
+            <item index="8" class="java.lang.String" itemvalue="django-otp" />
+            <item index="9" class="java.lang.String" itemvalue="nodeenv" />
+            <item index="10" class="java.lang.String" itemvalue="tornado" />
+            <item index="11" class="java.lang.String" itemvalue="botocore" />
+            <item index="12" class="java.lang.String" itemvalue="mypy" />
+            <item index="13" class="java.lang.String" itemvalue="pre-commit" />
+            <item index="14" class="java.lang.String" itemvalue="pylint-plugin-utils" />
+            <item index="15" class="java.lang.String" itemvalue="types-PyYAML" />
+            <item index="16" class="java.lang.String" itemvalue="astroid" />
+            <item index="17" class="java.lang.String" itemvalue="requests" />
+            <item index="18" class="java.lang.String" itemvalue="django-debug-toolbar" />
+            <item index="19" class="java.lang.String" itemvalue="redis" />
+            <item index="20" class="java.lang.String" itemvalue="sphinx" />
+            <item index="21" class="java.lang.String" itemvalue="django" />
+            <item index="22" class="java.lang.String" itemvalue="platformdirs" />
+            <item index="23" class="java.lang.String" itemvalue="Faker" />
+            <item index="24" class="java.lang.String" itemvalue="Sphinx" />
+            <item index="25" class="java.lang.String" itemvalue="django-axes" />
+            <item index="26" class="java.lang.String" itemvalue="docutils" />
+            <item index="27" class="java.lang.String" itemvalue="django-phonenumber-field" />
+            <item index="28" class="java.lang.String" itemvalue="urllib3" />
+            <item index="29" class="java.lang.String" itemvalue="django-formtools" />
           </list>
         </value>
       </option>

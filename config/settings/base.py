@@ -155,8 +155,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-
     "user_sessions.middleware.SessionMiddleware",
     # Replaced by django user session middleware
     # "django.contrib.sessions.middleware.SessionMiddleware",
@@ -176,6 +174,7 @@ MIDDLEWARE = [
     # you can skip installing the middleware and use your own views.
     "axes.middleware.AxesMiddleware",
 ]
+
 
 # STATIC
 # ------------------------------------------------------------------------------
@@ -298,7 +297,6 @@ GEOIP_PATH = BASE_DIR / "geolite_database"
 GEOIP_COUNTRY = "GeoLite2-Country.mmdb"
 GEOIP_CITY = "GeoLite2-City.mmdb"
 
-
 # ------------------------------------------------------------------------------
 # REST FRAMEWORK
 # ------------------------------------------------------------------------------
@@ -308,7 +306,6 @@ REST_FRAMEWORK = {
         # 'rest_framework.permissions.AllowAny',
     ]
 }
-
 
 # ------------------------------------------------------------------------------
 # GOOGLE SMTP EMAIL SETUP
