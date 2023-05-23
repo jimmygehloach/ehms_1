@@ -350,8 +350,8 @@ AWS_S3_ADDRESSING_STYLE = "virtual"
 # STATIC
 # ------------------------
 # STATICFILES_STORAGE = "ehms.utils.storages.StaticRootS3Boto3Storage"
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
-# STATIC_URL = f"https://{aws_s3_domain}/static/"
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+STATIC_URL = f"https://{aws_s3_domain}/static/"
 
 # MEDIA
 # ------------------------------------------------------------------------------
