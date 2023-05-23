@@ -328,7 +328,7 @@ AWS_SECRET_ACCESS_KEY = env("DJANGO_AWS_SECRET_ACCESS_KEY")
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
 AWS_STORAGE_BUCKET_NAME = env("DJANGO_AWS_STORAGE_BUCKET_NAME")
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-# AWS_QUERYSTRING_AUTH = True
+AWS_QUERYSTRING_AUTH = True
 # # DO NOT change these unless you know what you're doing.
 # _AWS_EXPIRY = 60 * 60 * 24 * 7
 # # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
@@ -357,4 +357,4 @@ AWS_S3_ADDRESSING_STYLE = "virtual"
 # ------------------------------------------------------------------------------
 # DEFAULT_FILE_STORAGE = "ehms.utils.storages.MediaRootS3Boto3Storage"
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# MEDIA_URL = f"https://{aws_s3_domain}/media/"
+MEDIA_URL = f"https://{aws_s3_domain}/media/"
