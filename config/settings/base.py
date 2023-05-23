@@ -352,7 +352,7 @@ AWS_S3_ADDRESSING_STYLE = "virtual"
 # STATIC
 # ------------------------
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-WHITENOISE_MANIFEST_STRICT = False
+# "whitenoise.storage.CompressedStaticFilesStorage"
 
 # MEDIA
 # ------------------------------------------------------------------------------
